@@ -1,7 +1,4 @@
-import React from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import { JsxElement } from 'typescript';
-
 const Home = () => { return (<p>Hello Welcome to <b>Home</b> Page.</p>) }
 const About = () => { return (<p>Hello welcome to <b>About</b> page.</p>) }
 

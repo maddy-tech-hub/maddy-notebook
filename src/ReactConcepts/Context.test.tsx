@@ -9,11 +9,11 @@ describe('Context', () => {
         const contextValue = getByTestId('context-value');
         const handleEventButton = getByTestId('handleEvent');
 
-        expect(contextValue).toHaveTextContent('Context : 0');
+        expect(contextValue).toHaveTextContent('Count : 0');
 
         fireEvent.click(handleEventButton);
 
-        expect(contextValue).toHaveTextContent('Context : 1');
+        expect(contextValue).toHaveTextContent('Count : 1');
     });
 
     it('should handle multiple clicks', () => {
@@ -22,11 +22,11 @@ describe('Context', () => {
         const contextValue = getByTestId('context-value');
         const handleEventButton = getByTestId('handleEvent');
 
-        expect(contextValue).toHaveTextContent('Context : 0');
+        expect(contextValue).toHaveTextContent('Count : 0');
 
         fireEvent.click(handleEventButton);
         fireEvent.click(handleEventButton);
 
-        expect(contextValue).toHaveTextContent('Context : 2');
+        expect(contextValue).toHaveTextContent('Count : 2');
     });
 });
