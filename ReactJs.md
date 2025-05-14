@@ -713,20 +713,138 @@ Closures are widely used in JavaScript for data encapsulation, creating private 
 **What is it?**  
 Hoisting is JavaScript's default behavior of moving declarations (variables and functions) to the top of their scope before code execution.
 
-**How it works:**  
-- Variable declarations (`var`) are hoisted but not their initializations.
-- Function declarations are hoisted entirely.
+### **Comparison Table: Hoisting Behavior**
 
-**Example:**
+| **Type**                | **Hoisted?** | **Initialized?** | **Can Call Before Declaration?** | **Example**                                                                 |
+|--------------------------|--------------|-------------------|------------------------------------|-----------------------------------------------------------------------------|
+| `var`                   | ✅ Yes       | ✅ Initialized to `undefined` | ✅ Yes                             | `console.log(a); var a = 10;` → Prints `undefined`                          |
+| `let`                   | ✅ Yes       | ❌ Not initialized | ❌ No (TDZ)                        | `console.log(b); let b = 20;` → ReferenceError                              |
+| `const`                 | ✅ Yes       | ❌ Not initialized | ❌ No (TDZ)                        | `console.log(c); const c = 30;` → ReferenceError                            |
+| Function Declaration    | ✅ Yes       | ✅ Fully hoisted   | ✅ Yes                             | `sayHi(); function sayHi() {}` → Works perfectly                            |
+| Function Expression     | ✅ Yes       | ❌ Not initialized | ❌ No                              | `greet(); var greet = function () {}` → TypeError                           |
+| Arrow Function          | ✅ Yes       | ❌ Not initialized | ❌ No                              | `sayHello(); var sayHello = () => {}` → TypeError                           |
+
+---
+
+#### **1. Hoisting with `var`**
+
+`var` declarations are hoisted and initialized with `undefined`.
+
 ```js
-console.log(a); // undefined (declaration is hoisted, but not initialization)
+console.log(a); // 👉 undefined
 var a = 10;
+```
 
-sayHi(); // "Hello!" (function declaration is hoisted)
+**Behind the Scenes:**
+```js
+var a;          // 💡 Declaration is hoisted to the top and initialized with undefined
+console.log(a); // 👉 Prints undefined
+a = 10;         // ✅ Assigned later at runtime
+```
+
+---
+
+#### **2. Hoisting with `let` and `const`**
+
+`let` and `const` are hoisted but are not initialized. Accessing them before their declaration results in a **ReferenceError** due to the **Temporal Dead Zone (TDZ)**.
+
+```js
+console.log(b); // ❌ ReferenceError: Cannot access 'b' before initialization
+let b = 20;
+
+console.log(c); // ❌ ReferenceError
+const c = 30;
+```
+
+**Behind the Scenes:**
+```js
+// Temporal Dead Zone (TDZ)
+let b;    // 🧨 Hoisted, but not initialized
+const c;  // 🧨 Hoisted, but not initialized
+
+// ❌ Accessing `b` or `c` before this point will throw ReferenceError
+```
+
+---
+
+#### **3. Hoisting with Function Declarations**
+
+Function declarations are **fully hoisted**, meaning both the name and the body of the function are moved to the top of their scope. This allows you to call the function before its declaration.
+
+```js
+sayHi(); // ✅ Works perfectly
 function sayHi() {
-  console.log("Hello!");
+  console.log("Hello from hoisted function!");
 }
 ```
+
+**Behind the Scenes:**
+```js
+// Function declaration is hoisted completely
+function sayHi() {
+  console.log("Hello from hoisted function!");
+}
+
+sayHi(); // 👉 Can be safely called here
+```
+
+---
+
+#### **4. Hoisting with Function Expressions**
+
+Function expressions are **not fully hoisted**. Only the variable declaration is hoisted, but the function itself is not assigned until runtime. This results in a **TypeError** if you try to call the function before its assignment.
+
+```js
+greet(); // ❌ TypeError: greet is not a function
+var greet = function () {
+  console.log("Hi from function expression!");
+};
+```
+
+**Behind the Scenes:**
+```js
+var greet;       // ✅ `var` is hoisted and initialized with undefined
+greet();         // ❌ Error because `greet` is undefined at this point
+greet = function () {
+  console.log("Hi from function expression!");
+};
+```
+
+---
+
+#### **5. Hoisting with Arrow Functions**
+
+Arrow functions behave like function expressions. They are **not fully hoisted**, and only the variable declaration is hoisted. Attempting to call the arrow function before its assignment results in a **TypeError**.
+
+```js
+sayHello(); // ❌ TypeError: sayHello is not a function
+
+var sayHello = () => {
+  console.log("👋 Hello from arrow function!");
+};
+```
+
+**Behind the Scenes:**
+```js
+var sayHello;      // ✅ `var` is hoisted and initialized to undefined
+
+sayHello();        // ❌ TypeError: sayHello is not a function
+
+sayHello = () => {
+  console.log("👋 Hello from arrow function!");
+};
+```
+
+---
+
+### **Key Takeaways**
+
+1. **`var`** is hoisted and initialized to `undefined`, so it can be accessed before its declaration (but will be `undefined`).
+2. **`let` and `const`** are hoisted but not initialized, so accessing them before their declaration results in a **ReferenceError**.
+3. **Function declarations** are fully hoisted, so they can be called before their declaration.
+4. **Function expressions and arrow functions** are not fully hoisted, so calling them before their assignment results in a **TypeError**.
+
+This structured explanation with examples and behind-the-scenes behavior ensures a clear understanding of hoisting in JavaScript.
 
 **Why it's important:**  
 Understanding hoisting helps avoid bugs caused by accessing variables or functions before they are defined.
@@ -762,7 +880,113 @@ Understanding the difference is crucial when working with objects to avoid unint
 
 ---
 
-#### **7.4 Debouncing & Throttling**
+#### **7.4 Promises & Async/Await**
+
+**What is it?**  
+- **Promises**: Represent the eventual completion (or failure) of an asynchronous operation.
+- **Async/Await**: A cleaner syntax for working with Promises.
+
+**How it works:**
+**Promises Example:**
+```js
+const fetchData = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Data fetched!");
+    }, 1000);
+  });
+};
+
+fetchData().then((data) => console.log(data)).catch((error) => console.error(error));
+```
+
+**Async/Await Example:**
+```js
+const fetchData = async () => {
+  try {
+    const data = await new Promise((resolve) => setTimeout(() => resolve("Data fetched!"), 1000));
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+fetchData();
+```
+
+**Why it's important:**  
+Promises and async/await are essential for handling asynchronous operations in a readable and maintainable way.
+
+---
+
+#### **7.5 Array Methods Mastery
+![image](https://github.com/user-attachments/assets/10d30b84-c826-467a-aea6-35ba133a6119)
+
+### JavaScript Array Methods and Their C# Equivalents
+
+| **JavaScript Method** | **C# Equivalent** | **JavaScript Example** | **JavaScript Output** | **C# Output** | **C# Example** |
+|------------------------|-------------------|--------------------------|------------------------|----------------|----------------|
+| **map()**              | `Select()`        | `let doubled = [1,2,3].map(n => n * 2);` | `[2, 4, 6]` | `2, 4, 6` | `numbers.Select(n => n * 2).ToArray();` |
+| **filter()**           | `Where()`         | `let even = [1,2,3,4,5].filter(n => n % 2 === 0);` | `[2, 4]` | `2, 4` | `numbers.Where(n => n % 2 == 0).ToArray();` |
+| **reduce()**           | `Aggregate()`     | `let sum = [1,2,3,4].reduce((a,b) => a + b);` | `10` | `10` | `numbers.Aggregate((a,b) => a + b);` |
+| **forEach()**          | `ForEach()`       | `[1,2,3].forEach(n => console.log(n));` | `1, 2, 3` | `1, 2, 3` | `numbers.ToList().ForEach(n => Console.WriteLine(n));` |
+| **some()**             | `Any()`           | `[1,2,3].some(n => n % 2 === 0);` | `true` | `True` | `numbers.Any(n => n % 2 == 0);` |
+| **every()**            | `All()`           | `[1,2,3].every(n => n < 4);` | `true` | `True` | `numbers.All(n => n < 4);` |
+| **indexOf()**          | `IndexOf()`       | `[1,2,3].indexOf(2);` | `1` | `1` | `Array.IndexOf(numbers, 2);` |
+| **find()**             | `FirstOrDefault()`| `[1,2,3].find(n => n > 1);` | `2` | `2` | `numbers.FirstOrDefault(n => n > 1);` |
+| **findIndex()**        | `FindIndex()`     | `[1,2,3].findIndex(n => n > 1);` | `1` | `1` | `numbers.ToList().FindIndex(n => n > 1);` |
+| **concat()**           | `Concat()`        | `[1,2].concat([3,4]);` | `[1, 2, 3, 4]` | `1, 2, 3, 4` | `arr1.Concat(arr2).ToArray();` |
+| **slice()**            | `Skip() + Take()` | `[1,2,3,4].slice(1, 3);` | `[2, 3]` | `2, 3` | `numbers.Skip(1).Take(2).ToArray();` |
+| **splice()**           | `Insert() / RemoveAt()` | `let a = [1,2,3]; a.splice(1,1);` | `[1, 3]` | `1, 3` | `list.RemoveAt(1);` |
+| **sort()**             | `OrderBy()`       | `[3,1,2].sort();` | `[1, 2, 3]` | `1, 2, 3` | `numbers.OrderBy(n => n).ToArray();` |
+| **reverse()**          | `Reverse()`       | `[1,2,3].reverse();` | `[3, 2, 1]` | `3, 2, 1` | `Array.Reverse(numbers);` |
+| **push()**             | `Add()`           | `let a = [1,2]; a.push(3);` | `[1, 2, 3]` | `1, 2, 3` | `list.Add(3);` |
+| **pop()**              | `RemoveAt()`      | `let a = [1,2,3]; a.pop();` | `[1, 2]` | `1, 2` | `list.RemoveAt(list.Count - 1);` |
+| **shift()**            | `RemoveAt(0)`     | `let a = [1,2,3]; a.shift();` | `[2, 3]` | `2, 3` | `list.RemoveAt(0);` |
+| **unshift()**          | `Insert(0, val)`  | `let a = [1,2]; a.unshift(0);` | `[0, 1, 2]` | `0, 1, 2` | `list.Insert(0, 0);` |
+
+---
+
+#### **7.6 Event Loop**
+
+**What is it?**  
+The event loop is a mechanism in JavaScript that handles asynchronous operations by managing the execution of the call stack and the task queue.
+
+**How it works:**
+1. JavaScript executes code in the **call stack**.
+2. Asynchronous tasks (e.g., `setTimeout`, Promises) are sent to the **task queue** or **microtask queue**.
+3. The event loop checks if the call stack is empty and then pushes tasks from the queue to the stack.
+
+**Example:**
+```js
+console.log("Start");
+
+setTimeout(() => {
+  console.log("Timeout");
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log("Promise");
+});
+
+console.log("End");
+```
+
+**Output:**
+```
+Start
+End
+Promise
+Timeout
+```
+
+**Why it's important:**  
+Understanding the event loop is crucial for debugging asynchronous code and avoiding issues like race conditions.
+
+---
+
+
+#### **7.7 Debouncing & Throttling**
 
 **What is it?**  
 - **Debouncing**: Ensures a function is executed only after a specified delay since the last time it was invoked.
@@ -821,84 +1045,7 @@ Debouncing and throttling are essential for optimizing performance in scenarios 
 
 ---
 
-#### **7.5 Event Loop**
-
-**What is it?**  
-The event loop is a mechanism in JavaScript that handles asynchronous operations by managing the execution of the call stack and the task queue.
-
-**How it works:**
-1. JavaScript executes code in the **call stack**.
-2. Asynchronous tasks (e.g., `setTimeout`, Promises) are sent to the **task queue** or **microtask queue**.
-3. The event loop checks if the call stack is empty and then pushes tasks from the queue to the stack.
-
-**Example:**
-```js
-console.log("Start");
-
-setTimeout(() => {
-  console.log("Timeout");
-}, 0);
-
-Promise.resolve().then(() => {
-  console.log("Promise");
-});
-
-console.log("End");
-```
-
-**Output:**
-```
-Start
-End
-Promise
-Timeout
-```
-
-**Why it's important:**  
-Understanding the event loop is crucial for debugging asynchronous code and avoiding issues like race conditions.
-
----
-
-#### **7.6 Promises & Async/Await**
-
-**What is it?**  
-- **Promises**: Represent the eventual completion (or failure) of an asynchronous operation.
-- **Async/Await**: A cleaner syntax for working with Promises.
-
-**How it works:**
-**Promises Example:**
-```js
-const fetchData = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("Data fetched!");
-    }, 1000);
-  });
-};
-
-fetchData().then((data) => console.log(data)).catch((error) => console.error(error));
-```
-
-**Async/Await Example:**
-```js
-const fetchData = async () => {
-  try {
-    const data = await new Promise((resolve) => setTimeout(() => resolve("Data fetched!"), 1000));
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-fetchData();
-```
-
-**Why it's important:**  
-Promises and async/await are essential for handling asynchronous operations in a readable and maintainable way.
-
----
-
-#### **7.7 Currying**
+#### **7.8 Currying**
 
 **What is it?**  
 Currying is a technique of transforming a function with multiple arguments into a sequence of functions, each taking a single argument.
@@ -919,6 +1066,7 @@ console.log(addFive(3)); // 8
 Currying is useful for creating reusable and composable functions.
 
 ---
+
 
 ## **TypeScript (TS)**
 
@@ -954,6 +1102,16 @@ let numbers: number[] = [1, 2, 3];
 let user: [string, number] = ["Alice", 30];
 ```
 
+### **2.3 Enum Types**
+```ts
+enum Direction {
+  Up = "UP",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT"
+}
+let move: Direction = Direction.Up;
+
 ---
 
 ### **3. Interfaces & Types**
@@ -967,8 +1125,15 @@ interface User {
 }
 const user: User = { name: "Alice", age: 30 };
 ```
+### **3.2 Extending Interfaces**
+```ts
+interface Employee extends User {
+  role: string;
+}
+const employee: Employee = { name: "Bob", age: 25, role: "Developer" };
+```
 
-#### **3.2 Type Aliases**
+#### **3.3 Type Aliases**
 
 ```ts
 type Car = {
@@ -977,7 +1142,6 @@ type Car = {
 };
 const car: Car = { brand: "Tesla", year: 2022 };
 ```
-
 ---
 
 ### **4. Functions**
