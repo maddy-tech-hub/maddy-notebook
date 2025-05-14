@@ -19,7 +19,7 @@ With a strong foundation in these, we move to **React**, a library for building 
 
 ---
 
-## HTML (HyperText Markup Language)
+# HTML (HyperText Markup Language)
 
 This guide provides a comprehensive understanding of HTML, covering its fundamental concepts, advanced features, and best practices with detailed examples.
 
@@ -56,6 +56,8 @@ Every HTML document follows a basic structure:
 </body>
 </html>
 ```
+
+### **Explanation:**
 
 - `<!DOCTYPE html>`: Declares the document type
 - `<html>`: The root element
@@ -149,11 +151,11 @@ Every HTML document follows a basic structure:
 
 ---
 
-## 5. Semantic HTML 🏷️
+## **5. Semantic HTML**
 
 Semantic HTML means using HTML tags that describe their meaning — not just their appearance.
 
-Instead of using `<div>`s everywhere, use **semantic elements** like:
+### **Examples of Semantic Elements:**
 
 - `<header>` – Top section (logo, title, nav)
 - `<nav>` – Navigation links
@@ -163,15 +165,115 @@ Instead of using `<div>`s everywhere, use **semantic elements** like:
 - `<aside>` – Sidebar or extra info
 - `<footer>` – Bottom of the page (contact, copyright)
 
-### 💡 Why It Matters:
+### **Why It Matters:**
 
-✅ **Better SEO(Search Engine Optimization)** – Search engines understand your content  
-✅ **Better Accessibility** – Screen readers can navigate easily  
-✅ **Cleaner Code** – Easier to read and maintain  
+- ✅ **Better SEO** – Search engines understand your content  
+- ✅ **Better Accessibility** – Screen readers can navigate easily  
+- ✅ **Cleaner Code** – Easier to read and maintain  
 
 ---
 
-### 🧪 Real-World Example: A Simple Blog Page
+## **6. HTML5 Features**
+
+### **6.1 Multimedia Elements**
+#### **Audio**
+```html
+<audio controls>
+    <source src="audio.mp3" type="audio/mpeg">
+</audio>
+```
+
+#### **Video**
+```html
+<video width="320" height="240" controls>
+    <source src="video.mp4" type="video/mp4">
+</video>
+```
+
+---
+
+### **6.2 Canvas for Drawing**
+The `<canvas>` element is used to draw graphics (games, charts, etc.) with JavaScript.
+```html
+<canvas id="myCanvas" width="200" height="100"></canvas>
+```
+```js
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+ctx.fillStyle = "blue";
+ctx.fillRect(10, 10, 150, 75);
+```
+
+---
+
+### **6.3 HTML5 Forms Enhancements**
+- `required` attribute for mandatory fields
+- `pattern` for input validation
+- `placeholder` for better user experience
+
+---
+
+### **6.4 Geolocation API**
+Get user’s location (with permission):
+```js
+navigator.geolocation.getCurrentPosition((position) => {
+  console.log(position.coords.latitude, position.coords.longitude);
+});
+```
+
+---
+
+### **6.5 Web Workers**
+Web Workers allow you to run JavaScript in the background without blocking the main thread.
+```js
+const worker = new Worker("worker.js");
+worker.postMessage("start");
+```
+
+---
+
+## **7. Advanced Concepts**
+
+### **7.1 Responsive Design with HTML & Meta Tags**
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
+
+---
+
+### **7.2 HTML & JavaScript Interaction**
+```html
+<button onclick="alert('Hello!')">Click Me</button>
+```
+
+---
+
+### **7.3 Web Storage (LocalStorage & SessionStorage)**
+```html
+<script>
+localStorage.setItem("username", "Alice");
+alert(localStorage.getItem("username"));
+</script>
+```
+
+---
+
+### **7.4 Accessibility Best Practices**
+- Use `alt` attributes for images
+- Ensure proper heading hierarchy
+- Use `aria` attributes for better screen reader support
+
+---
+
+### **7.5 SEO Best Practices**
+- Use proper heading structure
+- Add meta tags (`description`, `keywords`)
+- Optimize images with `alt` attributes
+- Use semantic elements (`<article>`, `<section>`, `<nav>`, etc.)
+
+---
+
+## **8. Real-World Example: A Simple Blog Page**
 
 ```html
 <!DOCTYPE html>
@@ -213,103 +315,23 @@ Instead of using `<div>`s everywhere, use **semantic elements** like:
 
 ---
 
-## **6. HTML5 Features**
+## **9. Interview Questions & Answers**
 
-### **6.1 Multimedia Elements**
-#### **Audio**
-```html
-<audio controls>
-    <source src="audio.mp3" type="audio/mpeg">
-</audio>
-```
-
-#### **Video**
-```html
-<video width="320" height="240" controls>
-    <source src="video.mp4" type="video/mp4">
-</video>
-```
-
-### **6.2 Canvas for Drawing**
-Draw graphics (games, charts, etc.) with JavaScript.
-```html
-<canvas id="myCanvas" width="200" height="100"></canvas>
-```
-```js
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d");
-ctx.fillStyle = "blue";
-ctx.fillRect(10, 10, 150, 75);
-```
-
-### **6.3 HTML5 Forms Enhancements**
-- `required` attribute for mandatory fields
-- `pattern` for input validation
-- `placeholder` for better user experience
-
-### 6.4 Geolocation API
-- Get user’s location (with permission):
-```js
-navigator.geolocation.getCurrentPosition((position) => {
-  console.log(position.coords.latitude, position.coords.longitude);
-});
-```
-
-### 6.5 Web Workers
-```js
-const worker = new Worker("worker.js");
-worker.postMessage("start");
-```
-
----
-
-## **7. Advanced Concepts**
-
-### **7.1 Responsive Design with HTML & Meta Tags**
-```html
-<meta name="viewport" content="width=device-width, initial-scale=1">
-```
-
-### **7.2 HTML & JavaScript Interaction**
-```html
-<button onclick="alert('Hello!')">Click Me</button>
-```
-
-### **7.3 Web Storage (LocalStorage & SessionStorage)**
-```html
-<script>
-localStorage.setItem("username", "Alice");
-alert(localStorage.getItem("username"));
-</script>
-```
-
-### **7.4 Accessibility Best Practices**
-- Use `alt` attributes for images
-- Ensure proper heading hierarchy
-- Use `aria` attributes for better screen reader support
-
-### **7.5 SEO Best Practices**
-- Use proper heading structure
-- Add meta tags (`description`, `keywords`)
-- Optimize images with `alt` attributes
-- Use semantic elements (`<article>`, `<section>`, `<nav>`, etc.)
-
----
-
-## **8. Interview Questions & Answers**
-
-### **8.1 Basic Questions**
+### **9.1 Basic Questions**
 1. What is HTML?
 2. What are HTML semantic elements?
 3. Difference between `<div>` and `<span>`?
 
-### **8.2 Advanced Questions**
+---
+
+### **9.2 Advanced Questions**
 1. What are the new features of HTML5?
 2. Explain the difference between localStorage and sessionStorage.
 3. How do you improve website accessibility using HTML?
 
 ---
-## CSS (Cascading Style Sheets)
+
+# CSS (Cascading Style Sheets)
 
 This guide provides a comprehensive understanding of CSS, covering fundamental concepts, advanced features, and best practices with detailed examples.
 
@@ -326,7 +348,7 @@ CSS (Cascading Style Sheets) is a stylesheet language used to control the presen
 - Separates content from design
 - Enhances user experience with better visuals
 - Enables responsive design
-- Supports tions and interactivity
+- Supports animations and interactivity
 - Improves maintainability and reusability
 
 ---
@@ -334,6 +356,8 @@ CSS (Cascading Style Sheets) is a stylesheet language used to control the presen
 ## **2. CSS Basics**
 
 ### **2.1 Selectors & Properties**
+
+CSS selectors are used to target HTML elements, and properties define their styles.
 
 ```css
 /* Element Selector */
@@ -354,12 +378,12 @@ h1 {
 
 ### **2.2 Box Model**
 
-CSS Box Model consists of:
+The CSS Box Model consists of:
 
-- **Content** (Text, images, etc.)
-- **Padding** (Space around content)
-- **Border** (Encapsulation of padding)
-- **Margin** (Space outside the border)
+1. **Content**: The actual content inside the element (e.g., text, images).
+2. **Padding**: Space between the content and the border.
+3. **Border**: Encapsulation around the padding.
+4. **Margin**: Space outside the border.
 
 ```css
 div {
@@ -424,7 +448,7 @@ CSS Grid is used to create complex and responsive layouts.
 .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0px;
+    gap: 10px;
 }
 
 .grid-item {
@@ -437,6 +461,8 @@ CSS Grid is used to create complex and responsive layouts.
 ## **4. Responsive Design**
 
 ### **4.1 Media Queries**
+
+Media queries are used to apply styles based on device width, height, or other properties.
 
 ```css
 @media (max-width: 600px) {
@@ -452,50 +478,149 @@ CSS Grid is used to create complex and responsive layouts.
 
 ### **5.1 Animations & Transitions**
 
-```html
-<button class="fancy-button">Click Me</button>
-```
+CSS animations and transitions add interactivity and enhance user experience.
+
+#### **Transitions**
+
+Transitions allow smooth changes between property values.
+
 ```css
-.fancy-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 15px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-
-  /* 🔄 This is the TRANSITION */
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.button {
+    background-color: #4CAF50;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.fancy-button:hover {
-  background-color: #45a049;
-
-  /* 🎯 This is the ANIMATION */
-  animation: bounce 0.6s;
-}
-
-/* 🎬 Keyframes for the bounce ANIMATION */
-@keyframes bounce {
-  0%   { transform: translateY(0); }
-  30%  { transform: translateY(-10px); }
-  60%  { transform: translateY(5px); }
-  100% { transform: translateY(0); }
+.button:hover {
+    background-color: #45a049;
+    transform: scale(1.1);
 }
 ```
+
+#### **Animations**
+
+Animations allow elements to move or change over time using keyframes.
+
+```css
+@keyframes bounce {
+    0%   { transform: translateY(0); }
+    30%  { transform: translateY(-10px); }
+    60%  { transform: translateY(5px); }
+    100% { transform: translateY(0); }
+}
+
+.animated-button {
+    animation: bounce 0.6s;
+}
+```
+
+---
 
 ### **5.2 CSS Variables**
+
+CSS variables (custom properties) allow you to reuse values throughout your stylesheet.
 
 ```css
 :root {
     --primary-color: blue;
+    --secondary-color: green;
 }
 
 h1 {
     color: var(--primary-color);
 }
+
+p {
+    color: var(--secondary-color);
+}
 ```
+
+---
+
+### **5.3 Pseudo-Classes**
+
+Pseudo-classes define the special state of an element.
+
+```css
+a:hover {
+    color: red;
+}
+
+input:focus {
+    border-color: blue;
+}
+```
+
+---
+
+### **5.4 Pseudo-Elements**
+
+Pseudo-elements style specific parts of an element.
+
+```css
+p::first-line {
+    font-weight: bold;
+}
+
+p::before {
+    content: "👉 ";
+}
+```
+
+---
+
+### **5.5 Z-Index**
+
+The `z-index` property controls the stack order of elements.
+
+```css
+.box1 {
+    position: absolute;
+    z-index: 1;
+}
+
+.box2 {
+    position: absolute;
+    z-index: 2;
+}
+```
+
+---
+
+### **5.6 Positioning**
+
+CSS positioning allows you to control the placement of elements.
+
+**Types of Positioning:**
+- `static` (default)
+- `relative`
+- `absolute`
+- `fixed`
+- `sticky`
+
+```css
+.relative-box {
+    position: relative;
+    top: 10px;
+    left: 20px;
+}
+
+.absolute-box {
+    position: absolute;
+    top: 50px;
+    left: 100px;
+}
+```
+
+---
+
+## **6. Best Practices**
+
+1. **Use CSS Variables**: For consistent and reusable values.
+2. **Organize Styles**: Use separate files for large projects.
+3. **Avoid Inline Styles**: Use external stylesheets for maintainability.
+4. **Use Shorthand Properties**: Simplify your code (e.g., `margin: 10px 20px;`).
+5. **Test Responsiveness**: Always test your design on multiple devices.
+
 
 ---
 # JavaScript (JS) & TypeScript (TS)
