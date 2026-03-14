@@ -102,6 +102,15 @@ Every HTML document follows a basic structure:
     <li>Second Item</li>
 </ol>
 ```
+#### **Description List:**
+```html
+<dl>
+  <dt>HTML</dt>
+  <dd>HyperText Markup Language</dd>
+  <dt>CSS</dt>
+  <dd>Cascading Style Sheets</dd>
+</dl>
+```
 
 ### **3.5 Tables**
 ```html
