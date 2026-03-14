@@ -385,6 +385,23 @@ h1 {
 }
 ```
 
+#### **Additional Selector Types**
+
+| Selector | Example | Description |
+|--------|--------|------------|
+| Descendant | `div p` | Targets p inside div |
+| Child | `div > p` | Direct child |
+| Adjacent sibling | `h1 + p` | Next sibling |
+| General sibling | `h1 ~ p` | All siblings |
+
+```css
+div > p {
+  color: blue;
+}
+```
+
+---
+
 ### **2.2 Box Model**
 
 The CSS Box Model consists of:
@@ -400,6 +417,83 @@ div {
     padding: 20px;
     border: 5px solid black;
     margin: 10px;
+}
+```
+
+#### **Box Model Properties**
+
+```css
+box-sizing: content-box;
+box-sizing: border-box;
+```
+
+---
+
+### **2.3 CSS Specificity**
+
+CSS Specificity determines which CSS rule is applied when multiple rules target the same element.
+
+Priority order:
+
+```
+Inline Styles > ID Selectors > Class Selectors > Element Selectors
+```
+
+Example:
+
+```css
+#title {
+  color: red;
+}
+
+.heading {
+  color: blue;
+}
+
+h1 {
+  color: green;
+}
+```
+
+---
+
+### **2.4 Display Property**
+
+The `display` property determines how elements appear in the layout.
+
+| Value | Description |
+|------|-------------|
+| block | Takes full width |
+| inline | Takes content width |
+| inline-block | Inline but allows width/height |
+| none | Hides element |
+| flex | Enables Flexbox |
+| grid | Enables Grid |
+
+```css
+span {
+  display: inline-block;
+}
+```
+
+---
+
+### **2.5 Overflow**
+
+The `overflow` property controls content overflow.
+
+| Value | Description |
+|------|-------------|
+| visible | Default |
+| hidden | Hides overflow |
+| scroll | Adds scrollbar |
+| auto | Scroll when needed |
+
+```css
+.container {
+  width: 200px;
+  height: 100px;
+  overflow: auto;
 }
 ```
 
@@ -433,6 +527,7 @@ CSS Flexbox is used to create flexible and responsive layouts.
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 }
 
 .item {
@@ -440,18 +535,25 @@ CSS Flexbox is used to create flexible and responsive layouts.
 }
 ```
 
+---
+
 ### **3.2 CSS Grid**
 
 CSS Grid is used to create complex and responsive layouts.
 
 #### **3.2.1 Grid Properties**
 
-- `display: grid;` → Enables Grid
-- `grid-template-columns: 1fr 2fr 1fr;` → Defines column sizes
-- `grid-template-rows: auto;` → Defines row sizes
-- `gap: 10px;` → Sets spacing between grid items
-- `justify-items: start | center | end;` → Aligns items horizontally
-- `align-items: start | center | end;` → Aligns items vertically
+- `display: grid;`
+- `grid-template-columns`
+- `grid-template-rows`
+- `gap`
+- `justify-items`
+- `align-items`
+- `justify-content`
+- `align-content`
+- `grid-column`
+- `grid-row`
+- `grid-area`
 
 ```css
 .grid-container {
@@ -481,6 +583,26 @@ Media queries are used to apply styles based on device width, height, or other p
 }
 ```
 
+#### **Common Media Query Breakpoints**
+
+```
+320px  → Mobile
+768px  → Tablet
+1024px → Laptop
+1440px → Desktop
+```
+
+#### **Responsive Units**
+
+| Unit | Description |
+|-----|-------------|
+| px | Fixed size |
+| % | Relative to parent |
+| em | Relative to parent font |
+| rem | Relative to root font |
+| vw | Viewport width |
+| vh | Viewport height |
+
 ---
 
 ## **5. Advanced CSS**
@@ -490,8 +612,6 @@ Media queries are used to apply styles based on device width, height, or other p
 CSS animations and transitions add interactivity and enhance user experience.
 
 #### **Transitions**
-
-Transitions allow smooth changes between property values.
 
 ```css
 .button {
@@ -506,8 +626,6 @@ Transitions allow smooth changes between property values.
 ```
 
 #### **Animations**
-
-Animations allow elements to move or change over time using keyframes.
 
 ```css
 @keyframes bounce {
@@ -559,6 +677,17 @@ input:focus {
 }
 ```
 
+Common pseudo-classes:
+
+```
+:hover
+:focus
+:active
+:first-child
+:last-child
+:nth-child()
+```
+
 ---
 
 ### **5.4 Pseudo-Elements**
@@ -573,6 +702,16 @@ p::first-line {
 p::before {
     content: "👉 ";
 }
+```
+
+Common pseudo-elements:
+
+```
+::before
+::after
+::first-line
+::first-letter
+::selection
 ```
 
 ---
@@ -600,7 +739,8 @@ The `z-index` property controls the stack order of elements.
 CSS positioning allows you to control the placement of elements.
 
 **Types of Positioning:**
-- `static` (default)
+
+- `static`
 - `relative`
 - `absolute`
 - `fixed`
@@ -622,6 +762,69 @@ CSS positioning allows you to control the placement of elements.
 
 ---
 
+### **5.7 Transform**
+
+Transforms modify element appearance.
+
+```
+translate()
+scale()
+rotate()
+skew()
+```
+
+```css
+.box:hover {
+  transform: scale(1.1);
+}
+```
+
+---
+
+### **5.8 Object Fit**
+
+Controls how images fit inside containers.
+
+```css
+img {
+  object-fit: cover;
+}
+```
+
+Values:
+
+```
+cover
+contain
+fill
+none
+scale-down
+```
+
+---
+
+### **5.9 Cursor**
+
+Defines mouse cursor appearance.
+
+```css
+button {
+  cursor: pointer;
+}
+```
+
+Common values:
+
+```
+pointer
+not-allowed
+grab
+text
+move
+```
+
+---
+
 ## **6. Best Practices**
 
 1. **Use CSS Variables**: For consistent and reusable values.
@@ -629,9 +832,8 @@ CSS positioning allows you to control the placement of elements.
 3. **Avoid Inline Styles**: Use external stylesheets for maintainability.
 4. **Use Shorthand Properties**: Simplify your code (e.g., `margin: 10px 20px;`).
 5. **Test Responsiveness**: Always test your design on multiple devices.
+6. **Use consistent naming conventions (BEM, utility classes).**
 
-
----
 # JavaScript (JS) & TypeScript (TS)
 
 This guide covers essential JavaScript and TypeScript concepts, including core fundamentals, modern features, and best practices.
