@@ -383,6 +383,26 @@ h1 {
 #main {
     background-color: lightgray;
 }
+
+/* Universal selector */
+* {
+  margin: 0;
+}
+
+/* Attribute selector */
+input[type="text"] {
+  border: 1px solid gray;
+}
+
+/* Descendant selector */
+div p {
+  color: blue;
+}
+
+/* Child selector */
+div > p {
+  color: red;
+}
 ```
 
 #### **Additional Selector Types**
