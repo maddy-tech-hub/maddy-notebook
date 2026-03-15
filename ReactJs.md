@@ -1345,8 +1345,8 @@ Understanding the event loop is crucial for debugging asynchronous code and avoi
 #### **7.7 Debouncing & Throttling**
 
 **What is it?**  
-- **Debouncing**: Ensures a function is executed only after a specified delay since the last time it was invoked.
-- **Throttling**: Ensures a function is executed at most once in a specified interval.
+- **Debouncing**: Debouncing ensures a function runs only after a certain period of inactivity.
+- **Throttling**: Throttling Ensures a function is executed at most once in a specified interval.
 
 **How it works:**
 
