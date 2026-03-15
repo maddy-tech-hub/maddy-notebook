@@ -1,3 +1,5 @@
+`C# Basics -> OOP + Core C# -> ASP.NET Core Web API -> EF Core -> Security + Performance + Testing`
+
 # C# Complete Guide (Concepts Only)
 
 ## **1. Introduction to C#**
