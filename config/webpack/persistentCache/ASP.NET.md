@@ -2572,3 +2572,184 @@ public void Configure(IApplicationBuilder app)
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
 }
 ```
+
+---
+
+## **14. Important Interview Topics You Should Also Cover (Backend Focus)**
+
+This section adds key areas that are frequently asked in .NET backend interviews and are not fully covered above.
+
+### **14.1 ASP.NET Core Request Pipeline and Middleware Order**
+- Every HTTP request goes through middleware in order.
+- Middleware order is critical.
+- Typical order:
+  - Exception handling
+  - HTTPS redirection
+  - Static files (if needed)
+  - Routing
+  - Authentication
+  - Authorization
+  - Endpoints
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+app.UseExceptionHandler("/error");
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
+```
+
+### **14.2 Minimal Hosting Model (.NET 6+) vs Startup.cs**
+- Modern ASP.NET Core apps commonly use `Program.cs` only (minimal hosting model).
+- Older projects use `Startup.cs` with `ConfigureServices` and `Configure`.
+- In interviews, explain both because many companies still maintain older codebases.
+
+### **14.3 Configuration and Options Pattern**
+- Keep settings in `appsettings.json` and environment-specific files (`appsettings.Development.json`).
+- Bind strongly typed settings with `IOptions<T>`.
+- Never hardcode secrets in source code.
+
+```csharp
+public class JwtSettings
+{
+    public string Issuer { get; set; } = string.Empty;
+    public string Audience { get; set; } = string.Empty;
+    public string Key { get; set; } = string.Empty;
+}
+
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("JwtSettings"));
+```
+
+### **14.4 Dependency Injection Lifetimes**
+- `AddTransient`: new instance every time.
+- `AddScoped`: one instance per HTTP request.
+- `AddSingleton`: one instance for app lifetime.
+- Interview favorite: do not inject `Scoped` service into `Singleton`.
+
+### **14.5 Global Error Handling with Standard Error Response**
+- Prefer centralized exception handling middleware.
+- Return consistent error format (`ProblemDetails`) instead of plain strings.
+
+```csharp
+app.UseExceptionHandler(exceptionApp =>
+{
+    exceptionApp.Run(async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/problem+json";
+
+        var problem = new ProblemDetails
+        {
+            Title = "Unexpected error",
+            Status = StatusCodes.Status500InternalServerError,
+            Detail = "An unexpected server error occurred."
+        };
+
+        await context.Response.WriteAsJsonAsync(problem);
+    });
+});
+```
+
+### **14.6 Advanced EF Core Topics (Very Common in Interviews)**
+- Tracking vs No-Tracking (`AsNoTracking`) for read-only queries.
+- Eager loading (`Include`) vs explicit loading vs lazy loading.
+- `IQueryable` vs `IEnumerable`.
+- Transactions for multi-step writes.
+- Optimistic concurrency with `RowVersion`.
+- Migrations and migration history.
+- N+1 query problem and how to avoid it.
+
+#### Optimistic Concurrency Example
+```csharp
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+}
+```
+
+### **14.7 Performance Optimization in Web API**
+- Use async all the way (`ToListAsync`, `SaveChangesAsync`).
+- Use projection (`Select`) instead of returning full entities.
+- Add database indexes for frequently filtered/sorted columns.
+- Use response compression and caching where relevant.
+- Use pagination for large datasets (already covered above, good).
+
+### **14.8 API Security Hardening**
+- Validate all inputs and DTOs.
+- Use HTTPS only.
+- Use JWT with proper token expiry and key rotation strategy.
+- Apply least privilege for roles/claims.
+- Protect against common issues: SQL injection (parameterized queries/EF), over-posting, and sensitive data exposure.
+
+### **14.9 API Design Best Practices**
+- Use DTOs instead of exposing EF entities directly.
+- Return correct status codes:
+  - `200 OK`, `201 Created`, `204 NoContent`
+  - `400 BadRequest`, `401 Unauthorized`, `403 Forbidden`, `404 NotFound`, `409 Conflict`
+- Keep endpoints resource-based and predictable.
+- Make write operations idempotent where possible (especially PUT).
+
+### **14.10 Logging, Monitoring, and Health Checks**
+- Use structured logging with `ILogger`.
+- Add correlation/trace id in logs.
+- Implement health check endpoints for production readiness.
+
+```csharp
+builder.Services.AddHealthChecks();
+app.MapHealthChecks("/health");
+```
+
+### **14.11 Background Processing**
+- Use `IHostedService` / `BackgroundService` for recurring background jobs.
+- Do not run heavy long-running tasks directly in controller actions.
+
+```csharp
+public class CleanupService : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            // background cleanup work
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+        }
+    }
+}
+```
+
+### **14.12 Testing Strategy (Must Know)**
+- Unit tests for business logic (`xUnit`, `NUnit`, `MSTest`).
+- Integration tests for API endpoints using `WebApplicationFactory`.
+- Mock external dependencies (email service, payment gateway, etc.).
+- Interview tip: explain what to unit test vs integration test.
+
+### **14.13 Clean Architecture Basics for .NET Backend**
+- Keep clear layers:
+  - API layer
+  - Application layer
+  - Domain layer
+  - Infrastructure layer
+- Follow dependency direction inward (infrastructure depends on domain/application, not vice versa).
+- This helps testability and long-term maintainability.
+
+### **14.14 Quick Interview Checklist**
+- Explain ASP.NET Core middleware flow clearly.
+- Explain DI lifetimes with real examples.
+- Explain EF Core tracking, loading strategies, and concurrency.
+- Explain JWT authentication vs authorization (roles/policies/claims).
+- Explain centralized exception handling and logging.
+- Explain performance tuning approach (DB + API + async).
+- Explain testing approach (unit + integration).
