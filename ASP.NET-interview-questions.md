@@ -1,523 +1,2631 @@
-# ASP.NET Core Developer Interview Questions and Answers (4-5+ Years)
+# ASP.NET Core Developer Interview Question Bank (4–5+ Years)
 
 Author: Madhava Reddy Vemireddy
 
-This version is written for interview preparation, not just quick lookup.  
-Each topic has:
-
-- a short direct answer
-- a small explanation for understanding
-- examples where they help
-
 ---
 
-# 1. C# Fundamentals
+# 1️⃣ C# Fundamentals
 
-1. **What is C#?**  
-**Answer:** C# is a modern, strongly typed, object-oriented programming language from Microsoft.  
-**Explanation:** It is used to build console apps, web apps, APIs, desktop apps, cloud services, and more on the .NET platform.
+## 1. What is C#?
 
-2. **What is the .NET framework?**  
-**Answer:** .NET is the development platform that provides runtime, libraries, and tooling for building applications.  
-**Explanation:** In interviews, clarify the difference:
-- `.NET Framework`: older, Windows-only
-- `.NET` / `.NET Core`: modern, cross-platform
+**Definition**
 
-3. **What is the CLR (Common Language Runtime)?**  
-**Answer:** CLR is the execution engine of .NET.  
-**Explanation:** It handles memory management, garbage collection, exception handling, security, and JIT compilation.
+C# (C-Sharp) is a modern, object-oriented, strongly typed programming language developed by Microsoft as part of the .NET ecosystem. It is widely used for building web applications, APIs, desktop applications, cloud services, and enterprise systems.
 
-4. **What is the CTS (Common Type System)?**  
-**Answer:** CTS defines how data types are declared and used in .NET.  
-**Explanation:** It helps different .NET languages understand the same type system.
+**Key Points**
 
-5. **What is the CLS (Common Language Specification)?**  
-**Answer:** CLS is a set of rules that .NET languages follow for interoperability.  
-**Explanation:** If a library follows CLS rules, it is easier to consume from other .NET languages.
+• Part of the .NET platform  
+• Strongly typed language  
+• Supports object-oriented programming  
+• Managed by the CLR runtime  
 
-6. **What are value types in C#?**  
-**Answer:** Types that store their data directly.  
-**Examples:** `int`, `bool`, `double`, `char`, `struct`, `enum`
-
-7. **What are reference types in C#?**  
-**Answer:** Types that store a reference to the actual object.  
-**Examples:** `class`, `string`, array, delegate, interface
-
-8. **What is the difference between value types and reference types?**  
-**Answer:** Value types copy actual data; reference types copy references.  
-**Explanation:** Updating one value type copy does not affect another. But multiple reference variables can point to the same object.
-
-9. **What is boxing and unboxing?**  
-**Answer:** Boxing converts a value type into `object`. Unboxing converts it back.  
-**Explanation:** This adds allocation/casting overhead and can hurt performance in tight loops.
+**Example**
 
 ```csharp
-int x = 10;
-object obj = x;      // boxing
-int y = (int)obj;    // unboxing
+int number = 10;
+string name = "Madhava";
+
+Console.WriteLine($"Hello {name}, Number: {number}");
 ```
 
-10. **What is the difference between `var`, `dynamic`, and `object`?**  
-**Answer:**  
-- `var`: compile-time inferred type  
-- `dynamic`: runtime type resolution  
-- `object`: base type of all .NET types  
-**Explanation:** `var` is still strongly typed. `dynamic` skips compile-time checking.
+---
 
-11. **What are nullable types in C#?**  
-**Answer:** Nullable value types allow value types to hold `null`.  
-**Example:** `int? age = null;`
+## 2. What is the .NET Framework?
 
-12. **What is the difference between `const` and `readonly`?**  
-**Answer:**  
-- `const`: compile-time constant  
-- `readonly`: assigned at runtime, usually in constructor  
-**Explanation:** Use `const` only for values that never change in any environment.
+.NET Framework is a development platform that provides libraries and runtime to build and run applications.
 
-13. **What is string immutability?**  
-**Answer:** Strings cannot be changed after creation.  
-**Explanation:** Operations like `Replace` or concatenation return a new string.
+It contains:
 
-14. **What is `StringBuilder` and when should it be used?**  
-**Answer:** `StringBuilder` is used for repeated string modifications.  
-**Explanation:** It is better than repeated `+` concatenation in loops because it reduces allocations.
+• CLR (Common Language Runtime)  
+• Base Class Library (BCL)  
+• ASP.NET  
+• Windows Forms / WPF  
 
-15. **What is the difference between `==` and `Equals()`?**  
-**Answer:** `==` uses operator equality. `Equals()` uses logical equality implementation.  
-**Explanation:** For strings, both usually compare value. For custom types, behavior may differ unless overridden.
-
-16. **What are control statements in C#?**  
-**Answer:** Statements that control program flow.  
-**Examples:** `if`, `else`, `switch`, `for`, `foreach`, `while`, `break`, `continue`
-
-17. **What is the difference between `for` and `foreach` loops?**  
-**Answer:**  
-- `for`: index-based, more control  
-- `foreach`: simpler, used for iterating collections  
-**Explanation:** Use `foreach` when you do not need indexes.
-
-18. **What is method overloading?**  
-**Answer:** Defining multiple methods with the same name but different parameters.
-
-19. **What is recursion?**  
-**Answer:** A method calling itself until a base condition is reached.  
-**Example:** factorial, tree traversal
-
-20. **What are parameters in C# methods?**  
-**Answer:** Parameters are inputs passed to methods.  
-**Examples:** value parameters, optional parameters, `ref`, `out`, `params`
-
-21. **What is the difference between `ref` and `out` parameters?**  
-**Answer:** `ref` requires initialization before passing; `out` does not.  
-**Explanation:** `out` is commonly used when a method needs to return multiple values.
-
-22. **What is the `Main` method?**  
-**Answer:** It is the entry point of a C# application.
-
-23. **What is garbage collection?**  
-**Answer:** Automatic memory cleanup by CLR for unused objects.  
-**Explanation:** It helps reduce manual memory management bugs.
-
-24. **What is the difference between stack and heap memory?**  
-**Answer:** Stack stores method call data and small value-type locals. Heap stores objects and reference-type data.  
-**Explanation:** Stack is faster but limited. Heap is larger and managed by the GC.
+Developers write C# code which gets compiled into **Intermediate Language (IL)** and executed by the CLR.
 
 ---
 
-# 2. OOP & Core C#
+## 3. What is CLR (Common Language Runtime)?
 
-1. **What are the four pillars of OOP?**  
-**Answer:** Encapsulation, inheritance, polymorphism, and abstraction.
+CLR is the execution engine of .NET that runs applications.
 
-2. **What is encapsulation?**  
-**Answer:** Hiding internal data and exposing only controlled access.  
-**Explanation:** Usually done with private fields and public properties/methods.
+Responsibilities include:
 
-3. **What is inheritance?**  
-**Answer:** A derived class can reuse and extend members of a base class.
+• Memory management  
+• Garbage collection  
+• Exception handling  
+• Security enforcement  
+• Thread management  
 
-4. **What is polymorphism?**  
-**Answer:** Same method name/interface can behave differently depending on the object type.
+Flow:
 
-5. **What is abstraction?**  
-**Answer:** Showing essential behavior and hiding implementation details.
+```
+C# Code → IL Code → CLR → Machine Code
+```
 
-6. **What is the difference between abstract class and interface?**  
-**Answer:**  
-- Abstract class can contain implementation and state  
-- Interface defines a contract  
-**Explanation:** Use interface for capabilities/contracts, abstract class for shared base behavior.
+---
 
-7. **What is method overriding?**  
-**Answer:** Replacing a base class virtual method in a derived class using `override`.
+## 4. What is CTS (Common Type System)?
 
-8. **What is method overloading?**  
-**Answer:** Same method name with different signatures.
+CTS defines how data types are declared and used in .NET.
 
-9. **What are constructors?**  
-**Answer:** Special methods used to initialize objects.
+Purpose:
 
-10. **What is a parameterized constructor?**  
-**Answer:** A constructor that accepts parameters for initialization.
+• Ensures language interoperability  
+• Provides standard data types  
 
-11. **What is a static constructor?**  
-**Answer:** It initializes static members and runs once per type.
+Examples:
 
-12. **What is a destructor?**  
-**Answer:** A finalizer called before garbage collection, rarely used in modern apps.  
-**Explanation:** In most real applications, `IDisposable` is preferred over destructors.
+```
+int
+string
+bool
+double
+```
 
-13. **What are access modifiers in C#?**  
-**Answer:** Keywords that control visibility of types and members.
+All .NET languages share these types.
 
-14. **What is the difference between `public`, `private`, `protected`, and `internal`?**  
-**Answer:**  
-- `public`: everywhere  
-- `private`: same class only  
-- `protected`: class + derived classes  
-- `internal`: same assembly only
+---
 
-15. **What is a sealed class?**  
-**Answer:** A class that cannot be inherited.
+## 5. What is CLS (Common Language Specification)?
 
-16. **What is a partial class?**  
-**Answer:** A class split across multiple files.
+CLS is a set of rules that languages must follow to ensure interoperability between .NET languages.
 
-17. **What are extension methods?**  
-**Answer:** Methods that add behavior to existing types without changing the original type.
+Example:
+
+A library written in C# can be used in VB.NET because both follow CLS rules.
+
+---
+
+## 6. What are Value Types?
+
+Value types store the actual data in memory.
+
+Examples:
+
+```
+int
+double
+bool
+struct
+enum
+```
+
+Example:
 
 ```csharp
-public static class StringExtensions
+int a = 10;
+int b = a;
+
+b = 20;
+
+Console.WriteLine(a); // 10
+```
+
+The value is copied.
+
+---
+
+## 7. What are Reference Types?
+
+Reference types store a reference to the memory location of the object.
+
+Examples:
+
+```
+class
+object
+string
+array
+```
+
+Example:
+
+```csharp
+Person p1 = new Person();
+Person p2 = p1;
+
+p2.Name = "John";
+```
+
+Both variables reference the same object.
+
+---
+
+## 8. Difference Between Value Types and Reference Types
+
+| Feature | Value Type | Reference Type |
+|------|------|------|
+| Storage | Stack | Heap |
+| Stores | Actual Value | Memory Reference |
+| Performance | Faster | Slightly slower |
+| Examples | int, struct | class, string |
+
+---
+
+## 9. What is Boxing and Unboxing?
+
+Boxing converts a value type to an object type.
+
+```csharp
+int num = 10;
+object obj = num;
+```
+
+Unboxing converts object back to value type.
+
+```csharp
+int value = (int)obj;
+```
+
+---
+
+## 10. Difference Between var, dynamic, and object
+
+| Type | Description |
+|-----|-------------|
+| var | Type inferred at compile time |
+| dynamic | Type resolved at runtime |
+| object | Base type for all types |
+
+Example
+
+```csharp
+var a = 10;
+dynamic b = 10;
+object c = 10;
+```
+
+---
+
+## 11. What are Nullable Types?
+
+Nullable types allow value types to store null values.
+
+Example:
+
+```csharp
+int? age = null;
+```
+
+Equivalent to:
+
+```csharp
+Nullable<int> age = null;
+```
+
+---
+
+## 12. Difference Between const and readonly
+
+| Feature | const | readonly |
+|------|------|------|
+| Assignment | Compile time | Runtime |
+| Modification | Not allowed | Allowed in constructor |
+
+Example:
+
+```csharp
+const double PI = 3.14;
+
+readonly int age;
+```
+
+---
+
+## 13. What is String Immutability?
+
+Strings in C# cannot be modified after creation.
+
+Example:
+
+```csharp
+string name = "Hello";
+
+name = name + " World";
+```
+
+A new object is created.
+
+---
+
+## 14. What is StringBuilder?
+
+StringBuilder is used when frequent string modifications are required.
+
+Example:
+
+```csharp
+StringBuilder sb = new StringBuilder();
+
+sb.Append("Hello");
+sb.Append(" World");
+
+Console.WriteLine(sb.ToString());
+```
+
+---
+
+## 15. Difference Between == and Equals()
+
+| Operator | Description |
+|------|------|
+| == | Compares values |
+| Equals() | Compares object equality |
+
+Example
+
+```csharp
+string a = "test";
+string b = "test";
+
+Console.WriteLine(a == b);
+Console.WriteLine(a.Equals(b));
+```
+
+---
+
+## 16. What are Control Statements?
+
+Control statements control the flow of execution.
+
+Types:
+
+```
+if
+switch
+for
+while
+do while
+```
+
+Example
+
+```csharp
+if(age > 18)
 {
-    public static string AddPrefix(this string value)
+ Console.WriteLine("Adult");
+}
+```
+
+---
+
+## 17. Difference Between for and foreach
+
+| Feature | for | foreach |
+|------|------|------|
+| Index access | Yes | No |
+| Modification | Allowed | Not recommended |
+| Performance | Slightly faster | Cleaner syntax |
+
+Example
+
+```csharp
+foreach(var item in list)
+{
+ Console.WriteLine(item);
+}
+```
+
+---
+
+## 18. What is Method Overloading?
+
+Method overloading means multiple methods with the same name but different parameters.
+
+Example
+
+```csharp
+void Add(int a, int b)
+
+void Add(int a, int b, int c)
+```
+
+---
+
+## 19. What is Recursion?
+
+Recursion is when a method calls itself.
+
+Example
+
+```csharp
+int Factorial(int n)
+{
+ if(n == 1)
+  return 1;
+
+ return n * Factorial(n-1);
+}
+```
+
+---
+
+## 20. What are Parameters in Methods?
+
+Parameters are variables passed to methods.
+
+Types:
+
+• Value parameters  
+• ref parameters  
+• out parameters  
+• params parameters  
+
+---
+
+## 21. Difference Between ref and out
+
+| Feature | ref | out |
+|------|------|------|
+| Initialization | Required | Not required |
+| Purpose | Pass reference | Return multiple values |
+
+Example
+
+```csharp
+void Test(ref int a)
+{
+ a = 20;
+}
+```
+
+---
+
+## 22. What is the Main Method?
+
+Main method is the entry point of a C# application.
+
+Example
+
+```csharp
+static void Main(string[] args)
+{
+ Console.WriteLine("Application Started");
+}
+```
+
+---
+
+## 23. What is Garbage Collection?
+
+Garbage collection automatically frees unused memory.
+
+CLR periodically removes objects that are no longer referenced.
+
+Benefits:
+
+• Prevents memory leaks  
+• Automatic memory management  
+
+---
+
+## 24. Difference Between Stack and Heap
+
+| Feature | Stack | Heap |
+|------|------|------|
+| Memory Type | Value types | Reference types |
+| Allocation | Faster | Slower |
+| Management | Automatic | Garbage collected |
+
+---
+
+# 2️⃣ OOP & Core C#
+
+## 1. What are the four pillars of OOP?
+
+The four principles of object-oriented programming are:
+
+• Encapsulation  
+• Inheritance  
+• Polymorphism  
+• Abstraction  
+
+These concepts help build scalable and maintainable software.
+
+---
+
+## 2. What is Encapsulation?
+
+Encapsulation is the process of hiding internal data and exposing it through methods or properties.
+
+Example
+
+```csharp
+class BankAccount
+{
+ private double balance;
+
+ public void Deposit(double amount)
+ {
+  balance += amount;
+ }
+}
+```
+
+---
+
+## 3. What is Inheritance?
+
+Inheritance allows a class to reuse properties and methods of another class.
+
+Example
+
+```csharp
+class Animal
+{
+ public void Eat(){}
+}
+
+class Dog : Animal
+{
+}
+```
+
+---
+
+## 4. What is Polymorphism?
+
+Polymorphism allows methods to behave differently based on input.
+
+Types:
+
+• Compile-time polymorphism (overloading)  
+• Runtime polymorphism (overriding)
+
+---
+
+## 5. What is Abstraction?
+
+Abstraction hides implementation details and exposes only necessary functionality.
+
+Example:
+
+Abstract class
+
+```csharp
+abstract class Shape
+{
+ public abstract void Draw();
+}
+```
+
+---
+
+## 6. Difference Between Abstract Class and Interface
+
+| Feature | Abstract Class | Interface |
+|------|------|------|
+| Implementation | Allowed | Not allowed (mostly) |
+| Multiple inheritance | No | Yes |
+| Constructors | Allowed | Not allowed |
+
+---
+
+## 7. What is Method Overriding?
+
+Method overriding allows derived classes to provide a new implementation.
+
+Example
+
+```csharp
+class Animal
+{
+ public virtual void Speak()
+ {
+  Console.WriteLine("Animal sound");
+ }
+}
+
+class Dog : Animal
+{
+ public override void Speak()
+ {
+  Console.WriteLine("Bark");
+ }
+}
+```
+
+---
+
+## 8. What are Constructors?
+
+Constructors initialize objects when created.
+
+Example
+
+```csharp
+class Person
+{
+ public Person()
+ {
+  Console.WriteLine("Object created");
+ }
+}
+```
+
+---
+
+## 9. What is a Parameterized Constructor?
+
+Constructor with parameters.
+
+Example
+
+```csharp
+class Person
+{
+ public Person(string name)
+ {
+  Name = name;
+ }
+}
+```
+
+---
+
+## 10. What is Static Constructor?
+
+A static constructor initializes static members of a class.
+
+Runs only once.
+
+---
+
+## 11. What is Destructor?
+
+Destructor cleans resources before object destruction.
+
+Example
+
+```csharp
+~Person()
+{
+}
+```
+
+---
+
+# 3️⃣ Collections & LINQ
+
+## 1. What are Collections in C#?
+
+Collections store groups of related objects.
+
+Examples:
+
+```
+List
+Dictionary
+Queue
+Stack
+HashSet
+```
+
+---
+
+## 2. Difference Between Array and List
+
+| Feature | Array | List |
+|------|------|------|
+| Size | Fixed | Dynamic |
+| Performance | Faster | Flexible |
+| Namespace | System | System.Collections.Generic |
+
+---
+
+## 3. What is IEnumerable?
+
+IEnumerable represents a sequence of elements that can be iterated.
+
+Example
+
+```csharp
+IEnumerable<int> numbers = new List<int>();
+```
+
+---
+
+## 4. What is ICollection?
+
+ICollection extends IEnumerable and supports operations like:
+
+```
+Add
+Remove
+Count
+```
+
+---
+
+## 5. What is IList?
+
+IList supports indexed access.
+
+Example
+
+```
+list[0]
+```
+
+---
+
+## 6. What is Dictionary?
+
+Dictionary stores key-value pairs.
+
+Example
+
+```csharp
+Dictionary<int,string> users = new Dictionary<int,string>();
+
+users.Add(1,"John");
+```
+
+---
+
+## 7. What is HashSet?
+
+HashSet stores unique values.
+
+Example
+
+```csharp
+HashSet<int> numbers = new HashSet<int>();
+```
+
+---
+
+## 8. What is Queue?
+
+Queue follows FIFO (First In First Out).
+
+Example
+
+```csharp
+Queue<int> queue = new Queue<int>();
+queue.Enqueue(1);
+queue.Dequeue();
+```
+
+---
+
+## 9. What is Stack?
+
+Stack follows LIFO (Last In First Out).
+
+Example
+
+```csharp
+Stack<int> stack = new Stack<int>();
+stack.Push(1);
+stack.Pop();
+```
+
+---
+
+## 10. What is LinkedList?
+
+LinkedList stores elements in nodes connected by references.
+
+---
+
+## 11. Difference Between IEnumerable and IQueryable
+
+| Feature | IEnumerable | IQueryable |
+|------|------|------|
+| Execution | In memory | Database |
+| Performance | Slower | Optimized |
+
+---
+
+## 12. What is LINQ?
+
+LINQ (Language Integrated Query) allows querying data using C# syntax.
+
+Example
+
+```csharp
+var result = numbers.Where(x => x > 10);
+```
+
+---
+
+## 13. Types of LINQ Syntax
+
+1. Query syntax
+2. Method syntax
+
+Example
+
+```csharp
+var result = numbers.Where(x => x > 10);
+```
+
+---
+
+## 14. What is Deferred Execution?
+
+LINQ query executes only when data is enumerated.
+
+---
+
+## 15. What is Immediate Execution?
+
+Query executes immediately using methods like:
+
+```
+ToList()
+Count()
+First()
+```
+
+---
+
+## 16. Common LINQ Operators
+
+```
+Where
+Select
+OrderBy
+GroupBy
+First
+Any
+All
+Count
+```
+
+---
+
+## 17. Select vs SelectMany
+
+| Operator | Description |
+|------|------|
+| Select | Projects one element |
+| SelectMany | Flattens nested collections |
+
+---
+
+## 18. What is GroupBy?
+
+GroupBy groups elements based on a key.
+
+Example
+
+```csharp
+var groups = employees.GroupBy(e => e.Department);
+```
+
+---
+
+## 19. First vs FirstOrDefault
+
+| Method | Behavior |
+|------|------|
+| First | Throws exception if empty |
+| FirstOrDefault | Returns default value |
+
+---
+
+## 20. Any vs All
+
+| Method | Description |
+|------|------|
+| Any | Checks if any element matches |
+| All | Checks if all elements match |
+
+Example
+
+```csharp
+numbers.Any(x => x > 10)
+```
+
+---
+---
+
+# 4️⃣ Delegates, Events & Functional Features
+
+## 1. What is a Delegate in C#?
+
+A delegate is a type-safe function pointer that references a method.
+
+Delegates allow methods to be passed as parameters.
+
+Example
+
+```csharp
+public delegate void PrintMessage(string message);
+
+public class Program
+{
+    static void Show(string msg)
     {
-        return "Mr. " + value;
+        Console.WriteLine(msg);
+    }
+
+    static void Main()
+    {
+        PrintMessage print = Show;
+        print("Hello Delegate");
     }
 }
 ```
 
-18. **What are structs in C#?**  
-**Answer:** Lightweight value types used for small data containers.
+---
 
-19. **What are enums?**  
-**Answer:** Named constants representing a fixed set of values.
+## 2. What are Multicast Delegates?
 
-20. **What is the difference between struct and class?**  
-**Answer:** Struct is a value type; class is a reference type.  
-**Explanation:** Structs are better for small immutable data.
+A multicast delegate can reference multiple methods.
 
-21. **What is object initialization?**  
-**Answer:** Initializing object properties during creation.
+Example
 
 ```csharp
-var employee = new Employee { Id = 1, Name = "Madhava" };
+public delegate void Notify();
+
+Notify notify = Method1;
+notify += Method2;
+
+notify();
 ```
 
-22. **What is method hiding?**  
-**Answer:** Using `new` in derived class to hide a base method instead of overriding it.
-
-23. **What is dependency inversion principle?**  
-**Answer:** High-level modules should depend on abstractions, not concrete implementations.
-
-24. **What is the SOLID principle?**  
-**Answer:** Five design principles used for maintainable object-oriented code.  
-**Explanation:** Very common interview topic for senior roles.
+Both methods will execute sequentially.
 
 ---
 
-# 3. Collections & LINQ
+## 3. Difference Between Delegate and Event
 
-1. **What are collections in C#?**  
-**Answer:** Classes and interfaces used to store groups of objects.
+| Feature | Delegate | Event |
+|------|------|------|
+| Usage | Direct method reference | Used for notifications |
+| Access | Can be invoked anywhere | Only raised by publisher |
+| Pattern | Function pointer | Publish-subscribe |
 
-2. **What is the difference between Array and List?**  
-**Answer:** Array has fixed size; `List<T>` grows dynamically.
+---
 
-3. **What is `IEnumerable`?**  
-**Answer:** Interface for iterating over a sequence.
+## 4. What is an Anonymous Method?
 
-4. **What is `ICollection`?**  
-**Answer:** Interface for collections that support count and modification.
+An anonymous method is a method without a name.
 
-5. **What is `IList`?**  
-**Answer:** Interface for ordered collections with index access.
-
-6. **What is Dictionary?**  
-**Answer:** Key-value collection optimized for fast key lookup.
-
-7. **What is HashSet?**  
-**Answer:** Collection of unique values.
-
-8. **What is Queue?**  
-**Answer:** FIFO collection.
-
-9. **What is Stack?**  
-**Answer:** LIFO collection.
-
-10. **What is LinkedList?**  
-**Answer:** Node-based collection where elements point to previous/next nodes.
-
-11. **What is the difference between `IEnumerable` and `IQueryable`?**  
-**Answer:** `IEnumerable` works in memory. `IQueryable` can translate queries to external data sources like SQL.  
-**Explanation:** This is critical in EF Core interviews.
-
-12. **What is LINQ?**  
-**Answer:** Language Integrated Query for querying objects, collections, XML, and databases.
-
-13. **What are the types of LINQ syntax?**  
-**Answer:** Query syntax and method syntax.
-
-14. **What is deferred execution in LINQ?**  
-**Answer:** The query is not executed until the result is iterated.
-
-15. **What is immediate execution in LINQ?**  
-**Answer:** The query executes immediately when methods like `ToList()` or `Count()` are called.
-
-16. **What are common LINQ operators?**  
-**Answer:** `Where`, `Select`, `OrderBy`, `GroupBy`, `Any`, `All`, `FirstOrDefault`, `Skip`, `Take`
-
-17. **What is `Select` vs `SelectMany`?**  
-**Answer:** `Select` maps one item to one result. `SelectMany` flattens nested collections.
-
-18. **What is `GroupBy` in LINQ?**  
-**Answer:** It groups elements by a key.
-
-19. **What is `First` vs `FirstOrDefault`?**  
-**Answer:** `First` throws if nothing exists. `FirstOrDefault` returns default value.
-
-20. **What is `Any` vs `All` in LINQ?**  
-**Answer:** `Any` checks whether at least one item matches. `All` checks whether every item matches.
+Example
 
 ```csharp
-var adults = users.Where(x => x.Age >= 18).ToList();
-bool hasAdmin = users.Any(x => x.Role == "Admin");
+Func<int,int> square = delegate(int x)
+{
+    return x * x;
+};
 ```
 
 ---
 
-# 4. Delegates, Events & Functional Features
+## 5. What are Lambda Expressions?
 
-1. **What is a delegate in C#?**  
-**Answer:** A delegate is a type-safe reference to a method.
+Lambda expressions are shorthand syntax for anonymous methods.
 
-2. **What are multicast delegates?**  
-**Answer:** Delegates that can point to multiple methods.
+Example
 
-3. **What is the difference between delegate and event?**  
-**Answer:** Delegate is the type; event is a controlled publish-subscribe wrapper around delegates.
+```csharp
+Func<int,int> square = x => x * x;
+```
 
-4. **What is an anonymous method?**  
-**Answer:** A method without a name, usually defined inline using `delegate`.
-
-5. **What are lambda expressions?**  
-**Answer:** Short inline functions like `x => x + 1`.
-
-6. **What are expression-bodied members?**  
-**Answer:** Short method/property syntax using `=>`.
-
-7. **What are Func delegates?**  
-**Answer:** Generic delegates that return a value.
-
-8. **What are Action delegates?**  
-**Answer:** Generic delegates that return no value.
-
-9. **What are Predicate delegates?**  
-**Answer:** Delegates that return `bool`, usually for filtering/checking.
-
-10. **What are events in C#?**  
-**Answer:** Notifications exposed by an object that subscribers can handle.
-
-11. **What is the publish-subscribe pattern?**  
-**Answer:** Publishers raise events; subscribers listen and react.
-
-12. **How do events work internally?**  
-**Answer:** Events are backed by delegates, and handlers are attached with `+=` and removed with `-=`.
-
-13. **What is the difference between delegates and interfaces?**  
-**Answer:** Delegates are for callbacks; interfaces define contracts with multiple members.
-
-14. **What are expression trees?**  
-**Answer:** Tree structures representing code expressions.  
-**Explanation:** EF Core uses expression trees to convert LINQ to SQL.
+Commonly used in LINQ.
 
 ---
 
-# 5. Async, Multithreading & Performance
+## 6. What are Expression-Bodied Members?
 
-1. **What is asynchronous programming?**  
-**Answer:** Programming where work can continue without blocking while waiting for I/O.
+A simplified syntax for methods or properties.
 
-2. **What is `async` and `await`?**  
-**Answer:** Language features that simplify writing asynchronous code using `Task`.
-
-3. **What is `Task` in C#?**  
-**Answer:** Represents an asynchronous operation.
-
-4. **What is `Task<T>`?**  
-**Answer:** Represents an asynchronous operation that returns a value.
-
-5. **What is the difference between async and synchronous programming?**  
-**Answer:** Sync blocks the current thread. Async frees the thread while waiting.
-
-6. **What is multithreading?**  
-**Answer:** Running multiple threads within a process.
-
-7. **What is the `Thread` class?**  
-**Answer:** Low-level API to create and manage threads manually.
-
-8. **What is thread pooling?**  
-**Answer:** Reusing worker threads instead of creating new threads every time.
-
-9. **What is `Task.Run`?**  
-**Answer:** Queues CPU-bound work to the thread pool.
-
-10. **What is Parallel programming?**  
-**Answer:** Running multiple operations at the same time, often for CPU-bound work.
-
-11. **What is `Task.WhenAll`?**  
-**Answer:** Awaits multiple tasks together.
-
-12. **What is `Task.WhenAny`?**  
-**Answer:** Completes when the first task finishes.
-
-13. **What are race conditions?**  
-**Answer:** Problems caused by multiple threads accessing shared data without synchronization.
-
-14. **What are deadlocks?**  
-**Answer:** Situations where threads wait forever on each other.
-
-15. **What is synchronization?**  
-**Answer:** Controlling access to shared resources safely.
-
-16. **What is the difference between `lock` and `Monitor`?**  
-**Answer:** `lock` is syntactic sugar over `Monitor` and is simpler. `Monitor` gives more control like timeout locking.
-
-17. **What is `SemaphoreSlim`?**  
-**Answer:** A lightweight synchronization primitive used to limit concurrent access, especially useful with async code.
+Example
 
 ```csharp
-await Task.WhenAll(task1, task2, task3);
+public int Square(int x) => x * x;
 ```
 
 ---
 
-# 6. ASP.NET Core Fundamentals
+## 7. What are Func Delegates?
 
-1. **What is ASP.NET Core?**  
-**Answer:** A fast, cross-platform framework for building modern web apps and APIs.
+Func represents a method that returns a value.
 
-2. **What is the difference between ASP.NET and ASP.NET Core?**  
-**Answer:** ASP.NET Core is cross-platform, modular, and redesigned for performance and cloud-native development.
+Example
 
-3. **What is Kestrel?**  
-**Answer:** The built-in cross-platform web server for ASP.NET Core.
+```csharp
+Func<int,int,int> add = (a,b) => a + b;
+```
 
-4. **What is the request pipeline?**  
-**Answer:** The chain of middleware through which every HTTP request passes.
-
-5. **What is middleware in ASP.NET Core?**  
-**Answer:** Components that handle requests/responses in the pipeline.
-
-6. **What is the minimal hosting model?**  
-**Answer:** The newer startup style where app setup is mostly done in `Program.cs`.
-
-7. **What is `Program.cs` in ASP.NET Core?**  
-**Answer:** Main startup file where services and middleware are configured.
-
-8. **What is `appsettings.json`?**  
-**Answer:** The default configuration file for application settings.
-
-9. **What are environment variables in ASP.NET Core?**  
-**Answer:** Variables used to override or supply configuration at runtime per environment.
-
-10. **What is configuration in ASP.NET Core?**  
-**Answer:** A unified system for loading settings from multiple providers.
-
-11. **What is the Options pattern?**  
-**Answer:** Strongly typed configuration binding using `IOptions<T>`.
+Last parameter represents return type.
 
 ---
 
-# 7. Web API Development
+## 8. What are Action Delegates?
 
-1. **What is a REST API?**  
-**Answer:** An API that exposes resources over HTTP in a stateless way.
+Action represents methods that return void.
 
-2. **What are REST principles?**  
-**Answer:** Statelessness, resource-based endpoints, standard methods, and uniform interface.
+Example
 
-3. **What are HTTP methods?**  
-**Answer:** `GET`, `POST`, `PUT`, `PATCH`, `DELETE`
-
-4. **What are HTTP status codes?**  
-**Answer:** Standard response codes like `200`, `201`, `204`, `400`, `401`, `403`, `404`, `500`.
-
-5. **What is a controller in ASP.NET Core?**  
-**Answer:** A class that handles incoming HTTP requests.
-
-6. **What is `ControllerBase`?**  
-**Answer:** A base class for API controllers without view support.
-
-7. **What is `ApiController` attribute?**  
-**Answer:** An attribute that enables API-specific behavior like automatic model validation responses.
-
-8. **What is routing?**  
-**Answer:** Mapping URLs to action methods.
-
-9. **What is attribute routing?**  
-**Answer:** Routing defined directly on controllers/actions via attributes.
-
-10. **What is conventional routing?**  
-**Answer:** Routing defined globally through route patterns.
-
-11. **What is model binding?**  
-**Answer:** Mapping HTTP request data to action parameters or model objects.
-
-12. **What is model validation?**  
-**Answer:** Checking whether input data satisfies validation rules before processing.
-
-13. **What are data annotations?**  
-**Answer:** Validation attributes like `[Required]`, `[Range]`, `[StringLength]`.
-
-14. **What are DTOs?**  
-**Answer:** Data Transfer Objects used for request/response contracts.
-
-15. **What is API versioning?**  
-**Answer:** Supporting multiple API versions without breaking existing clients.
+```csharp
+Action<string> print = message => Console.WriteLine(message);
+```
 
 ---
 
-# 8. Dependency Injection & Middleware
+## 9. What are Predicate Delegates?
 
-1. **What is dependency injection?**  
-**Answer:** A pattern where dependencies are provided to a class instead of created inside it.
+Predicate represents a method returning a boolean value.
 
-2. **What are DI lifetimes?**  
-**Answer:** Transient, Scoped, Singleton.
+Example
 
-3. **What is Transient lifetime?**  
-**Answer:** A new instance every time it is requested.
+```csharp
+Predicate<int> isEven = x => x % 2 == 0;
+```
 
-4. **What is Scoped lifetime?**  
-**Answer:** One instance per HTTP request.
+---
 
-5. **What is Singleton lifetime?**  
-**Answer:** One instance for the whole app lifetime.
+## 10. What are Events in C#?
 
-6. **What is constructor injection?**  
-**Answer:** Injecting dependencies through constructor parameters.
+Events are used to notify subscribers when something occurs.
 
-7. **What is middleware?**  
-**Answer:** Request-processing component in the pipeline.
+Example
 
-8. **How middleware works internally?**  
-**Answer:** Each middleware can handle the request, call the next middleware, and then handle the response on the way back.
+```csharp
+public event EventHandler FileUploaded;
+```
 
-9. **What is middleware ordering?**  
-**Answer:** The order of middleware registration affects behavior and correctness.
+Used in UI frameworks and messaging systems.
 
-10. **What is custom middleware?**  
-**Answer:** Middleware written by us for things like exception handling, logging, correlation IDs, etc.
+---
+
+## 11. What is the Publish-Subscribe Pattern?
+
+In this pattern:
+
+Publisher → raises event  
+Subscriber → listens to event
+
+Example
+
+```
+Button Click → Event → Handler executes
+```
+
+---
+
+## 12. How do Events Work Internally?
+
+Events internally use delegates.
+
+Steps:
+
+1. Declare delegate
+2. Declare event
+3. Subscribe method
+4. Raise event
+
+---
+
+## 13. Difference Between Delegates and Interfaces
+
+| Feature | Delegate | Interface |
+|------|------|------|
+| Usage | Method reference | Contract |
+| Multiple methods | No | Yes |
+| Flexibility | Functional programming | OOP design |
+
+---
+
+## 14. What are Expression Trees?
+
+Expression trees represent code as data structures.
+
+Used in:
+
+• LINQ providers  
+• Entity Framework queries  
+
+Example
+
+```csharp
+Expression<Func<int,bool>> expr = x => x > 5;
+```
+
+---
+
+# 5️⃣ Async, Multithreading & Performance
+
+## 1. What is Asynchronous Programming?
+
+Asynchronous programming allows tasks to run without blocking the main thread.
+
+Useful for:
+
+• I/O operations  
+• API calls  
+• Database queries
+
+---
+
+## 2. What are async and await?
+
+async enables asynchronous methods.
+
+await waits for async operation completion.
+
+Example
+
+```csharp
+public async Task<string> GetData()
+{
+    await Task.Delay(1000);
+    return "Done";
+}
+```
+
+---
+
+## 3. What is Task in C#?
+
+Task represents an asynchronous operation.
+
+Example
+
+```csharp
+Task task = Task.Run(() =>
+{
+    Console.WriteLine("Background task");
+});
+```
+
+---
+
+## 4. What is Task<T>?
+
+Task<T> returns a value from async operation.
+
+Example
+
+```csharp
+Task<int> GetNumberAsync()
+{
+    return Task.FromResult(10);
+}
+```
+
+---
+
+## 5. Difference Between Async and Synchronous Programming
+
+| Feature | Synchronous | Async |
+|------|------|------|
+| Execution | Blocking | Non-blocking |
+| Performance | Slower for I/O | Efficient |
+
+---
+
+## 6. What is Multithreading?
+
+Multithreading allows multiple threads to execute simultaneously.
+
+Example
+
+```csharp
+Thread thread = new Thread(() =>
+{
+    Console.WriteLine("Running thread");
+});
+
+thread.Start();
+```
+
+---
+
+## 7. What is the Thread Class?
+
+Thread class creates and manages threads.
+
+Namespace
+
+```
+System.Threading
+```
+
+---
+
+## 8. What is Thread Pooling?
+
+Thread pooling reuses threads instead of creating new ones.
+
+Benefits:
+
+• Improves performance  
+• Reduces thread creation cost
+
+---
+
+## 9. What is Task.Run?
+
+Task.Run runs a task on a background thread.
+
+Example
+
+```csharp
+await Task.Run(() => ProcessData());
+```
+
+---
+
+## 10. What is Parallel Programming?
+
+Parallel programming executes multiple tasks simultaneously.
+
+Example
+
+```csharp
+Parallel.For(0,10,i =>
+{
+    Console.WriteLine(i);
+});
+```
+
+---
+
+## 11. What is Task.WhenAll?
+
+Waits for multiple tasks to complete.
+
+Example
+
+```csharp
+await Task.WhenAll(task1, task2);
+```
+
+---
+
+## 12. What is Task.WhenAny?
+
+Returns when any task finishes.
+
+Example
+
+```csharp
+await Task.WhenAny(task1, task2);
+```
+
+---
+
+## 13. What are Race Conditions?
+
+Race condition occurs when multiple threads access shared resources simultaneously.
+
+Result: unpredictable output.
+
+---
+
+## 14. What are Deadlocks?
+
+Deadlock occurs when two threads wait for each other indefinitely.
+
+Example scenario:
+
+Thread A waits for resource B  
+Thread B waits for resource A
+
+---
+
+## 15. What is Synchronization?
+
+Synchronization ensures only one thread accesses critical resources at a time.
+
+---
+
+## 16. Difference Between lock and Monitor
+
+| Feature | lock | Monitor |
+|------|------|------|
+| Syntax | Simple | Advanced control |
+| Usage | Common | Fine-grained control |
+
+Example
+
+```csharp
+lock(obj)
+{
+    // critical section
+}
+```
+
+---
+
+## 17. What is SemaphoreSlim?
+
+SemaphoreSlim limits number of concurrent threads.
+
+Example
+
+```csharp
+SemaphoreSlim semaphore = new SemaphoreSlim(2);
+```
+
+---
+
+# 6️⃣ ASP.NET Core Fundamentals
+
+## 1. What is ASP.NET Core?
+
+ASP.NET Core is a cross-platform framework used to build modern web applications and APIs.
+
+Features:
+
+• High performance  
+• Cross-platform  
+• Built-in dependency injection  
+• Modular architecture
+
+---
+
+## 2. Difference Between ASP.NET and ASP.NET Core
+
+| Feature | ASP.NET | ASP.NET Core |
+|------|------|------|
+| Platform | Windows only | Cross-platform |
+| Performance | Slower | Faster |
+| Hosting | IIS | Kestrel |
+
+---
+
+## 3. What is Kestrel?
+
+Kestrel is a cross-platform web server used by ASP.NET Core.
+
+It handles HTTP requests.
+
+---
+
+## 4. What is the Request Pipeline?
+
+The request pipeline is the sequence of middleware components that handle HTTP requests.
+
+Flow
+
+```
+Request → Middleware → Controller → Response
+```
+
+---
+
+## 5. What is Middleware?
+
+Middleware is software that processes HTTP requests and responses.
+
+Examples:
+
+• Authentication  
+• Logging  
+• Routing  
+
+---
+
+## 6. What is Minimal Hosting Model?
+
+Introduced in .NET 6.
+
+Simplifies application startup.
+
+Example
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+var app = builder.Build();
+
+app.Run();
+```
+
+---
+
+## 7. What is Program.cs?
+
+Program.cs is the entry point of ASP.NET Core applications.
+
+It configures services and middleware.
+
+---
+
+## 8. What is appsettings.json?
+
+Configuration file used to store application settings.
+
+Example
+
+```json
+{
+ "ConnectionStrings": {
+  "DefaultConnection": "Server=..."
+ }
+}
+```
+
+---
+
+## 9. What are Environment Variables?
+
+Environment variables control environment-specific configuration.
+
+Examples:
+
+```
+Development
+Production
+Staging
+```
+
+---
+
+## 10. What is Configuration in ASP.NET Core?
+
+Configuration reads settings from:
+
+• appsettings.json  
+• environment variables  
+• command-line arguments
+
+---
+
+## 11. What is the Options Pattern?
+
+Options pattern maps configuration sections to strongly typed objects.
+
+Example
+
+```csharp
+services.Configure<MySettings>(
+    Configuration.GetSection("MySettings"));
+```
+
+---
+
+# 7️⃣ Web API Development
+
+## 1. What is a REST API?
+
+REST API is an architectural style for building web services using HTTP.
+
+---
+
+## 2. What are REST Principles?
+
+Key principles:
+
+• Stateless  
+• Client-server architecture  
+• Cacheable  
+• Uniform interface  
+
+---
+
+## 3. What are HTTP Methods?
+
+Common methods:
+
+```
+GET
+POST
+PUT
+PATCH
+DELETE
+```
+
+---
+
+## 4. What are HTTP Status Codes?
+
+Examples:
+
+| Code | Meaning |
+|------|------|
+| 200 | OK |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 404 | Not Found |
+| 500 | Internal Server Error |
+
+---
+
+## 5. What is a Controller in ASP.NET Core?
+
+Controller handles HTTP requests.
+
+Example
+
+```csharp
+[ApiController]
+[Route("api/products")]
+public class ProductsController : ControllerBase
+{
+}
+```
+
+---
+
+## 6. What is ControllerBase?
+
+ControllerBase provides core API functionality without view support.
+
+Used for APIs.
+
+---
+
+## 7. What is ApiController Attribute?
+
+Provides automatic API behaviors like:
+
+• Model validation  
+• Parameter binding  
+
+---
+
+## 8. What is Routing?
+
+Routing maps URLs to controllers.
+
+Example
+
+```
+/api/products
+```
+
+---
+
+## 9. What is Attribute Routing?
+
+Routing defined using attributes.
+
+Example
+
+```csharp
+[HttpGet("{id}")]
+```
+
+---
+
+## 10. What is Conventional Routing?
+
+Routing defined centrally in configuration.
+
+---
+
+## 11. What is Model Binding?
+
+Model binding maps HTTP request data to action parameters.
+
+---
+
+## 12. What is Model Validation?
+
+Model validation ensures incoming data is valid.
+
+Example
+
+```csharp
+[Required]
+[StringLength(50)]
+```
+
+---
+
+## 13. What are Data Annotations?
+
+Attributes used for validation.
+
+Examples
+
+```
+[Required]
+[EmailAddress]
+[Range]
+```
+
+---
+
+## 14. What are DTOs?
+
+DTO (Data Transfer Object) transfers data between layers.
+
+Benefits:
+
+• Security  
+• Separation of concerns  
+• Better API control
+
+---
+
+## 15. What is API Versioning?
+
+API versioning allows multiple versions of an API.
+
+Example
+
+```
+api/v1/products
+api/v2/products
+```
+
+---
+
+# 8️⃣ Dependency Injection & Middleware
+
+## 1. What is Dependency Injection?
+
+Dependency Injection (DI) is a design pattern used to provide dependencies to classes instead of creating them internally.
+
+Benefits:
+
+• Loose coupling  
+• Testability  
+• Maintainability  
+
+---
+
+## 2. What are DI Lifetimes?
+
+Three lifetimes:
+
+• Transient  
+• Scoped  
+• Singleton  
+
+---
+
+## 3. What is Transient Lifetime?
+
+New instance created every time it is requested.
+
+---
+
+## 4. What is Scoped Lifetime?
+
+One instance per request.
+
+---
+
+## 5. What is Singleton Lifetime?
+
+Single instance for entire application lifetime.
+
+---
+
+## 6. What is Constructor Injection?
+
+Dependencies are injected through constructor.
+
+Example
+
+```csharp
+public class ProductService
+{
+ private readonly IRepository _repo;
+
+ public ProductService(IRepository repo)
+ {
+  _repo = repo;
+ }
+}
+```
+
+---
+
+## 7. How Middleware Works Internally?
+
+Each middleware:
+
+• Processes request  
+• Calls next middleware  
+• Processes response
+
+---
+
+## 8. What is Middleware Ordering?
+
+Middleware executes in the order registered.
+
+Example
+
+```
+UseRouting()
+UseAuthentication()
+UseAuthorization()
+```
+
+---
+
+## 9. What is Custom Middleware?
+
+Middleware created by developers.
+
+Example
+
+```csharp
+public class LoggingMiddleware
+{
+ public async Task Invoke(HttpContext context)
+ {
+  Console.WriteLine("Request received");
+ }
+}
+```
+---
+
+# 9️⃣ Entity Framework Core
+
+## 1. What is Entity Framework Core?
+
+Entity Framework Core (EF Core) is a lightweight, open-source ORM (Object Relational Mapper) for .NET used to interact with databases using C# objects instead of SQL queries.
+
+Benefits:
+
+• Reduces boilerplate database code  
+• Supports LINQ queries  
+• Supports multiple databases (SQL Server, PostgreSQL, MySQL)
+
+Example
+
+```csharp
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+---
+
+## 2. What is ORM?
+
+ORM (Object Relational Mapping) maps database tables to C# classes.
+
+Example
+
+```
+Database Table → C# Class
+Row → Object
+Column → Property
+```
+
+---
+
+## 3. What is DbContext?
+
+DbContext is the main class used to interact with the database.
+
+Responsibilities:
+
+• Manage database connection  
+• Track entity changes  
+• Execute queries  
+• Save changes
+
+Example
+
+```csharp
+public class AppDbContext : DbContext
+{
+    public DbSet<Product> Products { get; set; }
+}
+```
+
+---
+
+## 4. What is DbSet?
+
+DbSet represents a table in the database.
+
+Example
+
+```csharp
+context.Products.Add(product);
+```
+
+---
+
+## 5. What is Code First Approach?
+
+In Code First, developers create C# models first and EF generates database tables.
+
+Flow
+
+```
+C# Model → Migration → Database Table
+```
+
+---
+
+## 6. What is Database First Approach?
+
+Database already exists → EF generates models from database schema.
+
+---
+
+## 7. What are Migrations?
+
+Migrations manage database schema changes.
+
+Commands
+
+```
+Add-Migration InitialCreate
+Update-Database
+```
+
+---
+
+## 8. What is Tracking in EF Core?
+
+EF tracks entity changes automatically.
+
+When SaveChanges() is called, EF updates modified records.
+
+---
+
+## 9. What is No Tracking Query?
+
+No tracking improves performance for read-only queries.
+
+Example
+
+```csharp
+context.Products.AsNoTracking().ToList();
+```
+
+---
+
+## 10. What is Lazy Loading?
+
+Data loads only when accessed.
+
+Example
+
+```csharp
+product.Category
+```
+
+Not loaded until accessed.
+
+---
+
+## 11. What is Eager Loading?
+
+Loads related data immediately.
+
+Example
+
+```csharp
+context.Products.Include(p => p.Category);
+```
+
+---
+
+## 12. What is Explicit Loading?
+
+Data is loaded manually.
+
+Example
+
+```csharp
+context.Entry(product).Reference(p => p.Category).Load();
+```
+
+---
+
+## 13. What is the N+1 Problem?
+
+Occurs when EF executes multiple queries for related data.
+
+Example
+
+```
+1 query for products
+N queries for categories
+```
+
+Solution:
+
+```
+Use Include()
+```
+
+---
+
+## 14. IQueryable vs IEnumerable in EF
+
+| Feature | IEnumerable | IQueryable |
+|------|------|------|
+| Execution | In memory | Database |
+| Performance | Slower | Faster |
+
+---
+
+## 15. What is Optimistic Concurrency?
+
+Ensures multiple users do not overwrite each other's changes.
+
+Uses a concurrency token.
+
+Example
+
+```
+RowVersion column
+```
+
+---
+
+# 🔟 Security (Auth, JWT, CORS)
+
+## 1. What is Authentication?
+
+Authentication verifies **who the user is**.
+
+Example:
+
+• Username/password  
+• JWT token
+
+---
+
+## 2. What is Authorization?
+
+Authorization determines **what a user can access**.
+
+Example
+
+```
+Admin → create users
+User → view profile
+```
+
+---
+
+## 3. What is JWT Authentication?
+
+JWT (JSON Web Token) is a token-based authentication mechanism used in APIs.
+
+Structure
+
+```
+Header.Payload.Signature
+```
+
+---
+
+## 4. How Does JWT Work?
+
+Steps:
+
+1. User logs in
+2. Server generates JWT token
+3. Client stores token
+4. Client sends token with every request
+5. Server validates token
+
+---
+
+## 5. What are Claims?
+
+Claims contain user information in the token.
+
+Example
+
+```
+UserId
+Role
+Email
+```
+
+---
+
+## 6. What are Roles?
+
+Roles define user permissions.
+
+Example
+
+```
+Admin
+User
+Manager
+```
+
+---
+
+## 7. What is Policy-Based Authorization?
+
+Authorization based on policies instead of roles.
+
+Example
+
+```csharp
+[Authorize(Policy = "AdminPolicy")]
+```
+
+---
+
+## 8. What is CORS?
+
+CORS (Cross-Origin Resource Sharing) allows APIs to be accessed from different domains.
+
+Example
+
+```
+React app → API server
+```
+
+---
+
+## 9. Why is CORS Needed?
+
+Browsers block requests from different origins for security reasons.
+
+CORS allows controlled access.
+
+---
+
+## 10. What are CSRF Attacks?
+
+CSRF (Cross-Site Request Forgery) tricks users into performing unwanted actions.
+
+Example
+
+```
+Malicious website triggers request using user session
+```
+
+---
+
+## 11. What are XSS Attacks?
+
+XSS (Cross-Site Scripting) injects malicious scripts into websites.
+
+Example
+
+```
+<script>alert('hack')</script>
+```
+
+---
+
+# 1️⃣1️⃣ API Design & Best Practices
+
+## 1. What are API Design Best Practices?
+
+Best practices include:
+
+• Use RESTful naming  
+• Proper HTTP status codes  
+• Use DTOs  
+• Version APIs  
+• Use pagination  
+
+---
+
+## 2. What is Idempotency?
+
+An operation that produces the same result even if executed multiple times.
+
+Example
+
+```
+PUT request
+DELETE request
+```
+
+---
+
+## 3. RESTful Naming Conventions
+
+Use nouns not verbs.
+
+Example
+
+```
+GET /products
+POST /products
+GET /products/{id}
+```
+
+---
+
+## 4. What are DTOs and Why Used?
+
+DTOs transfer data between layers.
+
+Benefits:
+
+• Hide sensitive data  
+• Improve security  
+• Control API responses
+
+---
+
+## 5. Why Should EF Entities Not Be Returned Directly?
+
+Reasons:
+
+• Security risks  
+• Tight coupling  
+• Overexposure of fields
+
+DTOs solve this.
+
+---
+
+## 6. API Versioning Strategies
+
+Types:
+
+• URL versioning  
+• Header versioning  
+• Query parameter versioning
+
+Example
+
+```
+api/v1/products
+```
+
+---
+
+## 7. Proper HTTP Response Codes
+
+Examples
+
+```
+200 OK
+201 Created
+204 No Content
+400 Bad Request
+401 Unauthorized
+404 Not Found
+500 Server Error
+```
+
+---
+
+## 8. What is Pagination?
+
+Pagination limits API response size.
+
+Example
+
+```
+/products?page=1&pageSize=10
+```
+
+---
+
+## 9. What is Filtering?
+
+Filtering allows clients to retrieve specific data.
+
+Example
+
+```
+/products?category=electronics
+```
+
+---
+
+## 10. What is API Documentation?
+
+API documentation explains API usage.
+
+Common tools:
+
+• Swagger / OpenAPI  
+• Postman documentation
+
+---
+
+# 1️⃣2️⃣ Performance Optimization
+
+## 1. How Do You Improve Web API Performance?
+
+Techniques:
+
+• Use async/await  
+• Implement caching  
+• Optimize database queries  
+• Use pagination  
+• Enable compression
+
+---
+
+## 2. Why Should APIs Use Async Programming?
+
+Async improves scalability by freeing threads during I/O operations.
+
+---
+
+## 3. What is Caching?
+
+Caching stores frequently accessed data for faster retrieval.
+
+---
+
+## 4. What is In-Memory Caching?
+
+Stores cache inside application memory.
+
+Example
+
+```csharp
+IMemoryCache
+```
+
+---
+
+## 5. What is Distributed Caching?
+
+Cache shared across multiple servers.
+
+Examples:
+
+```
+Redis
+SQL Server Cache
+```
+
+---
+
+## 6. What is Redis Caching?
+
+Redis is an in-memory distributed cache used for high-performance applications.
+
+---
+
+## 7. What is Response Compression?
+
+Compresses API responses to reduce network bandwidth.
+
+Example
+
+```
+Gzip compression
+```
+
+---
+
+## 8. What is Database Indexing?
+
+Indexes improve query performance.
+
+Example
+
+```
+CREATE INDEX idx_product_name ON Products(Name);
+```
+
+---
+
+## 9. What is Connection Pooling?
+
+Connection pooling reuses database connections instead of creating new ones.
+
+Improves performance.
+
+---
+
+# 1️⃣3️⃣ Logging, Monitoring & Health Checks
+
+## 1. What is ILogger?
+
+ILogger is used for logging application events.
+
+Example
+
+```csharp
+_logger.LogInformation("Product created");
+```
+
+---
+
+## 2. What are Logging Levels?
+
+Levels include:
+
+```
+Trace
+Debug
+Information
+Warning
+Error
+Critical
+```
+
+---
+
+## 3. What is Structured Logging?
+
+Structured logging stores logs in structured formats (JSON).
+
+Example tools:
+
+```
+Serilog
+NLog
+```
+
+---
+
+## 4. What are Health Checks?
+
+Health checks monitor application status.
+
+Example endpoint
+
+```
+/health
+```
+
+---
+
+## 5. What is Application Monitoring?
+
+Monitoring tracks performance and errors.
+
+Tools:
+
+```
+Grafana
+Prometheus
+Application Insights
+```
+
+---
+
+## 6. What is Distributed Tracing?
+
+Tracks requests across microservices.
+
+Example tools:
+
+```
+Jaeger
+Zipkin
+```
+
+---
+
+## 7. What is Correlation ID?
+
+Correlation ID tracks a request across multiple services.
+
+---
+
+# 1️⃣4️⃣ Testing
+
+## 1. What is Unit Testing?
+
+Unit testing verifies individual components.
+
+Example
+
+```
+Test service methods
+```
+
+---
+
+## 2. What is Integration Testing?
+
+Tests interaction between multiple components.
+
+Example
+
+```
+API + Database
+```
+
+---
+
+## 3. What is Mocking?
+
+Mocking simulates dependencies during testing.
+
+Example tools
+
+```
+Moq
+FakeItEasy
+```
+
+---
+
+## 4. What is xUnit?
+
+xUnit is a popular testing framework for .NET.
+
+---
+
+## 5. What is NUnit?
+
+Another unit testing framework used in .NET.
+
+---
+
+## 6. What is MSTest?
+
+Microsoft’s built-in testing framework.
+
+---
+
+## 7. What is WebApplicationFactory?
+
+Used for integration testing ASP.NET Core APIs.
+
+---
+
+# 1️⃣5️⃣ Architecture & Design Patterns
+
+## 1. What is Clean Architecture?
+
+Clean Architecture separates application into layers.
+
+Layers
+
+```
+Domain
+Application
+Infrastructure
+Presentation
+```
+
+---
+
+## 2. What is Repository Pattern?
+
+Repository abstracts database access.
+
+Example
+
+```
+IProductRepository
+```
+
+---
+
+## 3. What is Unit of Work Pattern?
+
+Ensures multiple operations are committed as a single transaction.
+
+---
+
+## 4. What is CQRS?
+
+CQRS separates:
+
+```
+Command → write operations
+Query → read operations
+```
+
+---
+
+## 5. What is Mediator Pattern?
+
+Mediator reduces dependencies between components.
+
+Example library
+
+```
+MediatR
+```
+
+---
+
+## 6. What is SOLID Principle?
+
+SOLID consists of:
+
+```
+S - Single Responsibility
+O - Open Closed
+L - Liskov Substitution
+I - Interface Segregation
+D - Dependency Inversion
+```
+
+---
+
+# 1️⃣6️⃣ System Design for APIs
+
+## 1. How Do You Design Scalable APIs?
+
+Strategies:
+
+• Load balancing  
+• Caching  
+• Database indexing  
+• Asynchronous processing  
+• Microservices architecture
+
+---
+
+## 2. How Do You Handle High Traffic APIs?
+
+Techniques:
+
+• Horizontal scaling  
+• CDN caching  
+• Rate limiting  
+• Queue processing
+
+---
+
+## 3. What is Load Balancing?
+
+Load balancing distributes traffic across multiple servers.
+
+Example tools
+
+```
+NGINX
+AWS ELB
+```
+
+---
+
+## 4. What is API Gateway?
+
+API gateway acts as a single entry point for microservices.
+
+Responsibilities:
+
+• Authentication  
+• Rate limiting  
+• Routing
+
+---
+
+## 5. What are Microservices?
+
+Microservices break applications into smaller independent services.
+
+Benefits:
+
+• Scalability  
+• Independent deployment
+
+---
+
+# 1️⃣7️⃣ Advanced Production Topics
+
+## 1. What are Background Services?
+
+Background services run tasks independently of HTTP requests.
+
+Example
+
+```
+Email processing
+Queue processing
+```
+
+---
+
+## 2. What is IHostedService?
+
+Interface used for background tasks.
+
+---
+
+## 3. What is BackgroundService?
+
+Simplified implementation of IHostedService.
+
+---
+
+## 4. What are Health Check Endpoints?
+
+Endpoints used to verify application health.
+
+Example
+
+```
+/health
+```
+
+---
+
+## 5. What is Rate Limiting?
+
+Limits number of requests per client.
+
+Example
+
+```
+100 requests per minute
+```
+
+---
+
+## 6. What is Circuit Breaker Pattern?
+
+Prevents repeated failures by temporarily blocking calls to failing services.
+
+---
+
+## 7. What is Containerization?
+
+Packaging applications with dependencies into containers.
+
+---
+
+## 8. What is Docker?
+
+Docker is a platform used to create and run containers.
+
+---
+
+## 9. What is CI/CD?
+
+CI/CD automates building, testing, and deployment.
+
+Examples
+
+```
+GitHub Actions
+Azure DevOps
+Jenkins
+```
+
+---
+
+# Advanced ASP.NET Core Interview Questions (Senior Level)
+
+---
+
+# 1️⃣ ASP.NET Core Architecture Questions
+
+## 1. Explain the ASP.NET Core Request Pipeline in Detail
+
+The ASP.NET Core request pipeline is a sequence of middleware components that process HTTP requests and responses.
+
+Flow:
+
+```
+Client Request
+     ↓
+Kestrel Server
+     ↓
+Middleware Pipeline
+     ↓
+Routing
+     ↓
+Controller / Endpoint
+     ↓
+Response
+```
+
+Example middleware pipeline
 
 ```csharp
 app.UseRouting();
@@ -526,295 +2634,507 @@ app.UseAuthorization();
 app.MapControllers();
 ```
 
----
+Key points:
 
-# 9. Entity Framework Core
-
-1. **What is Entity Framework Core?**  
-**Answer:** A modern ORM for .NET.
-
-2. **What is ORM?**  
-**Answer:** Object Relational Mapper. It maps database tables to C# objects.
-
-3. **What is `DbContext`?**  
-**Answer:** Main EF Core class for querying and saving data.
-
-4. **What is `DbSet`?**  
-**Answer:** Represents a table/entity collection.
-
-5. **What is Code First approach?**  
-**Answer:** Define models in C# first and generate the database schema.
-
-6. **What is Database First approach?**  
-**Answer:** Start from existing database and scaffold classes from it.
-
-7. **What are migrations?**  
-**Answer:** Versioned database schema changes managed by EF Core.
-
-8. **What is tracking in EF Core?**  
-**Answer:** EF Core keeps track of entity changes so it can update them later.
-
-9. **What is no tracking query?**  
-**Answer:** A read-only query using `AsNoTracking()` to improve performance.
-
-10. **What is lazy loading?**  
-**Answer:** Related entities load automatically when accessed.
-
-11. **What is eager loading?**  
-**Answer:** Related entities load immediately using `Include()`.
-
-12. **What is explicit loading?**  
-**Answer:** Related entities are loaded manually later.
-
-13. **What is the N+1 problem?**  
-**Answer:** One query loads parent records, then many extra queries load child records, harming performance.
-
-14. **What is `IQueryable` vs `IEnumerable` in EF?**  
-**Answer:** `IQueryable` runs on database side when possible. `IEnumerable` runs in memory after data is loaded.
-
-15. **What is optimistic concurrency?**  
-**Answer:** A concurrency model where conflicts are detected at update time instead of locking rows up front.
+• Middleware executes in order  
+• Each middleware can modify request/response  
+• Pipeline ends when response is returned  
 
 ---
 
-# 10. Security (Auth, JWT, CORS)
+## 2. How Does Dependency Injection Work Internally?
 
-1. **What is authentication?**  
-**Answer:** Verifying who the user is.
+ASP.NET Core has a built-in IoC container.
 
-2. **What is authorization?**  
-**Answer:** Deciding what the user can do.
+Steps:
 
-3. **What is JWT authentication?**  
-**Answer:** Authentication using signed JSON Web Tokens.
+1. Service registered in container
+2. Container builds object graph
+3. Dependency injected into constructors
 
-4. **How does JWT work?**  
-**Answer:** Server issues token after login; client sends it in each request; server validates it.
+Example
 
-5. **What are claims?**  
-**Answer:** Key-value identity information inside the token.
+```csharp
+services.AddScoped<IProductService, ProductService>();
+```
 
-6. **What are roles?**  
-**Answer:** Authorization categories like `Admin`, `Manager`, `User`.
+When controller is created:
 
-7. **What is policy-based authorization?**  
-**Answer:** Authorization using custom rules based on claims, roles, or logic.
-
-8. **What is CORS?**  
-**Answer:** Cross-Origin Resource Sharing, a browser mechanism controlling cross-origin requests.
-
-9. **Why is CORS needed?**  
-**Answer:** Because browsers block cross-origin calls by default unless the server allows them.
-
-10. **What are CSRF attacks?**  
-**Answer:** Attacks where a user’s authenticated browser is tricked into sending unwanted requests.
-
-11. **What are XSS attacks?**  
-**Answer:** Cross-site scripting attacks where malicious scripts are injected into pages.
+```
+Container → creates ProductService → injects into controller
+```
 
 ---
 
-# 11. API Design & Best Practices
+## 3. How Would You Design a Scalable Web API?
 
-1. **What are API design best practices?**  
-**Answer:** Use clear resource names, DTOs, versioning, proper status codes, validation, pagination, documentation, and consistent error handling.
+Key strategies:
 
-2. **What is idempotency in APIs?**  
-**Answer:** Making the same request multiple times gives the same result.
+• Stateless APIs  
+• Load balancing  
+• Distributed caching (Redis)  
+• Database indexing  
+• Asynchronous processing  
+• Horizontal scaling  
 
-3. **What are RESTful naming conventions?**  
-**Answer:** Use nouns, plural resources, and predictable route structures.
+Architecture Example
 
-4. **What are DTOs and why are they used?**  
-**Answer:** DTOs shape request/response models and protect internal domain/data structure.
-
-5. **Why should EF entities not be returned directly?**  
-**Answer:** It tightly couples the API contract to the database model and can expose sensitive/internal fields.
-
-6. **What are API versioning strategies?**  
-**Answer:** URL versioning, header versioning, query string versioning.
-
-7. **What are proper HTTP response codes?**  
-**Answer:** Return codes based on actual outcome, not always `200`.
-
-8. **What is pagination in APIs?**  
-**Answer:** Splitting large data into smaller pages for performance and usability.
-
-9. **What is filtering in APIs?**  
-**Answer:** Letting clients restrict returned data using query parameters.
-
-10. **What is API documentation?**  
-**Answer:** Describing endpoints, auth, payloads, and responses, typically with Swagger/OpenAPI.
+```
+Client
+   ↓
+Load Balancer
+   ↓
+API Servers
+   ↓
+Redis Cache
+   ↓
+Database
+```
 
 ---
 
-# 12. Performance Optimization
+# 2️⃣ Real Production Scenarios
 
-1. **How do you improve Web API performance?**  
-**Answer:** Use async, caching, pagination, optimized queries, compression, and avoid over-fetching.
+## 4. Your API Suddenly Became Slow. How Do You Debug It?
 
-2. **Why should APIs use async programming?**  
-**Answer:** It improves scalability by not blocking request threads during I/O waits.
+Steps:
 
-3. **What is caching?**  
-**Answer:** Temporarily storing frequently used data to avoid repeated expensive operations.
+1. Check logs
+2. Check database query performance
+3. Check thread pool usage
+4. Check external service latency
+5. Profile API performance
 
-4. **What is in-memory caching?**  
-**Answer:** Cache stored inside app process memory.
+Tools
 
-5. **What is distributed caching?**  
-**Answer:** Cache stored externally and shared across multiple app instances.
-
-6. **What is Redis caching?**  
-**Answer:** Using Redis as a fast distributed cache store.
-
-7. **What is response compression?**  
-**Answer:** Compressing API responses to reduce payload size.
-
-8. **What is database indexing?**  
-**Answer:** Data structures that improve query lookup performance.
-
-9. **What is connection pooling?**  
-**Answer:** Reusing existing database connections instead of constantly opening new ones.
+```
+Application Insights
+Grafana
+New Relic
+```
 
 ---
 
-# 13. Logging, Monitoring & Health Checks
+## 5. How Do You Handle Large File Uploads in ASP.NET Core?
 
-1. **What is `ILogger`?**  
-**Answer:** ASP.NET Core’s built-in logging abstraction.
+Use streaming instead of loading entire file into memory.
 
-2. **What are logging levels?**  
-**Answer:** `Trace`, `Debug`, `Information`, `Warning`, `Error`, `Critical`
+Example
 
-3. **What is structured logging?**  
-**Answer:** Logging with named fields so logs are easier to query and analyze.
+```csharp
+[RequestSizeLimit(100_000_000)]
+```
 
-4. **What are health checks?**  
-**Answer:** Endpoints used to report application status.
+Also use
 
-5. **What is application monitoring?**  
-**Answer:** Tracking metrics, logs, traces, uptime, and failures in production.
+```
+IFormFile
+```
 
-6. **What is distributed tracing?**  
-**Answer:** Tracking a request across multiple services.
+Best practices:
 
-7. **What is correlation ID?**  
-**Answer:** A unique id added to each request so related logs can be traced together.
-
----
-
-# 14. Testing
-
-1. **What is unit testing?**  
-**Answer:** Testing a small unit of logic in isolation.
-
-2. **What is integration testing?**  
-**Answer:** Testing how multiple components work together.
-
-3. **What is mocking?**  
-**Answer:** Replacing real dependencies with fake/test objects.
-
-4. **What is xUnit?**  
-**Answer:** A popular test framework for .NET.
-
-5. **What is NUnit?**  
-**Answer:** Another mature .NET test framework.
-
-6. **What is MSTest?**  
-**Answer:** Microsoft’s testing framework for .NET.
-
-7. **What is `WebApplicationFactory`?**  
-**Answer:** A utility for integration testing ASP.NET Core applications in memory.
+• Use streaming  
+• Use cloud storage (S3, Azure Blob)  
+• Validate file size
 
 ---
 
-# 15. Architecture & Design Patterns
+## 6. How Do You Prevent Memory Leaks in ASP.NET Core?
 
-1. **What is Clean Architecture?**  
-**Answer:** An approach where domain logic is independent from frameworks, UI, and infrastructure.
+Common causes:
 
-2. **What is the Repository Pattern?**  
-**Answer:** A pattern that abstracts data access logic behind repository interfaces.
+• Unreleased resources
+• Large in-memory objects
+• Incorrect singleton usage
 
-3. **What is Unit of Work Pattern?**  
-**Answer:** A pattern that groups changes into one transaction-like unit.
+Solutions:
 
-4. **What is CQRS?**  
-**Answer:** Separating read operations from write operations.
-
-5. **What is Mediator pattern?**  
-**Answer:** A pattern where components communicate through a mediator instead of directly.
-
-6. **What is the SOLID principle?**  
-**Answer:** A set of design principles used to build maintainable and extensible systems.
+• Dispose objects properly
+• Avoid large static collections
+• Use `using` statements
 
 ---
 
-# 16. System Design for APIs
+# 3️⃣ API Design Scenario Questions
 
-1. **How do you design scalable APIs?**  
-**Answer:** Use stateless services, async I/O, caching, pagination, efficient DB access, and observability.
+## 7. Design a Product API for an E-Commerce Application
 
-2. **How do you handle high traffic APIs?**  
-**Answer:** Use load balancing, caching, rate limiting, horizontal scaling, and optimized backend dependencies.
+Endpoints
 
-3. **What is load balancing?**  
-**Answer:** Distributing traffic across multiple server instances.
+```
+GET /products
+GET /products/{id}
+POST /products
+PUT /products/{id}
+DELETE /products/{id}
+```
 
-4. **What is API gateway?**  
-**Answer:** A single entry point for routing, auth, throttling, and other cross-cutting concerns.
+Features
 
-5. **What are microservices?**  
-**Answer:** Small independently deployable services organized around business capabilities.
+• Pagination  
+• Filtering  
+• Sorting  
 
----
+Example
 
-# 17. Advanced Production Topics
-
-1. **What are background services?**  
-**Answer:** Services that run behind the scenes for scheduled jobs or queue processing.
-
-2. **What is `IHostedService`?**  
-**Answer:** Interface for starting and stopping background services with the host.
-
-3. **What is `BackgroundService`?**  
-**Answer:** Base class that simplifies long-running hosted service implementations.
-
-4. **What are health check endpoints?**  
-**Answer:** Endpoints like `/health` used by orchestration and monitoring systems.
-
-5. **What is rate limiting?**  
-**Answer:** Restricting how many requests a client can make in a given period.
-
-6. **What is circuit breaker pattern?**  
-**Answer:** A resilience pattern that stops repeated calls to a failing dependency for a period of time.
-
-7. **What is containerization?**  
-**Answer:** Packaging an app and its dependencies into a consistent deployable unit.
-
-8. **What is Docker?**  
-**Answer:** A platform for building and running containers.
-
-9. **What is CI/CD?**  
-**Answer:** Automating build, test, and deployment pipelines for faster and safer releases.
+```
+GET /products?page=1&pageSize=10&category=mobile
+```
 
 ---
 
-# Quick Interview Focus
+## 8. How Do You Handle Versioning in APIs?
 
-For strong interview preparation, make sure you can explain these clearly with one real example from your own project:
+Strategies
 
-1. `IEnumerable` vs `IQueryable`
-2. `var` vs `dynamic` vs `object`
-3. Abstract class vs interface
-4. LINQ deferred execution
-5. `async/await` and `Task.WhenAll`
-6. ASP.NET Core middleware order
-7. DTOs and why not to return EF entities directly
-8. EF Core loading strategies and N+1 problem
-9. JWT authentication and policy-based authorization
-10. Pagination, filtering, versioning, and proper status codes
-11. Caching, indexing, connection pooling
-12. Clean Architecture, CQRS, Mediator
-13. Background services, rate limiting, health checks, Docker, and CI/CD
+1. URL versioning
+
+```
+/api/v1/products
+```
+
+2. Header versioning
+
+```
+X-API-Version: 1
+```
+
+3. Query parameter versioning
+
+```
+/api/products?version=1
+```
+
+---
+
+# 4️⃣ Performance Optimization Questions
+
+## 9. How Do You Optimize EF Core Queries?
+
+Techniques
+
+• Use AsNoTracking for read queries
+• Use projections
+• Avoid N+1 queries
+• Use indexes
+• Use pagination
+
+Example
+
+```csharp
+context.Products
+       .AsNoTracking()
+       .Select(p => new ProductDto { Id = p.Id, Name = p.Name })
+       .ToList();
+```
+
+---
+
+## 10. What Causes the N+1 Query Problem?
+
+Example
+
+```
+Query products
+Query category for each product
+```
+
+Solution
+
+```
+Use Include()
+```
+
+Example
+
+```csharp
+context.Products.Include(p => p.Category);
+```
+
+---
+
+## 11. When Should You Use Caching?
+
+Use caching when:
+
+• Data rarely changes  
+• Queries are expensive  
+
+Examples
+
+```
+Product catalog
+Configuration data
+```
+
+Types
+
+```
+In-memory cache
+Distributed cache (Redis)
+```
+
+---
+
+# 5️⃣ Security Scenario Questions
+
+## 12. How Do You Secure an ASP.NET Core API?
+
+Techniques
+
+• JWT authentication  
+• HTTPS enforcement  
+• CORS configuration  
+• Rate limiting  
+• Input validation  
+
+---
+
+## 13. How Do You Protect APIs from DDoS Attacks?
+
+Solutions
+
+• Rate limiting
+• API gateway
+• CDN protection
+• Load balancing
+
+---
+
+## 14. How Do You Protect Sensitive Data?
+
+Methods
+
+• Encryption  
+• Hashing passwords  
+• HTTPS  
+• Secure headers  
+
+Example
+
+```
+BCrypt for password hashing
+```
+
+---
+
+# 6️⃣ Microservices Questions
+
+## 15. What Challenges Exist in Microservices Architecture?
+
+Challenges
+
+• Distributed transactions  
+• Service communication  
+• Data consistency  
+• Monitoring  
+
+---
+
+## 16. How Do Microservices Communicate?
+
+Methods
+
+1. REST APIs
+2. Message queues
+3. Event streaming
+
+Tools
+
+```
+RabbitMQ
+Kafka
+Azure Service Bus
+```
+
+---
+
+# 7️⃣ Distributed Systems Questions
+
+## 17. What is Eventual Consistency?
+
+In distributed systems, data consistency may take time across services.
+
+Example
+
+```
+Order Service updates order
+Inventory service updates stock later
+```
+
+---
+
+# 8️⃣ Logging & Monitoring Questions
+
+## 18. How Do You Implement Centralized Logging?
+
+Use tools like
+
+```
+ELK Stack
+Serilog
+Grafana
+Splunk
+```
+
+---
+
+## 19. How Do You Trace Requests Across Microservices?
+
+Use
+
+```
+Distributed tracing
+Correlation IDs
+```
+
+Tools
+
+```
+Jaeger
+Zipkin
+```
+
+---
+
+# 9️⃣ Deployment & DevOps Questions
+
+## 20. How Do You Deploy ASP.NET Core Applications?
+
+Methods
+
+```
+IIS
+Docker containers
+Kubernetes
+Cloud platforms
+```
+
+---
+
+## 21. What is Blue-Green Deployment?
+
+Blue environment = current production  
+Green environment = new version
+
+Traffic switched after validation.
+
+Benefits
+
+• Zero downtime deployment
+
+---
+
+## 22. What is Canary Deployment?
+
+New version released to a small percentage of users first.
+
+---
+
+# 🔟 Debugging & Troubleshooting Questions
+
+## 23. API Returns 500 Error in Production. How Do You Investigate?
+
+Steps
+
+1. Check logs
+2. Reproduce issue locally
+3. Check database connectivity
+4. Check external API failures
+
+---
+
+## 24. Database Queries Are Slow. What Do You Do?
+
+Steps
+
+• Check query execution plan
+• Add indexes
+• Optimize joins
+• Use caching
+
+---
+
+# 1️⃣1️⃣ Senior Developer Thinking Questions
+
+## 25. How Would You Design a High Traffic System (Like Netflix API)?
+
+Architecture
+
+```
+Client
+↓
+CDN
+↓
+Load Balancer
+↓
+API Gateway
+↓
+Microservices
+↓
+Distributed Cache
+↓
+Database Cluster
+```
+
+---
+
+## 26. What Are the Most Common Production Problems in APIs?
+
+Examples
+
+• Memory leaks  
+• Database slow queries  
+• High CPU usage  
+• Thread pool starvation  
+• Deadlocks  
+
+---
+
+## 27. What Is the Biggest Mistake Developers Make in APIs?
+
+Common mistakes
+
+• Returning EF entities directly  
+• Not handling exceptions  
+• Not validating input  
+• Missing pagination  
+
+---
+
+# 1️⃣2️⃣ Real Senior Interview Questions
+
+## 28. Explain the Difference Between Task.Run and async/await
+
+Task.Run creates a new thread.
+
+async/await handles asynchronous operations.
+
+Use async/await for:
+
+```
+I/O operations
+Database calls
+API calls
+```
+
+---
+
+## 29. What Is Thread Pool Starvation?
+
+Occurs when all thread pool threads are busy.
+
+Causes
+
+• Blocking calls
+• Long running tasks
+
+Solution
+
+```
+Use async operations
+```
+
+---
+
+
