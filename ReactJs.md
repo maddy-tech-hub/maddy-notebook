@@ -2916,6 +2916,105 @@ Libraries:
 react-window
 react-virtualized
 ```
+---
+
+## **20. Additional Advanced React Concepts**
+
+### **20.1 Why React Components Re-render**
+
+A React component re-renders when:
+
+1. **State changes**
+2. **Props change**
+3. **Parent component re-renders**
+4. **Context value changes**
+
+Example:
+
+```tsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+When `setCount()` is called, the component re-renders.
+
+---
+
+### **20.2 React Strict Mode**
+
+Strict Mode is a development tool that helps detect potential problems in React applications.
+
+Example:
+
+```tsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+Benefits:
+
+- Identifies unsafe lifecycle methods
+- Detects unexpected side effects
+- Provides additional development warnings
+
+---
+
+### **20.3 React Portals**
+
+React Portals allow rendering components **outside the parent DOM hierarchy**.
+
+Useful for:
+
+- Modals
+- Tooltips
+- Popups
+
+Example:
+
+```tsx
+import ReactDOM from "react-dom";
+
+function Modal({ children }) {
+  return ReactDOM.createPortal(
+    <div className="modal">{children}</div>,
+    document.getElementById("modal-root")
+  );
+}
+```
+
+---
+
+### **20.4 Suspense for Data Loading**
+
+React Suspense can also be used for **asynchronous data loading**.
+
+Example:
+
+```tsx
+<Suspense fallback={<p>Loading...</p>}>
+  <UserProfile />
+</Suspense>
+```
+
+This allows React to show a fallback UI while waiting for data or components.
+
 
 ---
 
