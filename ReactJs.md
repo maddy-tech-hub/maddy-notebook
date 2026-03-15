@@ -1423,6 +1423,191 @@ Currying is useful for creating reusable and composable functions.
 
 ---
 
+---
+
+#### **7.9 `this` Keyword**
+
+**What is it?**  
+The `this` keyword refers to the object that is executing the current function.
+
+The value of `this` depends on **how the function is called**, not where it is defined.
+
+**Example: Object Method**
+
+```js
+const person = {
+  name: "Alice",
+  greet() {
+    console.log(this.name);
+  }
+};
+
+person.greet(); // Alice
+```
+
+---
+
+**Example: Arrow Function Behavior**
+
+Arrow functions **do not have their own `this`**. They inherit `this` from the surrounding lexical scope.
+
+```js
+const person = {
+  name: "Alice",
+  greet: () => {
+    console.log(this.name);
+  }
+};
+
+person.greet(); // undefined
+```
+
+---
+
+**Why it's important:**  
+Understanding `this` is critical when working with:
+
+- Object methods
+- Classes
+- Event handlers
+- React components
+
+---
+
+#### **7.10 Prototypes & Prototype Chain**
+
+**What is it?**  
+JavaScript uses **prototype-based inheritance**.
+
+Every JavaScript object has a hidden property called `[[Prototype]]`.
+
+Objects inherit properties and methods from other objects through the **prototype chain**.
+
+---
+
+**Example**
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.greet = function () {
+  console.log(`Hello ${this.name}`);
+};
+
+const user = new Person("Alice");
+user.greet();
+```
+
+---
+
+**Prototype Chain**
+
+When accessing a property:
+
+```
+object → prototype → prototype prototype → null
+```
+
+JavaScript searches up the chain until it finds the property.
+
+---
+
+**Why it's important:**  
+Prototypes are the foundation of:
+
+- JavaScript inheritance
+- Classes
+- Object behavior
+
+---
+
+#### **7.11 Execution Context & Call Stack**
+
+**Execution Context**
+
+JavaScript code runs inside an **execution context**.
+
+Types:
+
+1. Global Execution Context  
+2. Function Execution Context  
+
+---
+
+**Call Stack**
+
+The **call stack** keeps track of function execution order.
+
+Example:
+
+```js
+function a() {
+  console.log("Function A");
+}
+
+function b() {
+  a();
+}
+
+b();
+```
+
+Call stack order:
+
+```
+Global
+b()
+a()
+```
+
+---
+
+**Why it's important:**  
+Understanding execution context helps explain:
+
+- Hoisting
+- Closures
+- Call stack errors
+- Function execution flow
+
+---
+
+#### **7.12 Garbage Collection**
+
+**What is it?**  
+JavaScript automatically manages memory using **Garbage Collection**.
+
+Garbage collection removes objects that are **no longer reachable**.
+
+---
+
+**Example**
+
+```js
+let obj = { name: "Alice" };
+
+obj = null; // eligible for garbage collection
+```
+
+---
+
+**Common Causes of Memory Leaks**
+
+- Unremoved event listeners
+- Closures holding references
+- Global variables
+- Timers not cleared
+
+---
+
+**Why it's important:**  
+Understanding garbage collection helps prevent:
+
+- Memory leaks
+- Performance issues
+- Unresponsive applications
 
 ## **TypeScript (TS)**
 
@@ -1574,6 +1759,116 @@ console.log(identity<string>("Hello"));
 type Person = { name: string; age: number; };
 type PartialPerson = Partial<Person>;
 type ReadOnlyPerson = Readonly<Person>;
+```
+---
+
+#### **6.3 Union Types**
+
+Union types allow a variable to hold **multiple possible types**.
+
+```ts
+let id: string | number;
+
+id = "101";
+id = 101;
+```
+
+---
+
+#### **6.4 Intersection Types**
+
+Intersection types combine multiple types into one.
+
+```ts
+type Person = {
+  name: string;
+};
+
+type Employee = {
+  role: string;
+};
+
+type Staff = Person & Employee;
+
+const staff: Staff = {
+  name: "Alice",
+  role: "Developer"
+};
+```
+
+---
+
+#### **6.5 Type Narrowing**
+
+Type narrowing allows TypeScript to refine types using conditions.
+
+```ts
+function printId(id: string | number) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log(id);
+  }
+}
+```
+
+---
+
+#### **6.6 Optional Chaining**
+
+Optional chaining safely accesses nested properties.
+
+```ts
+const user = {
+  address: {
+    city: "London"
+  }
+};
+
+console.log(user?.address?.city);
+```
+
+---
+
+#### **6.7 Nullish Coalescing**
+
+Provides a default value when a variable is `null` or `undefined`.
+
+```ts
+let username = null;
+let name = username ?? "Guest";
+```
+
+---
+
+#### **6.8 Readonly**
+
+The `readonly` modifier prevents modification of properties.
+
+```ts
+type User = {
+  readonly id: number;
+  name: string;
+};
+
+const user: User = { id: 1, name: "Alice" };
+
+// user.id = 2 ❌ Error
+```
+
+---
+
+#### **6.9 Record Utility Type**
+
+The `Record` utility type creates an object type with consistent key/value structure.
+
+```ts
+type UserRoles = Record<string, string>;
+
+const roles: UserRoles = {
+  admin: "Administrator",
+  user: "Regular User"
+};
 ```
 
 ---
