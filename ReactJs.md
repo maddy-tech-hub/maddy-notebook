@@ -2036,6 +2036,7 @@ console.log(calc.add(5, 10)); // Method: add
 ```
 
 ---
+
 # React.js
 
 ## **1. Getting Started with React**
@@ -2613,6 +2614,307 @@ module.exports = {
     }),
   ],
 };
+```
+
+---
+
+## **11. Controlled vs Uncontrolled Components**
+
+React forms can be managed in two ways: **Controlled Components** and **Uncontrolled Components**.
+
+### **11.1 Controlled Components**
+
+In controlled components, **React state controls the form input**.
+
+```tsx
+import { useState } from "react";
+
+function ControlledInput() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div>
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Enter text"
+      />
+      <p>Value: {value}</p>
+    </div>
+  );
+}
+```
+
+**Advantages**
+
+- Predictable state management
+- Easier validation
+- Better debugging
+
+---
+
+### **11.2 Uncontrolled Components**
+
+Uncontrolled components allow the **DOM to manage the input state** using `useRef`.
+
+```tsx
+import { useRef } from "react";
+
+function UncontrolledInput() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = () => {
+    alert(inputRef.current?.value);
+  };
+
+  return (
+    <div>
+      <input ref={inputRef} placeholder="Enter text" />
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+}
+```
+
+---
+
+## **12. React.memo (Performance Optimization)**
+
+`React.memo` is a **higher-order component** used to prevent unnecessary re-renders.
+
+If props do not change, the component will **not re-render**.
+
+```tsx
+import React from "react";
+
+const Child = React.memo(({ name }: { name: string }) => {
+  console.log("Child rendered");
+  return <h2>{name}</h2>;
+});
+
+export default Child;
+```
+
+---
+
+## **13. Custom Hooks**
+
+Custom hooks allow developers to **reuse logic between components**.
+
+### Example: Fetch API Data
+
+```tsx
+import { useEffect, useState } from "react";
+
+function useFetch(url: string) {
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((result) => setData(result));
+  }, [url]);
+
+  return data;
+}
+```
+
+Usage:
+
+```tsx
+function Users() {
+  const users = useFetch("https://jsonplaceholder.typicode.com/users");
+
+  if (!users) return <p>Loading...</p>;
+
+  return (
+    <ul>
+      {users.map((user: any) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+## **14. Code Splitting (Lazy Loading)**
+
+Code splitting helps **reduce bundle size** and improves performance.
+
+React supports lazy loading using `React.lazy` and `Suspense`.
+
+```tsx
+import React, { Suspense } from "react";
+
+const Dashboard = React.lazy(() => import("./Dashboard"));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Dashboard />
+    </Suspense>
+  );
+}
+
+export default App;
+```
+
+---
+
+## **15. Error Boundaries**
+
+Error boundaries catch **JavaScript errors in component trees** and display fallback UI.
+
+```tsx
+import React from "react";
+
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: any) {
+    console.error("Error caught:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h2>Something went wrong.</h2>;
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+```
+
+Usage:
+
+```tsx
+<ErrorBoundary>
+  <App />
+</ErrorBoundary>
+```
+
+---
+
+## **16. React Rendering Lifecycle**
+
+React components go through three lifecycle phases.
+
+### **Mount**
+
+Component is created and inserted into the DOM.
+
+### **Update**
+
+Component re-renders when:
+
+- Props change
+- State changes
+- Parent re-renders
+
+### **Unmount**
+
+Component is removed from the DOM.
+
+Hooks equivalent:
+
+```
+componentDidMount → useEffect(() => {}, [])
+componentDidUpdate → useEffect(() => {}, [deps])
+componentWillUnmount → cleanup function
+```
+
+---
+
+## **17. React Reconciliation**
+
+React uses a **diffing algorithm** to compare the **Virtual DOM** with the previous version.
+
+This process is called **Reconciliation**.
+
+Steps:
+
+1. React builds a new Virtual DOM tree.
+2. Compares it with the previous tree.
+3. Updates only the changed elements in the real DOM.
+
+Benefits:
+
+- Faster UI updates
+- Efficient DOM manipulation
+
+---
+
+## **18. List Rendering & Keys**
+
+Keys help React **identify which items changed, added, or removed**.
+
+```tsx
+const users = [
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" }
+];
+
+function UserList() {
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+## **19. React Performance Optimization**
+
+Important techniques for optimizing React applications.
+
+### Memoization
+
+```
+React.memo
+useMemo
+useCallback
+```
+
+### Code Splitting
+
+```
+React.lazy
+Dynamic imports
+```
+
+### Avoid Unnecessary Re-renders
+
+- Proper key usage
+- Memoized components
+- Avoid inline functions
+
+### Virtualization
+
+Used when rendering **large lists**.
+
+Libraries:
+
+```
+react-window
+react-virtualized
 ```
 
 ---
