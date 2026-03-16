@@ -447,7 +447,7 @@ These concepts help build scalable and maintainable software.
 
 ## 2. What is Encapsulation?
 
-Encapsulation is the process of hiding internal data and exposing it through methods or properties.
+ Encapsulation means combining data and the functions that work on that data into a single unit, like a class.
 
 Example
 
@@ -462,7 +462,7 @@ class BankAccount
  }
 }
 ```
-
+![alt text](image.png)
 ---
 
 ## 3. What is Inheritance?
@@ -2441,17 +2441,363 @@ MediatR
 
 ---
 
-## 6. What is SOLID Principle?
+## 6. What is the SOLID Principle?
 
-SOLID consists of:
+SOLID is a set of five design principles that help developers build maintainable, scalable, and loosely coupled software.
+
+SOLID stands for:
+
+S - Single Responsibility Principle  
+O - Open/Closed Principle  
+L - Liskov Substitution Principle  
+I - Interface Segregation Principle  
+D - Dependency Inversion Principle
+
+---
+
+# 1️⃣ Single Responsibility Principle (SRP)
+
+### Definition
+
+A class should have **only one reason to change**.
+
+In simple terms:
+
+A class should **do only one job**.
+
+---
+
+### ❌ Bad Example (Violates SRP)
+
+```csharp
+public class InvoiceService
+{
+    public void CalculateTotal()
+    {
+        // calculate invoice
+    }
+
+    public void SaveToDatabase()
+    {
+        // database logic
+    }
+
+    public void SendEmail()
+    {
+        // email logic
+    }
+}
+```
+
+Problem:
+
+This class handles **3 responsibilities**
+
+• Calculation  
+• Database  
+• Email  
+
+---
+
+### ✅ Good Example (Following SRP)
+
+```csharp
+public class InvoiceCalculator
+{
+    public decimal CalculateTotal()
+    {
+        return 100;
+    }
+}
+
+public class InvoiceRepository
+{
+    public void Save()
+    {
+        // save to database
+    }
+}
+
+public class EmailService
+{
+    public void SendEmail()
+    {
+        // send email
+    }
+}
+```
+
+Now each class has **only one responsibility**.
+
+---
+
+# 2️⃣ Open / Closed Principle (OCP)
+
+### Definition
+
+Software entities should be:
 
 ```
-S - Single Responsibility
-O - Open Closed
-L - Liskov Substitution
-I - Interface Segregation
-D - Dependency Inversion
+Open for extension
+Closed for modification
 ```
+
+Meaning:
+
+You should **extend behavior without modifying existing code**.
+
+---
+
+### ❌ Bad Example
+
+```csharp
+public class DiscountService
+{
+    public double GetDiscount(string customerType)
+    {
+        if(customerType == "Regular")
+            return 10;
+
+        if(customerType == "Premium")
+            return 20;
+
+        return 0;
+    }
+}
+```
+
+Problem:
+
+If a new customer type is added, we must **modify this class**.
+
+---
+
+### ✅ Good Example
+
+```csharp
+public interface IDiscount
+{
+    double GetDiscount();
+}
+
+public class RegularCustomer : IDiscount
+{
+    public double GetDiscount() => 10;
+}
+
+public class PremiumCustomer : IDiscount
+{
+    public double GetDiscount() => 20;
+}
+```
+
+Now we can **add new discount types without modifying existing code**.
+
+---
+
+# 3️⃣ Liskov Substitution Principle (LSP)
+
+### Definition
+
+Derived classes should be able to **replace base classes without breaking functionality**.
+
+---
+
+### ❌ Bad Example
+
+```csharp
+public class Bird
+{
+    public virtual void Fly()
+    {
+        Console.WriteLine("Flying");
+    }
+}
+
+public class Penguin : Bird
+{
+    public override void Fly()
+    {
+        throw new Exception("Penguins cannot fly");
+    }
+}
+```
+
+Problem:
+
+Penguin cannot behave like Bird.
+
+This breaks **LSP**.
+
+---
+
+### ✅ Good Example
+
+```csharp
+public class Bird
+{
+}
+
+public class FlyingBird : Bird
+{
+    public void Fly()
+    {
+        Console.WriteLine("Flying");
+    }
+}
+
+public class Penguin : Bird
+{
+}
+```
+
+Now behavior is properly separated.
+
+---
+
+# 4️⃣ Interface Segregation Principle (ISP)
+
+### Definition
+
+Clients should **not be forced to depend on interfaces they do not use**.
+
+---
+
+### ❌ Bad Example
+
+```csharp
+public interface IWorker
+{
+    void Work();
+    void Eat();
+}
+```
+
+Problem:
+
+A **Robot worker doesn't eat**.
+
+---
+
+### ❌ Robot implementation
+
+```csharp
+public class Robot : IWorker
+{
+    public void Work()
+    {
+        Console.WriteLine("Working");
+    }
+
+    public void Eat()
+    {
+        throw new Exception();
+    }
+}
+```
+
+---
+
+### ✅ Good Example
+
+Split interfaces.
+
+```csharp
+public interface IWork
+{
+    void Work();
+}
+
+public interface IEat
+{
+    void Eat();
+}
+```
+
+Now:
+
+```csharp
+public class Human : IWork, IEat
+{
+    public void Work(){}
+    public void Eat(){}
+}
+
+public class Robot : IWork
+{
+    public void Work(){}
+}
+```
+
+Now interfaces are **clean and specific**.
+
+---
+
+# 5️⃣ Dependency Inversion Principle (DIP)
+
+### Definition
+
+High-level modules should **not depend on low-level modules**.
+
+Both should depend on **abstractions (interfaces)**.
+
+---
+
+### ❌ Bad Example
+
+```csharp
+public class OrderService
+{
+    private EmailService emailService = new EmailService();
+
+    public void PlaceOrder()
+    {
+        emailService.SendEmail();
+    }
+}
+```
+
+Problem:
+
+OrderService is tightly coupled to EmailService.
+
+---
+
+### ✅ Good Example
+
+```csharp
+public interface INotification
+{
+    void Send();
+}
+
+public class EmailService : INotification
+{
+    public void Send()
+    {
+        Console.WriteLine("Email sent");
+    }
+}
+
+public class OrderService
+{
+    private readonly INotification notification;
+
+    public OrderService(INotification notification)
+    {
+        this.notification = notification;
+    }
+
+    public void PlaceOrder()
+    {
+        notification.Send();
+    }
+}
+```
+
+Now OrderService depends on **abstraction**, not implementation.
+
+This is exactly how **Dependency Injection works in ASP.NET Core**.
 
 ---
 
