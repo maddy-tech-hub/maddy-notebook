@@ -331,3 +331,185 @@ CQRS separates read and write operations.
 
 90. **What is Scalability?**  
 Scalability is the ability to handle increased load.
+
+---
+
+# 13. C# Memory Management & Threading
+
+91. **What is IDisposable?**  
+IDisposable is used to release unmanaged resources manually.
+
+92. **What is using statement?**  
+using automatically disposes objects implementing IDisposable.
+
+93. **What is Managed Code?**  
+Managed code runs under CLR supervision.
+
+94. **What is Unmanaged Code?**  
+Unmanaged code runs directly on OS without CLR.
+
+95. **What is Stack vs Heap?**  
+Stack stores value types, Heap stores reference types.
+
+96. **What is Finalizer?**  
+Finalizer releases unmanaged resources before garbage collection.
+
+97. **What is Thread Safety?**  
+Thread safety ensures correct execution in multi-threaded environments.
+
+98. **What is lock keyword?**  
+lock prevents multiple threads accessing shared resources simultaneously.
+
+99. **What is Monitor class?**  
+Monitor controls thread synchronization.
+
+100. **What is Semaphore?**  
+Semaphore limits number of threads accessing resource.
+
+101. **What is Mutex?**  
+Mutex allows only one thread to access resource.
+
+---
+
+# 14. ASP.NET Core Advanced
+
+102. **What is Kestrel?**  
+Kestrel is the default cross-platform web server in ASP.NET Core.
+
+103. **What is Minimal API?**  
+Minimal API allows building lightweight APIs with minimal configuration.
+
+104. **What is Hosting Environment?**  
+Hosting environment defines runtime modes like Development or Production.
+
+105. **What is Short-Circuiting in Middleware?**  
+Short-circuiting stops further middleware execution.
+
+106. **Difference between Use() and Run()?**  
+Use continues pipeline, Run ends pipeline.
+
+107. **What is Health Check Middleware?**  
+Health checks monitor application health status.
+
+---
+
+# 15. Web API Advanced
+
+108. **What is Idempotent API?**  
+Idempotent API produces same result for repeated requests.
+
+109. **What is Rate Limiting?**  
+Rate limiting restricts number of requests.
+
+110. **What is Throttling?**  
+Throttling controls request rate.
+
+111. **What is Content Negotiation?**  
+Content negotiation selects response format.
+
+112. **What is HATEOAS?**  
+HATEOAS provides navigation links in API responses.
+
+113. **What is API Documentation?**  
+API documentation explains API usage details.
+
+---
+
+# 16. Entity Framework Core Advanced
+
+114. **What is Change Tracker?**  
+Change tracker monitors entity changes.
+
+115. **What is AsNoTracking()?**  
+AsNoTracking disables tracking to improve performance.
+
+116. **What is Explicit Loading?**  
+Explicit loading loads related data manually.
+
+117. **What is Split Query?**  
+Split query loads related data using multiple queries.
+
+118. **What is Compiled Query?**  
+Compiled query improves execution speed.
+
+119. **What is Bulk Insert?**  
+Bulk insert efficiently inserts large records.
+
+---
+
+# 17. Database Optimization
+
+120. **What is Query Execution Plan?**  
+Execution plan shows query processing steps.
+
+121. **What is Index Seek?**  
+Index seek retrieves specific records quickly.
+
+122. **What is Index Scan?**  
+Index scan reads entire index.
+
+123. **What is Deadlock in Database?**  
+Deadlock occurs when transactions wait indefinitely.
+
+124. **What is Isolation Level?**  
+Isolation level controls transaction visibility.
+
+125. **What is Connection Pooling?**  
+Connection pooling reuses database connections.
+
+---
+
+# 18. Performance Optimization Advanced
+
+126. **What is Response Compression?**  
+Response compression reduces response size.
+
+127. **What is Thread Pool?**  
+Thread pool manages reusable threads.
+
+128. **What is Memory Leak?**  
+Memory leak occurs when memory isn't released.
+
+129. **How to identify performance bottlenecks?**  
+Use profiling and logging tools.
+
+130. **What is Caching Strategy?**  
+Caching strategy defines caching rules.
+
+---
+
+# 19. Logging Advanced
+
+131. **What is Correlation ID?**  
+Correlation ID tracks request across services.
+
+132. **What is Log Aggregation?**  
+Log aggregation collects logs centrally.
+
+133. **What is Distributed Logging?**  
+Distributed logging collects logs from multiple services.
+
+---
+
+# 20. Real-Time Scenario Questions (Very Important)
+
+134. **API response is slow — what will you check?**  
+Check logs, database queries, and caching.
+
+135. **Duplicate records issue — solution?**  
+Use unique constraints and validation.
+
+136. **High memory usage — solution?**  
+Check memory leaks and optimize resources.
+
+137. **Database query taking long time — solution?**  
+Optimize query and add indexes.
+
+138. **Production error debugging steps?**  
+Check logs, stack trace, and monitoring tools.
+
+139. **How to handle high traffic APIs?**  
+Use caching and load balancing.
+
+140. **How to prevent API abuse?**  
+Implement rate limiting and authentication.
