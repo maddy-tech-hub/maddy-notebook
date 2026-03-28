@@ -1,9 +1,9 @@
-import { Context, Provider } from './ReactConcepts/Context';
-import FormHandle from './ReactConcepts/FormHandle';
-import HoC from './ReactConcepts/HoC';
-import HooksExample from './ReactConcepts/HooksExample';
-import { ReduxStore } from './ReactConcepts/ReduxStore';
-import Routers from './ReactConcepts/Routers';
+import { Context, Provider } from './Practice/ReactConcepts/Context';
+import FormHandle from './Practice/ReactConcepts/FormHandle';
+import HoC from './Practice/ReactConcepts/HoC';
+import HooksExample from './Practice/ReactConcepts/HooksExample';
+import { ReduxStore } from './Practice/ReactConcepts/ReduxStore';
+import Routers from './Practice/ReactConcepts/Routers';
 import './App.scss';
 
 const App = () => {

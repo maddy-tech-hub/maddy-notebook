@@ -462,7 +462,7 @@ class BankAccount
  }
 }
 ```
-![alt text](image.png)
+![ASP.NET interview diagram](../assets/aspnet-interview-diagram.png)
 ---
 
 ## 3. What is Inheritance?
@@ -2454,7 +2454,7 @@ I - Interface Segregation Principle
 D - Dependency Inversion Principle
 
 ---
-https://github.com/maddy-tech-hub/maddy-notebook/blob/master/SOLID-Principles.md
+[SOLID Principles examples](./solid-principles.md)
 ---
 
 # 1️⃣6️⃣ System Design for APIs

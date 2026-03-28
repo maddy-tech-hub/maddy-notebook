@@ -1,5 +1,6 @@
-import { render } from "@testing-library/react";
-import HoC from "./HoC";
+import { render } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import HoC from './HoC';
 
 describe('HoC', () => {
     it('should render with isLogin true', () => {

@@ -1,10 +1,10 @@
-import { fireEvent } from "@testing-library/dom";
-import { render } from "@testing-library/react";
-import { Context, Provider } from "./Context";
+import { fireEvent, render } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { Context, Provider } from './Context';
 
 describe('Context', () => {
     it('should render context value and handle event', () => {
-        const { getByTestId } = render(<Provider> <Context /></Provider>);
+        const { getByTestId } = render(<Provider><Context /></Provider>);
 
         const contextValue = getByTestId('context-value');
         const handleEventButton = getByTestId('handleEvent');
@@ -17,7 +17,7 @@ describe('Context', () => {
     });
 
     it('should handle multiple clicks', () => {
-        const { getByTestId } = render(<Provider> <Context /></Provider>);
+        const { getByTestId } = render(<Provider><Context /></Provider>);
 
         const contextValue = getByTestId('context-value');
         const handleEventButton = getByTestId('handleEvent');
