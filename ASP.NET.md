@@ -1969,33 +1969,34 @@ In RESTful services, each URL (endpoint) corresponds to an action or a resource.
 
 ### Example of Routing in REST API:
 ```csharp
-[Route("api/products")]
-public class ProductsController : ControllerBase
+[ApiController] // Marks this class as an API controller
+[Route("api/products")] // Base route for all product endpoints
+public class ProductsController : ControllerBase // ControllerBase is used for Web APIs
 {
     // GET: api/products
-    [HttpGet]
-    public ActionResult<IEnumerable<Product>> GetProducts()
+    [HttpGet] // Handles HTTP GET requests
+    public ActionResult<IEnumerable<Product>> GetProducts() // Returns a list of products
     {
         // Fetch all products
     }
 
     // POST: api/products
-    [HttpPost]
-    public ActionResult CreateProduct(Product product)
+    [HttpPost] // Handles HTTP POST requests
+    public ActionResult CreateProduct(Product product) // Accepts product data from request body
     {
         // Create new product
     }
 
     // PUT: api/products/5
-    [HttpPut("{id}")]
-    public ActionResult UpdateProduct(int id, Product product)
+    [HttpPut("{id}")] // Route parameter {id} is passed from URL
+    public ActionResult UpdateProduct(int id, Product product) // Updates existing product
     {
         // Update product details
     }
 
     // DELETE: api/products/5
-    [HttpDelete("{id}")]
-    public ActionResult DeleteProduct(int id)
+    [HttpDelete("{id}")] // Handles HTTP DELETE requests
+    public ActionResult DeleteProduct(int id) // Deletes product by id
     {
         // Delete product
     }
@@ -2013,10 +2014,10 @@ ASP.NET Core Web API supports model binding, which automatically maps request da
 ```csharp
 public class Product
 {
-    [Required]
+    [Required] // Validation: Name must be provided
     public string Name { get; set; }
     
-    [Range(1, 1000)]
+    [Range(1, 1000)] // Validation: Price must be between 1 and 1000
     public decimal Price { get; set; }
 }
 ```
@@ -2027,18 +2028,18 @@ ASP.NET Core uses Dependency Injection (DI) to manage service lifetimes and prom
 ```csharp
 public class ProductsController : ControllerBase
 {
-    private readonly IProductService _productService;
+    private readonly IProductService _productService; // Service dependency injected by DI
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IProductService productService) // Constructor injection
     {
-        _productService = productService;
+        _productService = productService; // Store injected service for later use
     }
 
-    [HttpGet]
+    [HttpGet] // GET endpoint
     public IActionResult GetProducts()
     {
-        var products = _productService.GetAllProducts();
-        return Ok(products);
+        var products = _productService.GetAllProducts(); // Call business/service layer
+        return Ok(products); // Return HTTP 200 with data
     }
 }
 ```
@@ -2046,7 +2047,7 @@ public class ProductsController : ControllerBase
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddScoped<IProductService, ProductService>();
+    services.AddScoped<IProductService, ProductService>(); // Scoped: one instance per HTTP request
 }
 ```
 ## **5. Entity Framework Core in Web API**
@@ -2062,18 +2063,18 @@ Entity Framework Core (EF Core) is an Object-Relational Mapping (ORM) framework 
 ```csharp
 public class Product
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
+    public int Id { get; set; } // Primary key
+    public string Name { get; set; } // Product name column
+    public decimal Price { get; set; } // Product price column
 }
 ```
 #### 2. Define the DbContext
 ```csharp
 public class ApplicationDbContext : DbContext
 {
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; } // Represents Products table
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) // DbContext options injected by DI
         : base(options)
     {
     }
@@ -2083,59 +2084,69 @@ public class ApplicationDbContext : DbContext
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+    services.AddDbContext<ApplicationDbContext>(options => // Register EF Core DbContext
+        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); // Configure SQL Server provider
 }
 ```
 #### 4. Example of CRUD Operations
 ```csharp
-[Route("api/products")]
-[ApiController]
+[Route("api/products")] // Base route
+[ApiController] // Enables API-specific behavior
 public class ProductsController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context; // Injected EF Core DbContext
 
-    public ProductsController(ApplicationDbContext context)
+    public ProductsController(ApplicationDbContext context) // Constructor injection
     {
         _context = context;
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProduct(int id)
+    {
+        var product = await _context.Products.FindAsync(id); // Find single row by primary key
+        if (product == null)
+            return NotFound(); // Return 404 when record does not exist
+
+        return Ok(product); // Return 200 with product data
+    }
+
+    [HttpGet] // GET: api/products
     public async Task<IActionResult> GetProducts()
     {
-        var products = await _context.Products.ToListAsync();
-        return Ok(products);
+        var products = await _context.Products.ToListAsync(); // Read all rows asynchronously
+        return Ok(products); // Return 200 with list
     }
 
-    [HttpPost]
+    [HttpPost] // POST: api/products
     public async Task<IActionResult> CreateProduct(Product product)
     {
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetProducts), new { id = product.Id }, product);
+        _context.Products.Add(product); // Mark entity for insert
+        await _context.SaveChangesAsync(); // Save changes to DB
+        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product); // Return 201 with location of new resource
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id}")] // PUT: api/products/{id}
     public async Task<IActionResult> UpdateProduct(int id, Product product)
     {
-        if (id != product.Id)
+        if (id != product.Id) // Validate route id against body id
             return BadRequest();
 
-        _context.Entry(product).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        return NoContent();
+        _context.Entry(product).State = EntityState.Modified; // Mark entity as updated
+        await _context.SaveChangesAsync(); // Save update
+        return NoContent(); // Return 204 when update succeeds
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}")] // DELETE: api/products/{id}
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        var product = await _context.Products.FindAsync(id);
+        var product = await _context.Products.FindAsync(id); // Find entity before delete
         if (product == null)
-            return NotFound();
+            return NotFound(); // Return 404 if not found
 
-        _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
-        return NoContent();
+        _context.Products.Remove(product); // Mark entity for deletion
+        await _context.SaveChangesAsync(); // Persist delete to DB
+        return NoContent(); // Return 204 after delete
     }
 }
 ```
@@ -2148,24 +2159,31 @@ In ASP.NET Core, routing is the process of mapping an incoming HTTP request to a
 
 ### Example of Attribute Routing:
 ```csharp
-[Route("api/products")]
-[ApiController]
+[Route("api/products")] // Base route for this controller
+[ApiController] // API controller behavior
 public class ProductsController : ControllerBase
 {
-    [HttpGet("{id}")]
-    public IActionResult GetProduct(int id)
+    private readonly ApplicationDbContext _context; // DbContext injected using DI
+
+    public ProductsController(ApplicationDbContext context)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == id);
-        if (product == null) return NotFound();
-        return Ok(product);
+        _context = context;
     }
 
-    [HttpPost]
+    [HttpGet("{id}")] // GET: api/products/1
+    public IActionResult GetProduct(int id)
+    {
+        var product = _context.Products.FirstOrDefault(p => p.Id == id); // Query product by id
+        if (product == null) return NotFound(); // Return 404 if no product found
+        return Ok(product); // Return 200 with product data
+    }
+
+    [HttpPost] // POST: api/products
     public IActionResult CreateProduct(Product product)
     {
-        _context.Products.Add(product);
-        _context.SaveChanges();
-        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+        _context.Products.Add(product); // Add new entity
+        _context.SaveChanges(); // Save to database
+        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product); // Return 201 with location header
     }
 }
 ```
@@ -2177,12 +2195,12 @@ public class ProductsController : ControllerBase
  ```csharp
 public void Configure(IApplicationBuilder app)
 {
-    app.UseRouting();
+    app.UseRouting(); // Enables endpoint routing
     app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllerRoute(
-            name: "default",
-            pattern: "api/{controller}/{action}/{id?}");
+            name: "default", // Route name
+            pattern: "api/{controller}/{action}/{id?}"); // Conventional route pattern
     });
 }
 ```
@@ -2211,21 +2229,22 @@ JWT is a common authentication method for APIs. It allows users to authenticate 
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // Set JWT Bearer as default auth scheme
         .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidIssuer = "yourIssuer",
-                ValidAudience = "yourAudience",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yourSecretKey"))
+                ValidateIssuer = true, // Validate token issuer
+                ValidateAudience = true, // Validate token audience
+                ValidateLifetime = true, // Validate token expiry time
+                ValidateIssuerSigningKey = true, // Validate signing key used to create token
+                ValidIssuer = "yourIssuer", // Expected issuer
+                ValidAudience = "yourAudience", // Expected audience
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yourSecretKey")) // Secret key for signature validation
             };
         });
 
-    services.AddControllers();
+    services.AddControllers(); // Register controllers
 }
 ```
 **3. Use JWT Authentication:**
@@ -2233,12 +2252,13 @@ In the Configure method, enable authentication middleware.
 ```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
-    app.UseAuthentication();
-    app.UseAuthorization();
+    app.UseRouting(); // Matches request to endpoint metadata
+    app.UseAuthentication(); // Identifies the user
+    app.UseAuthorization(); // Checks access permissions
     
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapControllers();
+        endpoints.MapControllers(); // Maps attribute-routed controllers
     });
 }
 ```
@@ -2246,22 +2266,22 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 **4. Create a Login Endpoint:**
 Generate JWT tokens on successful authentication.
 ```csharp
-[HttpPost("login")]
+[HttpPost("login")] // POST: api/.../login
 public IActionResult Login([FromBody] UserLogin model)
 {
-    var user = _userService.Authenticate(model.Username, model.Password);
+    var user = _userService.Authenticate(model.Username, model.Password); // Validate username and password
     if (user == null)
     {
-        return Unauthorized();
+        return Unauthorized(); // Return 401 if credentials are invalid
     }
 
-    var token = _tokenService.GenerateToken(user);
-    return Ok(new { token });
+    var token = _tokenService.GenerateToken(user); // Generate JWT for authenticated user
+    return Ok(new { token }); // Return token to client
 }
 ```
 **5. Authorize Actions:** Use the [Authorize] attribute to protect specific controller actions.
 ```csharp
-[Authorize]
+[Authorize] // Requires authenticated user
 [HttpGet("profile")]
 public IActionResult GetProfile()
 {
@@ -2280,7 +2300,7 @@ Authorization determines if the authenticated user has permission to perform an 
 ```csharp
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin")); // Policy requires Admin role
 });
 
 ```
@@ -2288,7 +2308,7 @@ services.AddAuthorization(options =>
 **2. Use Role-Based Authorization:** You can protect actions or controllers using roles.
 
 ```csharp
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")] // Only users with Admin role can access
 [HttpGet("admin")]
 public IActionResult GetAdminData()
 {
@@ -2302,12 +2322,12 @@ public IActionResult GetAdminData()
 ```csharp
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("IsOver18", policy => policy.RequireClaim("Age", "18"));
+    options.AddPolicy("IsOver18", policy => policy.RequireClaim("Age", "18")); // Policy requires Age claim with value 18
 });
 ```
 **2. Use the Policy:** Protect an action based on the policy.
 ```csharp
-[Authorize(Policy = "IsOver18")]
+[Authorize(Policy = "IsOver18")] // Only users satisfying the policy can access
 [HttpGet("restricted")]
 public IActionResult GetRestrictedData()
 {
@@ -2333,13 +2353,13 @@ CORS is typically configured in the `Startup.cs` file by defining policies. It c
        // Add CORS service with a named policy
        services.AddCors(options =>
        {
-           options.AddPolicy("AllowAll",
-               builder => builder.AllowAnyOrigin() // Allow all origins
-                                 .AllowAnyMethod()  // Allow any HTTP methods
-                                 .AllowAnyHeader()); // Allow any headers
+            options.AddPolicy("AllowAll",
+                builder => builder.AllowAnyOrigin() // Allow requests from any origin
+                                  .AllowAnyMethod()  // Allow all HTTP methods
+                                  .AllowAnyHeader()); // Allow all headers
        });
 
-       services.AddControllers();
+       services.AddControllers(); // Register controllers
    }
 ```
 
@@ -2348,12 +2368,11 @@ You need to enable the CORS middleware in the HTTP request pipeline to enforce t
 ```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
-    app.UseCors("AllowAll"); // Use the CORS policy defined above
-
-    app.UseRouting();
+    app.UseRouting(); // Enable routing first
+    app.UseCors("AllowAll"); // Apply named CORS policy before endpoints
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapControllers();
+        endpoints.MapControllers(); // Map controller endpoints
     });
 }
 ```
@@ -2366,12 +2385,12 @@ public void ConfigureServices(IServiceCollection services)
     services.AddCors(options =>
     {
         options.AddPolicy("MyCustomPolicy",
-            builder => builder.WithOrigins("https://example.com") // Allow only specific domain
-                              .AllowMethods("GET", "POST")  // Allow only GET and POST methods
-                              .AllowHeaders("Content-Type", "Authorization")); // Allow specific headers
+            builder => builder.WithOrigins("https://example.com") // Allow only this origin
+                              .AllowMethods("GET", "POST")  // Allow only GET and POST requests
+                              .AllowHeaders("Content-Type", "Authorization")); // Allow only required headers
     });
 
-    services.AddControllers();
+    services.AddControllers(); // Register controllers
 }
 ```
 In this example, only https://example.com is allowed to make requests to the API, and only GET and POST methods are permitted.
@@ -2383,12 +2402,13 @@ If you want to allow credentials (cookies, HTTP authentication) with your reques
 services.AddCors(options =>
 {
     options.AddPolicy("AllowCredentials",
-        builder => builder.WithOrigins("https://example.com")
-                          .AllowCredentials()  // Allow credentials (cookies, HTTP authentication)
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+        builder => builder.WithOrigins("https://example.com") // Credentials require specific origins
+                          .AllowCredentials()  // Allow cookies or auth headers
+                          .AllowAnyMethod() // Allow all methods
+                          .AllowAnyHeader()); // Allow all headers
 });
 ```
+**Important:** Do not use `AllowAnyOrigin()` together with `AllowCredentials()`.
 CORS issues usually arise when a web browser sends a request to a different origin (e.g., a web page hosted on `example.com` tries to access resources from `api.example.com`). When CORS is not configured properly, the browser will block the request and show an error.
 
 To handle such errors effectively:
@@ -2406,11 +2426,11 @@ Pagination is used to split large data sets into smaller, manageable chunks, whi
 ### **Example of API Pagination**
 
 ```csharp
-[ApiController]
-[Route("api/products")]
+[ApiController] // API controller behavior
+[Route("api/products")] // Base route
 public class ProductsController : ControllerBase
 {
-    private readonly List<Product> _products;
+    private readonly List<Product> _products; // In-memory sample data
 
     public ProductsController()
     {
@@ -2427,18 +2447,18 @@ public class ProductsController : ControllerBase
         };
     }
 
-    [HttpGet]
+    [HttpGet] // GET: api/products?page=2&pageSize=3
     public IActionResult GetProducts(int page = 1, int pageSize = 3)
     {
-        var paginatedProducts = _products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-        return Ok(paginatedProducts);
+        var paginatedProducts = _products.Skip((page - 1) * pageSize).Take(pageSize).ToList(); // Skip previous rows, take current page rows
+        return Ok(paginatedProducts); // Return paginated result
     }
 }
 
 public class Product
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
+    public int Id { get; set; } // Product identifier
+    public string Name { get; set; } // Product name
 }
 
 // out put
@@ -2457,23 +2477,23 @@ API versioning is essential when you need to make changes to the API without bre
 
 #### Example of Versioned API:
 ```csharp
-[Route("api/v1/products")]
+[Route("api/v1/products")] // Version 1 route
 public class ProductsV1Controller : ControllerBase
 {
-    [HttpGet]
+    [HttpGet] // GET endpoint for v1
     public IActionResult GetAllV1()
     {
-        return Ok(new { version = "v1", products = new string[] { "Product1", "Product2" } });
+        return Ok(new { version = "v1", products = new string[] { "Product1", "Product2" } }); // Response for API v1
     }
 }
 
-[Route("api/v2/products")]
+[Route("api/v2/products")] // Version 2 route
 public class ProductsV2Controller : ControllerBase
 {
-    [HttpGet]
+    [HttpGet] // GET endpoint for v2
     public IActionResult GetAllV2()
     {
-        return Ok(new { version = "v2", products = new string[] { "Product1", "Product2", "Product3" } });
+        return Ok(new { version = "v2", products = new string[] { "Product1", "Product2", "Product3" } }); // Response for API v2
     }
 }
 ```
@@ -2488,23 +2508,25 @@ Caching helps improve performance by storing frequently accessed data.
 ```csharp
 public class ProductsController : ControllerBase
 {
-    private readonly IMemoryCache _cache;
+    private readonly IMemoryCache _cache; // Built-in memory cache service
+    private readonly IProductService _productService; // Service used to fetch source data
 
-    public ProductsController(IMemoryCache cache)
+    public ProductsController(IMemoryCache cache, IProductService productService)
     {
         _cache = cache;
+        _productService = productService;
     }
 
-    [HttpGet]
+    [HttpGet] // GET endpoint with caching
     public IActionResult GetProducts()
     {
-        var products = _cache.Get<List<Product>>("products");
+        var products = _cache.Get<List<Product>>("products"); // Try to read cached value by key
         if (products == null)
         {
-            products = _productService.GetAllProducts();
-            _cache.Set("products", products, TimeSpan.FromMinutes(5));
+            products = _productService.GetAllProducts(); // Load from service if cache miss
+            _cache.Set("products", products, TimeSpan.FromMinutes(5)); // Store in cache for 5 minutes
         }
-        return Ok(products);
+        return Ok(products); // Return cached or fresh data
     }
 }
 ```
@@ -2520,7 +2542,7 @@ In Web API, proper exception handling and logging are crucial for debugging and 
 ```csharp
 public class ErrorHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate _next; // Represents next middleware in pipeline
 
     public ErrorHandlingMiddleware(RequestDelegate next)
     {
@@ -2531,19 +2553,19 @@ public class ErrorHandlingMiddleware
     {
         try
         {
-            await _next(httpContext);
+            await _next(httpContext); // Pass request to next middleware
         }
         catch (Exception ex)
         {
-            logger.LogError($"Something went wrong: {ex.Message}");
-            await HandleExceptionAsync(httpContext);
+            logger.LogError($"Something went wrong: {ex.Message}"); // Log exception details
+            await HandleExceptionAsync(httpContext); // Return error response
         }
     }
 
     private Task HandleExceptionAsync(HttpContext context)
     {
-        context.Response.StatusCode = 500;
-        return context.Response.WriteAsync("Internal server error");
+        context.Response.StatusCode = 500; // Set HTTP 500
+        return context.Response.WriteAsync("Internal server error"); // Send safe error message
     }
 }
 ```
@@ -2562,7 +2584,7 @@ public void ConfigureServices(IServiceCollection services)
 {
     services.AddSwaggerGen(c =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" }); // Define Swagger document metadata
     });
 }
 ```
@@ -2570,8 +2592,8 @@ In `Configure` method, enable Swagger:
 ```csharp
 public void Configure(IApplicationBuilder app)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+    app.UseSwagger(); // Generate swagger.json
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1")); // Expose Swagger UI
 }
 ```
 
@@ -2594,19 +2616,19 @@ This section adds key areas that are frequently asked in .NET backend interviews
   - Endpoints
 
 ```csharp
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+var builder = WebApplication.CreateBuilder(args); // Create builder
+builder.Services.AddControllers(); // Register controllers
 
-var app = builder.Build();
+var app = builder.Build(); // Build application
 
-app.UseExceptionHandler("/error");
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
+app.UseExceptionHandler("/error"); // Global exception handling
+app.UseHttpsRedirection(); // Redirect HTTP to HTTPS
+app.UseRouting(); // Match request to endpoint metadata
+app.UseAuthentication(); // Authenticate user
+app.UseAuthorization(); // Authorize user access
+app.MapControllers(); // Map controller endpoints
 
-app.Run();
+app.Run(); // Start app
 ```
 
 ### **14.2 Minimal Hosting Model (.NET 6+) vs Startup.cs**
@@ -2622,13 +2644,13 @@ app.Run();
 ```csharp
 public class JwtSettings
 {
-    public string Issuer { get; set; } = string.Empty;
-    public string Audience { get; set; } = string.Empty;
-    public string Key { get; set; } = string.Empty;
+    public string Issuer { get; set; } = string.Empty; // Token issuer
+    public string Audience { get; set; } = string.Empty; // Token audience
+    public string Key { get; set; } = string.Empty; // Secret key
 }
 
 builder.Services.Configure<JwtSettings>(
-    builder.Configuration.GetSection("JwtSettings"));
+    builder.Configuration.GetSection("JwtSettings")); // Bind config section to strongly typed options
 ```
 
 ### **14.4 Dependency Injection Lifetimes**
@@ -2646,17 +2668,17 @@ app.UseExceptionHandler(exceptionApp =>
 {
     exceptionApp.Run(async context =>
     {
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        context.Response.ContentType = "application/problem+json";
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError; // Return 500 for unhandled errors
+        context.Response.ContentType = "application/problem+json"; // Standard RFC error format
 
         var problem = new ProblemDetails
         {
-            Title = "Unexpected error",
-            Status = StatusCodes.Status500InternalServerError,
-            Detail = "An unexpected server error occurred."
+            Title = "Unexpected error", // Short error title
+            Status = StatusCodes.Status500InternalServerError, // Response status
+            Detail = "An unexpected server error occurred." // Safe public message
         };
 
-        await context.Response.WriteAsJsonAsync(problem);
+        await context.Response.WriteAsJsonAsync(problem); // Write error payload as JSON
     });
 });
 ```
@@ -2677,7 +2699,7 @@ public class Product
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 
-    [Timestamp]
+    [Timestamp] // Marks RowVersion as concurrency token
     public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 }
 ```
@@ -2710,8 +2732,8 @@ public class Product
 - Implement health check endpoints for production readiness.
 
 ```csharp
-builder.Services.AddHealthChecks();
-app.MapHealthChecks("/health");
+builder.Services.AddHealthChecks(); // Register health check services
+app.MapHealthChecks("/health"); // Expose health endpoint
 ```
 
 ### **14.11 Background Processing**
@@ -2723,10 +2745,10 @@ public class CleanupService : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested) // Keep running until app stops
         {
             // background cleanup work
-            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken); // Wait before next run
         }
     }
 }
