@@ -1031,16 +1031,28 @@ In this example:
 
 Transforms modify element appearance.
 
-```
-translate()
-scale()
-rotate()
-skew()
-```
+#### **Common Transform Functions**
+
+- `translate()` -> Moves the element from its current position
+- `scale()` -> Makes the element bigger or smaller
+- `rotate()` -> Turns the element clockwise or counterclockwise
+- `skew()` -> Tilts the element on the X-axis or Y-axis
 
 ```css
-.box:hover {
-  transform: scale(1.1);
+.box--move {
+  transform: translate(20px, 10px);
+}
+
+.box--scale {
+  transform: scale(1.2);
+}
+
+.box--rotate {
+  transform: rotate(45deg);
+}
+
+.box--skew {
+  transform: skew(10deg, 5deg);
 }
 ```
 
