@@ -648,7 +648,7 @@ CSS Flexbox is used to create flexible and responsive layouts.
 - `flex-direction: row | column | row-reverse | column-reverse;` → Defines the direction of items
 - `justify-content: flex-start | center | space-between | space-around | space-evenly;` → Aligns items horizontally
 - `align-items: flex-start | center | flex-end | stretch;` → Aligns items vertically
-- `flex-wrap: nowrap | wrap | wrap-reverse;` → Controls wrapping of items
+- `flex-wrap: nowrap | wrap | wrap-reverse;` → decides if flex items stay on one line or wrap to the next when space runs out.
 
 **Item Properties:**
 
