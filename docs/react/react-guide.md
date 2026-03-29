@@ -681,22 +681,22 @@ CSS Grid is used to create complex and responsive layouts.
 **Container Properties:**
 
 - `display: grid;` -> Enables CSS Grid
-- `grid-template-columns: repeat(3, 1fr);` -> Defines how many columns the grid has and how wide they are
-- `grid-template-rows: auto;` -> Defines the height of grid rows
-- `gap: 16px;` -> Adds spacing between rows and columns
-- `justify-items: start | center | end | stretch;` -> Aligns items horizontally inside each grid cell
-- `align-items: start | center | end | stretch;` -> Aligns items vertically inside each grid cell
-- `justify-content: start | center | end | space-between | space-around;` -> Aligns the entire grid horizontally when extra space exists
-- `align-content: start | center | end | space-between | space-around;` -> Aligns the entire grid vertically when extra space exists
-- `grid-template-areas` -> Defines named layout areas for easier placement
+- `grid-template-columns: repeat(3, 1fr);` -> Defines column tracks
+- `grid-template-rows: auto;` -> Defines row tracks
+- `gap: 16px;` -> Sets row and column spacing
+- `justify-items: start | center | end | stretch;` -> Aligns items on the inline axis inside each cell
+- `align-items: start | center | end | stretch;` -> Aligns items on the block axis inside each cell
+- `justify-content: start | center | end | space-between | space-around;` -> Aligns the grid on the inline axis
+- `align-content: start | center | end | space-between | space-around;` -> Aligns the grid on the block axis
+- `grid-template-areas` -> Declares named grid areas
 
 **Item Properties:**
 
-- `grid-column: 1 / 3;` -> Makes an item span from column line 1 to column line 3
-- `grid-row: 1 / 3;` -> Makes an item span from row line 1 to row line 3
-- `grid-area: header;` -> Places an item into a named area or works as shorthand for row and column placement
-- `justify-self: start | center | end | stretch;` -> Aligns one item horizontally inside its own cell
-- `align-self: start | center | end | stretch;` -> Aligns one item vertically inside its own cell
+- `grid-column: 1 / 3;` -> Sets column start/end or span
+- `grid-row: 1 / 3;` -> Sets row start/end or span
+- `grid-area: header;` -> Assigns a named area or shorthand placement
+- `justify-self: start | center | end | stretch;` -> Aligns one item on the inline axis
+- `align-self: start | center | end | stretch;` -> Aligns one item on the block axis
 
 ```css
 .grid-container {
@@ -766,17 +766,12 @@ Media queries are used to apply styles based on device width, height, or other p
 
 CSS animations and transitions add interactivity and enhance user experience.
 
-#### **Difference Between Transition and Animation**
+#### **Technical Difference**
 
-- A **transition** moves an element from one state to another when something changes, like `:hover`, `:focus`, or adding a class.
-- An **animation** uses `@keyframes` and can run automatically, repeat, or move through multiple visual steps.
+- `transition` -> Interpolates property values between states after a trigger
+- `animation` -> Runs keyframe-based sequences with duration, timing, and iteration control
 
-#### **One Clear Example**
-
-In this example:
-
-- the button uses a **transition** when the user hovers over it
-- the badge uses an **animation** to keep pulsing automatically
+#### **Example**
 
 ```html
 <button class="cta-button">
@@ -832,13 +827,7 @@ In this example:
 }
 ```
 
-#### **Why This Example Is Useful**
-
-- `transition` is best when you want a smooth change between two states.
-- `animation` is best when you want repeated motion or multiple steps.
-- `transform` and `opacity` are preferred for animation because they usually perform better than changing layout-heavy properties.
-
-#### **Common Syntax**
+#### **Syntax**
 
 ```css
 transition: property duration timing-function delay;
@@ -943,25 +932,82 @@ The `z-index` property controls the stack order of elements.
 
 CSS positioning allows you to control the placement of elements.
 
-**Types of Positioning:**
+#### **Positioning Types**
 
-- `static`
-- `relative`
-- `absolute`
-- `fixed`
-- `sticky`
+- `position: static;` -> Default document flow
+- `position: relative;` -> Offset from its normal position
+- `position: absolute;` -> Positioned against the nearest positioned ancestor
+- `position: fixed;` -> Positioned against the viewport
+- `position: sticky;` -> Relative until threshold, then fixed-like within scroll container
+
+#### **Common Positioning Properties**
+
+- `top` -> Top offset
+- `right` -> Right offset
+- `bottom` -> Bottom offset
+- `left` -> Left offset
+- `inset` -> Shorthand for all offsets
+- `z-index` -> Stack order
+
+#### **Example**
+
+```html
+<section class="product-section">
+  <h2 class="section-title">Featured Products</h2>
+
+  <div class="product-card">
+    <span class="sale-badge">Sale</span>
+    <h3>Wireless Headphones</h3>
+    <p>Clear sound, long battery life, and a comfortable fit.</p>
+  </div>
+
+  <button class="help-button">Help</button>
+</section>
+```
 
 ```css
-.relative-box {
-    position: relative;
-    top: 10px;
-    left: 20px;
+.product-section {
+    min-height: 1200px;
+    padding: 24px;
 }
 
-.absolute-box {
+.section-title {
+    position: sticky;
+    top: 0;
+    padding: 12px 0;
+    background-color: white;
+    z-index: 5;
+}
+
+.product-card {
+    position: relative;
+    width: 320px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.sale-badge {
     position: absolute;
-    top: 50px;
-    left: 100px;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: #dc2626;
+    color: white;
+    font-size: 12px;
+}
+
+.help-button {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 999px;
+    background-color: #2563eb;
+    color: white;
 }
 ```
 
