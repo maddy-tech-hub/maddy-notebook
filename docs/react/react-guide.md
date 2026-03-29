@@ -674,29 +674,31 @@ CSS Flexbox is used to create flexible and responsive layouts.
 
 ### **3.2 CSS Grid**
 
-CSS Grid is used to create complex and responsive layouts.
+CSS Grid is used when you want to place items in rows and columns.
 
 #### **3.2.1 Grid Properties**
 
 **Container Properties:**
 
 - `display: grid;` -> Enables CSS Grid
-- `grid-template-columns: repeat(3, 1fr);` -> Defines column tracks
-- `grid-template-rows: auto;` -> Defines row tracks
-- `gap: 16px;` -> Sets row and column spacing
-- `justify-items: start | center | end | stretch;` -> Aligns items on the inline axis inside each cell
-- `align-items: start | center | end | stretch;` -> Aligns items on the block axis inside each cell
-- `justify-content: start | center | end | space-between | space-around;` -> Aligns the grid on the inline axis
-- `align-content: start | center | end | space-between | space-around;` -> Aligns the grid on the block axis
-- `grid-template-areas` -> Declares named grid areas
+- `grid-template-columns: repeat(3, 1fr);` -> Creates 3 equal columns
+- `grid-template-rows: auto;` -> Sets row height
+- `gap: 16px;` -> Adds space between grid items
+- `justify-items: start | center | end | stretch;` -> Moves items left, center, right, or stretch inside each cell
+- `align-items: start | center | end | stretch;` -> Moves items top, center, bottom, or stretch inside each cell
+- `justify-content: start | center | end | space-between | space-around;` -> Moves the full grid left, center, or right when extra space exists
+- `align-content: start | center | end | space-between | space-around;` -> Moves the full grid up, center, or down when extra space exists
+- `grid-template-areas` -> Gives names to grid sections
 
 **Item Properties:**
 
-- `grid-column: 1 / 3;` -> Sets column start/end or span
-- `grid-row: 1 / 3;` -> Sets row start/end or span
-- `grid-area: header;` -> Assigns a named area or shorthand placement
-- `justify-self: start | center | end | stretch;` -> Aligns one item on the inline axis
-- `align-self: start | center | end | stretch;` -> Aligns one item on the block axis
+- `grid-column: 1 / 3;` -> Makes an item take multiple columns
+- `grid-row: 1 / 3;` -> Makes an item take multiple rows
+- `grid-area: header;` -> Places an item in a named area
+- `justify-self: start | center | end | stretch;` -> Moves one item left, center, right, or stretch
+- `align-self: start | center | end | stretch;` -> Moves one item top, center, bottom, or stretch
+
+This example creates 3 columns, adds space between items, makes one item wider, and makes one item taller.
 
 ```css
 .grid-container {
@@ -766,12 +768,17 @@ Media queries are used to apply styles based on device width, height, or other p
 
 CSS animations and transitions add interactivity and enhance user experience.
 
-#### **Technical Difference**
+#### **Simple Difference**
 
-- `transition` -> Interpolates property values between states after a trigger
-- `animation` -> Runs keyframe-based sequences with duration, timing, and iteration control
+- `transition` -> Changes a style smoothly when something happens like hover or focus
+- `animation` -> Runs movement or effects using `@keyframes`, even without hover
 
 #### **Example**
+
+In this example:
+
+- the button changes smoothly on hover using `transition`
+- the badge keeps moving using `animation`
 
 ```html
 <button class="cta-button">
@@ -934,22 +941,29 @@ CSS positioning allows you to control the placement of elements.
 
 #### **Positioning Types**
 
-- `position: static;` -> Default document flow
-- `position: relative;` -> Offset from its normal position
-- `position: absolute;` -> Positioned against the nearest positioned ancestor
-- `position: fixed;` -> Positioned against the viewport
-- `position: sticky;` -> Relative until threshold, then fixed-like within scroll container
+- `position: static;` -> Default position
+- `position: relative;` -> Stays in normal place, but you can move it a little from that place
+- `position: absolute;` -> Moves based on the nearest parent that has `position: relative`, `absolute`, `fixed`, or `sticky`
+- `position: fixed;` -> Stays in the same place on the screen even when the page scrolls
+- `position: sticky;` -> Acts normal first, then sticks when scrolling reaches a point
 
 #### **Common Positioning Properties**
 
-- `top` -> Top offset
-- `right` -> Right offset
-- `bottom` -> Bottom offset
-- `left` -> Left offset
-- `inset` -> Shorthand for all offsets
-- `z-index` -> Stack order
+- `top` -> Distance from the top
+- `right` -> Distance from the right
+- `bottom` -> Distance from the bottom
+- `left` -> Distance from the left
+- `inset` -> Shortcut for `top`, `right`, `bottom`, and `left`
+- `z-index` -> Decides which element comes in front
 
 #### **Example**
+
+In this example:
+
+- `.product-card` uses `position: relative`
+- `.sale-badge` uses `position: absolute` inside the card
+- `.help-button` uses `position: fixed`
+- `.section-title` uses `position: sticky`
 
 ```html
 <section class="product-section">
