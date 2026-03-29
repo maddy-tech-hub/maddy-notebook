@@ -766,33 +766,83 @@ Media queries are used to apply styles based on device width, height, or other p
 
 CSS animations and transitions add interactivity and enhance user experience.
 
-#### **Transitions**
+#### **Difference Between Transition and Animation**
+
+- A **transition** moves an element from one state to another when something changes, like `:hover`, `:focus`, or adding a class.
+- An **animation** uses `@keyframes` and can run automatically, repeat, or move through multiple visual steps.
+
+#### **One Clear Example**
+
+In this example:
+
+- the button uses a **transition** when the user hovers over it
+- the badge uses an **animation** to keep pulsing automatically
+
+```html
+<button class="cta-button">
+  Save Changes
+  <span class="cta-badge">New</span>
+</button>
+```
 
 ```css
-.button {
-    background-color: #4CAF50;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+.cta-button {
+    position: relative;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    background-color: #1d4ed8;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.button:hover {
-    background-color: #45a049;
-    transform: scale(1.1);
+.cta-button:hover {
+    background-color: #2563eb;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
+}
+
+.cta-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background-color: #f97316;
+    font-size: 12px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.12);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 ```
 
-#### **Animations**
+#### **Why This Example Is Useful**
+
+- `transition` is best when you want a smooth change between two states.
+- `animation` is best when you want repeated motion or multiple steps.
+- `transform` and `opacity` are preferred for animation because they usually perform better than changing layout-heavy properties.
+
+#### **Common Syntax**
 
 ```css
-@keyframes bounce {
-    0%   { transform: translateY(0); }
-    30%  { transform: translateY(-10px); }
-    60%  { transform: translateY(5px); }
-    100% { transform: translateY(0); }
-}
-
-.animated-button {
-    animation: bounce 0.6s;
-}
+transition: property duration timing-function delay;
+animation: name duration timing-function delay iteration-count direction;
 ```
 
 ---
