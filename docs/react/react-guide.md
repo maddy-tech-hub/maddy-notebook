@@ -563,7 +563,15 @@ CSS Specificity determines which CSS rule is applied when multiple rules target 
 Priority order:
 
 ```
-Inline Styles > ID Selectors > Class Selectors > Element Selectors
+Inline Styles
+      ↓
+IDs (#id)
+      ↓
+Classes (.class), Attributes, Pseudo-classes
+      ↓
+Elements (div, p) & Pseudo-elements
+      ↓
+Universal selector (*) / inherited styles
 ```
 
 Example:
