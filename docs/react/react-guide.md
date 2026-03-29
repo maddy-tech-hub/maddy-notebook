@@ -1909,7 +1909,7 @@ enum Direction {
   Right = "RIGHT"
 }
 let move: Direction = Direction.Up;
-
+```
 ---
 
 ### **3. Interfaces & Types**
