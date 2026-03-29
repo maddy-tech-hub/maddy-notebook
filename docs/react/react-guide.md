@@ -180,6 +180,44 @@ Semantic HTML means using HTML tags that describe their meaning — not just the
 - ✅ **Better Accessibility** – Screen readers can navigate easily  
 - ✅ **Cleaner Code** – Easier to read and maintain  
 
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Blog</title>
+</head>
+<body>
+
+  <header>
+    <h1>📝 My Awesome Blog</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <article>
+        <h2>Post Title</h2>
+        <p>This is my first blog post using semantic HTML!</p>
+      </article>
+    </section>
+    
+    <aside>
+      <h3>About Me</h3>
+      <p>I'm a web developer sharing my journey.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>© 2025 My Blog. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
+```
+
 ---
 
 ## **6. HTML5 Features**
@@ -288,34 +326,103 @@ alert(localStorage.getItem("username"));
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>My Blog</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Hospital - Patient Portal</title>
 </head>
+
 <body>
 
+  <!-- Header -->
   <header>
-    <h1>📝 My Awesome Blog</h1>
+    <h1>City Hospital</h1>
     <nav>
-      <a href="/">Home</a>
-      <a href="/about">About</a>
+      <a href="#">Home</a> |
+      <a href="#">Appointments</a> |
+      <a href="#">Reports</a> |
+      <a href="#">Contact</a>
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
+
+    <!-- Section: Patient Registration -->
     <section>
-      <article>
-        <h2>Post Title</h2>
-        <p>This is my first blog post using semantic HTML!</p>
-      </article>
+      <h2>Patient Registration</h2>
+
+      <form>                                  
+        <fieldset>
+          <legend>Basic Information</legend>
+
+          <label for="name">Full Name:</label>
+          <input type="text" id="name" name="name" required><br><br>
+
+          <label for="age">Age:</label>
+          <input type="number" id="age" name="age"><br><br>
+
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select><br><br>
+
+          <label for="symptoms">Symptoms:</label><br>
+          <textarea id="symptoms" name="symptoms"></textarea><br><br>
+
+          <button type="submit">Register</button>
+        </fieldset>
+      </form>
     </section>
-    
+
+    <!-- Section: Lab Reports -->
+    <section>
+      <h2>Recent Lab Reports</h2>
+
+      <table border="1">
+        <!--<thead>-->
+          <tr>
+            <th>Date</th>
+            <th>Test</th>
+            <th>Result</th>
+          </tr>
+        <!--</thead>-->
+        <tbody>
+          <tr>
+            <td><time datetime="2026-03-20">March 20, 2026</time></td>
+            <td>Blood Sugar</td>
+            <td>110 mg/dL</td>
+          </tr>
+          <tr>
+            <td><time datetime="2026-03-22">March 22, 2026</time></td>
+            <td>Cholesterol</td>
+            <td>180 mg/dL</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section: Health Article -->
+    <article>
+      <h2>Health Tip</h2>
+      <p>
+        Drinking enough water daily helps maintain <strong>good health</strong>.
+        <mark>Stay hydrated</mark> to avoid fatigue.
+      </p>
+    </article>
+
+    <!-- Aside -->
     <aside>
-      <h3>About Me</h3>
-      <p>I'm a web developer sharing my journey.</p>
+      <h3>Emergency Contact</h3>
+      <p>Call: <strong>+91-1234567890</strong></p>
     </aside>
+
   </main>
 
+  <!-- Footer -->
   <footer>
-    <p>© 2025 My Blog. All rights reserved.</p>
+    <p>&copy; 2026 City Hospital | All Rights Reserved</p>
   </footer>
 
 </body>
