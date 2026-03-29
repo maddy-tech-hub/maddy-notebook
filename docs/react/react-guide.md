@@ -678,27 +678,47 @@ CSS Grid is used to create complex and responsive layouts.
 
 #### **3.2.1 Grid Properties**
 
-- `display: grid;`
-- `grid-template-columns`
-- `grid-template-rows`
-- `gap`
-- `justify-items`
-- `align-items`
-- `justify-content`
-- `align-content`
-- `grid-column`
-- `grid-row`
-- `grid-area`
+**Container Properties:**
+
+- `display: grid;` -> Enables CSS Grid
+- `grid-template-columns: repeat(3, 1fr);` -> Defines how many columns the grid has and how wide they are
+- `grid-template-rows: auto;` -> Defines the height of grid rows
+- `gap: 16px;` -> Adds spacing between rows and columns
+- `justify-items: start | center | end | stretch;` -> Aligns items horizontally inside each grid cell
+- `align-items: start | center | end | stretch;` -> Aligns items vertically inside each grid cell
+- `justify-content: start | center | end | space-between | space-around;` -> Aligns the entire grid horizontally when extra space exists
+- `align-content: start | center | end | space-between | space-around;` -> Aligns the entire grid vertically when extra space exists
+- `grid-template-areas` -> Defines named layout areas for easier placement
+
+**Item Properties:**
+
+- `grid-column: 1 / 3;` -> Makes an item span from column line 1 to column line 3
+- `grid-row: 1 / 3;` -> Makes an item span from row line 1 to row line 3
+- `grid-area: header;` -> Places an item into a named area or works as shorthand for row and column placement
+- `justify-self: start | center | end | stretch;` -> Aligns one item horizontally inside its own cell
+- `align-self: start | center | end | stretch;` -> Aligns one item vertically inside its own cell
 
 ```css
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+    grid-template-rows: auto;
+    gap: 16px;
+    justify-items: stretch;
+    align-items: start;
 }
 
 .grid-item {
+    padding: 16px;
     background-color: lightblue;
+}
+
+.grid-item--wide {
+    grid-column: 1 / 3;
+}
+
+.grid-item--tall {
+    grid-row: span 2;
 }
 ```
 
