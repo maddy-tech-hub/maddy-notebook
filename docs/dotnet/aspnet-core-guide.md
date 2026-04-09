@@ -1880,7 +1880,10 @@ public class UserService : IUserService
 ```
 
 **Step 3: Register Service (Program.cs)**
+```
 builder.Services.AddScoped<IUserService, UserService>();
+```
+
 **Step 4: Inject into Controller**
 ```
 public class UserController : Controller
