@@ -234,10 +234,10 @@ Clustered index sorts and stores table data physically.
 Non-clustered index stores pointers to table data.
 
 66. **What is Normalization?**  
-Normalization reduces data redundancy.
+Normalization simply means organizing data so it’s stored efficiently without duplicates.
 
 67. **What is Denormalization?**  
-Denormalization improves read performance by adding redundancy.
+Denormalization is combining or adding redundant data to a database to make queries faster.
 
 68. **What is Transaction?**  
 Transaction is a sequence of operations executed as a single unit.
