@@ -2524,7 +2524,7 @@ public class ProductsController : ControllerBase
 }
 ```
 
-12. Exception Handling and Logging
+### 12. Exception Handling and Logging
 In Web API, proper exception handling and logging are crucial for debugging and tracking errors.
 **Key Points:**
 
