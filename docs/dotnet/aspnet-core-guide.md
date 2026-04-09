@@ -2566,7 +2566,7 @@ public sealed class GlobalExceptionMiddleware(RequestDelegate next, ILogger<Glob
 }
 ```
 
-13. API Documentation with Swagger
+### 13. API Documentation with Swagger
 Swagger (OpenAPI) is used to generate interactive API documentation.
 **Key Points:**
 - Swagger provides a UI to test API endpoints.
