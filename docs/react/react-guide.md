@@ -2194,7 +2194,7 @@ printValue(42); // Not a string
 ```
 
 #### **8.2 Discriminated Unions**
-
+A union of types that share a common literal property used to safely distinguish between them
 ```ts
 type Shape =
   | { kind: "circle"; radius: number }
