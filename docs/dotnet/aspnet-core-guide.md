@@ -2533,32 +2533,35 @@ In Web API, proper exception handling and logging are crucial for debugging and 
 - Use **ILogger** for logging errors.
 #### Example of Exception Handling Middleware:
 ```csharp
-public class ErrorHandlingMiddleware
+using System.Net;
+using FinanceTracker.Application.Common;
+
+namespace FinanceTracker.Api.Middleware;
+
+public sealed class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
 {
-    private readonly RequestDelegate _next; // Represents next middleware in pipeline
-
-    public ErrorHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext httpContext, ILogger<ErrorHandlingMiddleware> logger)
+    public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(httpContext); // Pass request to next middleware
+            await next(context);
         }
         catch (Exception ex)
         {
-            logger.LogError($"Something went wrong: {ex.Message}"); // Log exception details
-            await HandleExceptionAsync(httpContext); // Return error response
-        }
-    }
+            logger.LogError(ex, "Unhandled exception");
+            context.Response.ContentType = "application/json";
 
-    private Task HandleExceptionAsync(HttpContext context)
-    {
-        context.Response.StatusCode = 500; // Set HTTP 500
-        return context.Response.WriteAsync("Internal server error"); // Send safe error message
+            var (status, message) = ex switch
+            {
+                AppValidationException => (HttpStatusCode.BadRequest, ex.Message),
+                NotFoundException => (HttpStatusCode.NotFound, ex.Message),
+                ForbiddenException => (HttpStatusCode.Unauthorized, ex.Message),
+                _ => (HttpStatusCode.InternalServerError, "An unexpected error occurred.")
+            };
+
+            context.Response.StatusCode = (int)status;
+            await context.Response.WriteAsJsonAsync(ApiResponse<object>.Fail(message));
+        }
     }
 }
 ```
