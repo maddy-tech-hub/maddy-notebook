@@ -1860,54 +1860,47 @@ This is a sample class.
 - Commonly used in **ASP.NET Core**, **unit testing**, and **layered architectures**
 
 ---
-
-### 💡 Example:
-```csharp
-// Step 1: Define a service interface
-interface IMessageService
+**Step 1: Create Interface**
+```
+public interface IUserService
 {
-    void SendMessage(string message);
+    string GetUser();
 }
+```
 
-// Step 2: Create an implementation
-class EmailService : IMessageService
+**Step 2: Implement Service**
+```
+public class UserService : IUserService
 {
-    public void SendMessage(string message)
+    public string GetUser()
     {
-        Console.WriteLine($"Email sent: {message}");
-    }
-}
-
-// Step 3: Inject the service into the dependent class
-class Notification
-{
-    private readonly IMessageService _service;
-
-    public Notification(IMessageService service)
-    {
-        _service = service;
-    }
-
-    public void Notify(string message)
-    {
-        _service.SendMessage(message);
-    }
-}
-
-// Step 4: Create and inject the dependency
-class Program
-{
-    static void Main()
-    {
-        IMessageService service = new EmailService(); // Injected here
-        Notification notification = new Notification(service);
-        notification.Notify("Hello, Dependency Injection!");
+        return "User Data";
     }
 }
 ```
-**Output:**
+
+**Step 3: Register Service (Program.cs)**
 ```
-Email sent: Hello, Dependency Injection!
+builder.Services.AddScoped<IUserService, UserService>();
+```
+
+**Step 4: Inject into Controller**
+```
+public class UserController : Controller
+{
+    private readonly IUserService _userService;
+
+    public UserController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
+    public IActionResult Index()
+    {
+        var data = _userService.GetUser();
+        return Content(data);
+    }
+}
 ```
 
 ---
@@ -2531,7 +2524,7 @@ public class ProductsController : ControllerBase
 }
 ```
 
-12. Exception Handling and Logging
+### 12. Exception Handling and Logging
 In Web API, proper exception handling and logging are crucial for debugging and tracking errors.
 **Key Points:**
 
@@ -2540,37 +2533,40 @@ In Web API, proper exception handling and logging are crucial for debugging and 
 - Use **ILogger** for logging errors.
 #### Example of Exception Handling Middleware:
 ```csharp
-public class ErrorHandlingMiddleware
+using System.Net;
+using FinanceTracker.Application.Common;
+
+namespace FinanceTracker.Api.Middleware;
+
+public sealed class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
 {
-    private readonly RequestDelegate _next; // Represents next middleware in pipeline
-
-    public ErrorHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext httpContext, ILogger<ErrorHandlingMiddleware> logger)
+    public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(httpContext); // Pass request to next middleware
+            await next(context);
         }
         catch (Exception ex)
         {
-            logger.LogError($"Something went wrong: {ex.Message}"); // Log exception details
-            await HandleExceptionAsync(httpContext); // Return error response
-        }
-    }
+            logger.LogError(ex, "Unhandled exception");
+            context.Response.ContentType = "application/json";
 
-    private Task HandleExceptionAsync(HttpContext context)
-    {
-        context.Response.StatusCode = 500; // Set HTTP 500
-        return context.Response.WriteAsync("Internal server error"); // Send safe error message
+            var (status, message) = ex switch
+            {
+                AppValidationException => (HttpStatusCode.BadRequest, ex.Message),
+                NotFoundException => (HttpStatusCode.NotFound, ex.Message),
+                ForbiddenException => (HttpStatusCode.Unauthorized, ex.Message),
+                _ => (HttpStatusCode.InternalServerError, "An unexpected error occurred.")
+            };
+
+            context.Response.StatusCode = (int)status;
+            await context.Response.WriteAsJsonAsync(ApiResponse<object>.Fail(message));
+        }
     }
 }
 ```
 
-13. API Documentation with Swagger
+### 13. API Documentation with Swagger
 Swagger (OpenAPI) is used to generate interactive API documentation.
 **Key Points:**
 - Swagger provides a UI to test API endpoints.

@@ -2194,7 +2194,7 @@ printValue(42); // Not a string
 ```
 
 #### **8.2 Discriminated Unions**
-
+A union of types that share a common literal property used to safely distinguish between them
 ```ts
 type Shape =
   | { kind: "circle"; radius: number }
@@ -2716,13 +2716,18 @@ export default App;
 #### **8.2.2 Fetching Data with Queries**
 
 ```tsx
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 function UsersList() {
-  const { data, error, isLoading } = useQuery('users', async () => {
-    const response = await axios.get("https://jsonplaceholder.typicode.com/users");
-    return response.data;
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+      return response.data;
+    },
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -2747,30 +2752,34 @@ export default UsersList;
 Mutations in React Query are used to create, update, or delete data on the server.
 
 ```tsx
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 function AddUser() {
   const queryClient = useQueryClient();
 
-  const mutation = useMutation(
-    (newUser) => axios.post("https://jsonplaceholder.typicode.com/users", newUser),
-    {
-      onSuccess: () => {
-        // Invalidate and refetch the users query
-        queryClient.invalidateQueries('users');
-      },
-    }
-  );
+  const mutation = useMutation({
+    mutationFn: (newUser) =>
+      axios.post("https://jsonplaceholder.typicode.com/users", newUser),
+
+    onSuccess: () => {
+      // Refetch users after adding
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
 
   const handleAddUser = () => {
-    mutation.mutate({ name: "New User", email: "newuser@example.com" });
+    mutation.mutate({
+      name: "New User",
+      email: "newuser@example.com",
+    });
   };
 
   return (
     <div>
       <button onClick={handleAddUser}>Add User</button>
-      {mutation.isLoading && <p>Adding user...</p>}
+
+      {mutation.isPending && <p>Adding user...</p>}
       {mutation.isError && <p>Error adding user</p>}
       {mutation.isSuccess && <p>User added successfully!</p>}
     </div>
