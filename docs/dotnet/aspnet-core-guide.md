@@ -1860,54 +1860,44 @@ This is a sample class.
 - Commonly used in **ASP.NET Core**, **unit testing**, and **layered architectures**
 
 ---
-
-### 💡 Example:
-```csharp
-// Step 1: Define a service interface
-interface IMessageService
+**Step 1: Create Interface**
+```
+public interface IUserService
 {
-    void SendMessage(string message);
+    string GetUser();
 }
+```
 
-// Step 2: Create an implementation
-class EmailService : IMessageService
+**Step 2: Implement Service**
+```
+public class UserService : IUserService
 {
-    public void SendMessage(string message)
+    public string GetUser()
     {
-        Console.WriteLine($"Email sent: {message}");
-    }
-}
-
-// Step 3: Inject the service into the dependent class
-class Notification
-{
-    private readonly IMessageService _service;
-
-    public Notification(IMessageService service)
-    {
-        _service = service;
-    }
-
-    public void Notify(string message)
-    {
-        _service.SendMessage(message);
-    }
-}
-
-// Step 4: Create and inject the dependency
-class Program
-{
-    static void Main()
-    {
-        IMessageService service = new EmailService(); // Injected here
-        Notification notification = new Notification(service);
-        notification.Notify("Hello, Dependency Injection!");
+        return "User Data";
     }
 }
 ```
-**Output:**
+
+**Step 3: Register Service (Program.cs)**
+builder.Services.AddScoped<IUserService, UserService>();
+**Step 4: Inject into Controller**
 ```
-Email sent: Hello, Dependency Injection!
+public class UserController : Controller
+{
+    private readonly IUserService _userService;
+
+    public UserController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
+    public IActionResult Index()
+    {
+        var data = _userService.GetUser();
+        return Content(data);
+    }
+}
 ```
 
 ---
