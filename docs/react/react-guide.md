@@ -1685,10 +1685,9 @@ Understanding the event loop is crucial for debugging asynchronous code and avoi
 
 **What is it?**  
 - **Debouncing**: Debouncing ensures a function runs only after a certain period of inactivity.
+  - Run only after user stops doing something (“wait & then fire”).
 - **Throttling**: Throttling Ensures a function is executed at most once in a specified interval.
-
-- **Debouncing**: Run only after user stops doing something (“wait & then fire”).
-- **Throttling**: Run function once every X milliseconds, no matter how many times event happens (“fire every interval”).
+  - Run function once every X milliseconds, no matter how many times event happens (“fire every interval”).
 
 **How it works:**
 
