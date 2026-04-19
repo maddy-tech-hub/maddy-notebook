@@ -2363,8 +2363,9 @@ Discriminated Unions
 
 --------------------------------------------
 
-Basic Example:
+**Basic Example:**
 
+```js
 type Circle = {
   kind: "circle";
   radius: number;
@@ -2376,11 +2377,13 @@ type Square = {
 };
 
 type Shape = Circle | Square;
+```
 
 --------------------------------------------
 
-Usage:
+**Usage:**
 
+```js
 function area(shape: Shape) {
   if (shape.kind === "circle") {
     return 3.14 * shape.radius * shape.radius;
@@ -2390,17 +2393,18 @@ function area(shape: Shape) {
     return shape.side * shape.side;
   }
 }
-
+```
 --------------------------------------------
 
-Example Calls:
+**Example Calls:**
 
+```
 area({ kind: "circle", radius: 10 });
 Output: 314
 
 area({ kind: "square", side: 5 });
 Output: 25
-
+```
 👉 "kind" is the discriminator
 
 --------------------------------------------
@@ -2414,9 +2418,11 @@ Output: 25
 
 Example:
 
+```js
 function throwError(message: string): never {
   throw new Error(message);
 }
+```
 
 Output:
 ❌ Function always throws error
