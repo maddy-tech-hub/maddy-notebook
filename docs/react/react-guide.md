@@ -966,20 +966,14 @@ In this example:
 - `.section-title` uses `position: sticky`
 
 ```html
-<section class="product-section">
-  <h2 class="section-title">Featured Products</h2>
-
-  <div class="product-card">
-    <span class="sale-badge">Sale</span>
-    <h3>Wireless Headphones</h3>
-    <p>Clear sound, long battery life, and a comfortable fit.</p>
-  </div>
-
-  <button class="help-button">Help</button>
-</section>
-```
-
-```css
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      height: 2000px; /* for scroll */
+      font-family: Arial;
+    }
 .product-section {
     min-height: 1200px;
     padding: 24px;
@@ -1023,7 +1017,27 @@ In this example:
     background-color: #2563eb;
     color: white;
 }
+  </style>
+</head>
+
+<body>
+
+  <section class="product-section">
+  <h2 class="section-title">Featured Products</h2>
+
+  <div class="product-card">
+    <span class="sale-badge">Sale</span>
+    <h3>Wireless Headphones</h3>
+    <p>Clear sound, long battery life, and a comfortable fit.</p>
+  </div>
+
+  <button class="help-button">Help</button>
+</section>
+
+</body>
+</html>
 ```
+
 
 ---
 
