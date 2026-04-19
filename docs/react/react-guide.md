@@ -2289,35 +2289,6 @@ let name = username ?? "Guest";
 
 ---
 
-#### **6.8 Readonly**
-
-The `readonly` modifier prevents modification of properties.
-
-```ts
-type User = {
-  readonly id: number;
-  name: string;
-};
-
-const user: User = { id: 1, name: "Alice" };
-
-// user.id = 2 ❌ Error
-```
-
----
-
-#### **6.9 Record Utility Type**
-
-The `Record` utility type creates an object type with consistent key/value structure.
-
-```ts
-type UserRoles = Record<string, string>;
-
-const roles: UserRoles = {
-  admin: "Administrator",
-  user: "Regular User"
-};
-```
 
 ---
 
@@ -2385,50 +2356,88 @@ printValue(42); // Not a string
 ```
 
 #### **8.2 Discriminated Unions**
-A union of types that share a common literal property used to safely distinguish between them
-```ts
-type Shape =
-  | { kind: "circle"; radius: number }
-  | { kind: "square"; side: number };
+TypeScript Discriminated Unions
 
-function getArea(shape: Shape): number {
+Discriminated Unions
+👉 A pattern where multiple types share a common field (discriminator) to safely identify which type is being used.
+
+--------------------------------------------
+
+Basic Example:
+
+type Circle = {
+  kind: "circle";
+  radius: number;
+};
+
+type Square = {
+  kind: "square";
+  side: number;
+};
+
+type Shape = Circle | Square;
+
+--------------------------------------------
+
+Usage:
+
+function area(shape: Shape) {
   if (shape.kind === "circle") {
-    return Math.PI * shape.radius ** 2;
-  } else if (shape.kind === "square") {
-    return shape.side ** 2;
+    return 3.14 * shape.radius * shape.radius;
+  }
+
+  if (shape.kind === "square") {
+    return shape.side * shape.side;
   }
 }
 
-console.log(getArea({ kind: "circle", radius: 5 })); // 78.53981633974483
-console.log(getArea({ kind: "square", side: 4 })); // 16
-```
+--------------------------------------------
 
+Example Calls:
+
+area({ kind: "circle", radius: 10 });
+Output: 314
+
+area({ kind: "square", side: 5 });
+Output: 25
+
+👉 "kind" is the discriminator
+
+--------------------------------------------
 #### **8.3 `never` Type**
+👉 The `never` type represents values that NEVER occur.
+👉 It is used for functions that never return or for exhaustive type checking.
 
-```ts
+--------------------------------------------
+
+1. Function That Never Returns
+
+Example:
+
 function throwError(message: string): never {
   throw new Error(message);
 }
 
-function handleValue(value: string | number): string {
-  if (typeof value === "string") {
-    return `String: ${value}`;
-  } else if (typeof value === "number") {
-    return `Number: ${value}`;
-  }
-  // Exhaustive check
-  const _exhaustiveCheck: never = value;
-  return _exhaustiveCheck;
-}
-```
+Output:
+❌ Function always throws error
+✔ No return value ever happens
 
 ---
+TypeScript Decorators
 
-### **9. Decorators**
+Decorators
+👉 Decorators are special functions used to modify or add behavior to classes, methods, or properties.
 
-#### **9.1 Class Decorators**
+👉 They run at runtime and are prefixed with `@`
 
-```ts
+--------------------------------------------
+
+1. Class Decorators
+
+👉 Applied to an entire class
+
+Example:
+
 function Logger(constructor: Function) {
   console.log("Logging...");
   console.log(constructor);
@@ -2444,12 +2453,33 @@ class Person {
 }
 
 const person = new Person();
-```
 
-#### **9.2 Method Decorators**
+--------------------------------------------
 
-```ts
-function Log(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+Output Flow:
+
+1. Class is defined → Logger runs
+2. Logs constructor function
+3. Object creation triggers constructor
+
+Output:
+Logging...
+[class Person]
+Creating person object...
+
+--------------------------------------------
+
+2. Method Decorators
+
+👉 Applied to class methods
+
+Example:
+
+function Log(
+  target: any,
+  propertyName: string,
+  descriptor: PropertyDescriptor
+) {
   console.log(`Method: ${propertyName}`);
 }
 
@@ -2461,15 +2491,36 @@ class Calculator {
 }
 
 const calc = new Calculator();
-console.log(calc.add(5, 10)); // Method: add
-```
+console.log(calc.add(5, 10));
 
----
+--------------------------------------------
+
+Output Flow:
+
+1. Decorator runs when class is defined
+2. Logs method name
+3. Method executes normally
+
+Output:
+Method: add
+15
+
+--------------------------------------------
+
+Key Points:
+
+✔ Class decorators modify or observe class creation
+✔ Method decorators modify or observe method behavior
+✔ Runs at runtime, not compile time
+✔ Used for logging, validation, authentication, etc.
+
+--------------------------------------------
+
+Key Idea:
+👉 Decorators = “Attach behavior to classes/methods without changing core code”
+
 
 ### **10. TypeScript Configuration**
-
-#### **10.1 Common Options**
-
 ```json
 {
   "compilerOptions": {
@@ -2644,91 +2695,67 @@ React Hooks allow functional components to manage state and side effects without
    ```
 **Example :**
 ```tsx
-import React, { useState, useEffect, useCallback, useMemo, useRef, useReducer } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef, useReducer } from "react";
 
-const reducer = (state: number, action: { type: string }) => {
-    switch (action.type) {
-        case 'increment':
-            return state + 1;
-        case 'decrement':
-            return state - 1;
-        case 'reset':
-            return 0;
-        default:
-            return state;
-    }
-};
+/* Reducer */
+type Action = { type: "inc" | "dec" | "reset" };
 
-export function HooksExample() {
-    const [count, setCount] = useState(0);
-    const [timer, setTimer] = useState(0);
-    const [text, setText] = useState('');
-    const renderCompCountRef = useRef(0);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [reducerCount, dispatch] = useReducer(reducer, 0);
-
-    const expensiveCalculation = useMemo(() => { return count * 2; }, [count]);
-
-    const handleButtonClick = useCallback(() => { setCount((prev) => prev + 1); }, []);
-
-    // Without dependencies, the effect will run on every re-render
-    useEffect(() => { renderCompCountRef.current += 1; });
-
-    /* Automatically focuses the input field when the component mounts */
-    useEffect(() => { inputRef.current?.focus(); }, []);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTimer((prev) => prev + 1);
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
-
-    return (
-        <div className="grid-container">
-            <div className="grid-item">
-                <h2>useEffect with Interval</h2>
-                <p>Timer: {timer} seconds</p>
-            </div>
-            <div className="grid-item">
-                <h2>useState</h2>
-                <p>Count: {count}</p>
-                <button onClick={handleButtonClick}>Increment Count</button>
-            </div>
-            <div className="grid-item">
-                <h2>useMemo</h2>
-                <p>Expensive Calculation Result: {expensiveCalculation}</p>
-            </div>
-            <div className="grid-item">
-                <h2>useReducer</h2>
-                <p>Reducer Count: {reducerCount}</p>
-                <button onClick={() => dispatch({ type: 'increment' })}>Increment</button>
-                <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
-                <button onClick={() => dispatch({ type: 'reset' })}>Reset</button>
-            </div>
-            <div className="grid-item">
-                <h2>useRef</h2>
-                <input
-                    ref={inputRef}
-                    type="text"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Type something..."
-                />
-                <p>Input Value: {text}</p>
-            </div>
-            <div className="grid-item">
-                <h2>Component Render Count</h2>
-                <p>{renderCompCountRef.current}</p>
-            </div>
-        </div>
-    );
+function reducer(state: number, action: Action) {
+  switch (action.type) {
+    case "inc":
+      return state + 1;
+    case "dec":
+      return state - 1;
+    case "reset":
+      return 0;
+    default:
+      return state;
+  }
 }
 
-export default HooksExample;
+export default function HooksDemo() {
+  /* useState */
+  const [count, setCount] = useState(0);
+
+  /* useReducer */
+  const [value, dispatch] = useReducer(reducer, 0);
+
+  /* useRef */
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  /* useMemo */
+  const doubled = useMemo(() => count * 2, [count]);
+
+  /* useCallback */
+  const inc = useCallback(() => setCount((c) => c + 1), []);
+
+  /* useEffect (mount) */
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  return (
+    <div>
+
+      {/* useState */}
+      <h3>Count: {count}</h3>
+      <button onClick={inc}>Increment</button>
+
+      {/* useMemo */}
+      <p>Doubled: {doubled}</p>
+
+      {/* useReducer */}
+      <h3>Reducer: {value}</h3>
+      <button onClick={() => dispatch({ type: "inc" })}>+</button>
+      <button onClick={() => dispatch({ type: "dec" })}>-</button>
+      <button onClick={() => dispatch({ type: "reset" })}>Reset</button>
+
+      {/* useRef */}
+      <input ref={inputRef} placeholder="Auto focus input" />
+
+    </div>
+  );
+}
 ```
 
 ---
@@ -2782,10 +2809,8 @@ export const Context = () => {
   const { count, setCount } = useContext(ContextCreation);
   return (
     <>
-      <div data-testid="context-value">Count : {count}</div> <br />
-      <button data-testid="handleEvent" onClick={() => setCount(count + 1)}>
-        Click Here
-      </button>
+      <div>Count : {count}</div> <br />
+      <button onClick={() => setCount(count + 1)}>Click Here</button>
     </>
   );
 };
@@ -3034,17 +3059,27 @@ function App() {
 export default App;
 ```
 
+-----------------------------------------
+
+React Advanced Concepts (Simplified Notes)
+
+--------------------------------------------
+## **10. Micro Frontends (MFE)**
+
+Micro Frontends split a large frontend application into smaller independent apps.
+
+👉 Each app can be developed and deployed separately.
+
 ---
 
-## **10. Micro Frontends (MFE) Advanced Concepts**
+### **10.1 Module Federation (Webpack)**
 
-Micro Frontends allow breaking a monolithic frontend into smaller, independently developed and deployed applications.
+👉 Used to share code between micro frontend applications.
 
-### **10.1 Module Federation in Webpack**
+---
 
-#### **Basic Usage Example**
+#### **Remote App (App1)**
 
-1. **Remote Application (App1):**
 ```js
 const ModuleFederationPlugin = require("webpack").container.ModuleFederationPlugin;
 
@@ -3053,13 +3088,15 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "app1",
       filename: "remoteEntry.js",
-      exposes: { "./Component": "./src/Component" },
-    }),
-  ],
+      exposes: {
+        "./Component": "./src/Component"
+      }
+    })
+  ]
 };
 ```
+#### **Host App (App2)**
 
-2. **Host Application (App2):**
 ```js
 const ModuleFederationPlugin = require("webpack").container.ModuleFederationPlugin;
 
@@ -3067,52 +3104,48 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin({
       name: "app2",
-      remotes: { app1: "app1@http://localhost:3001/remoteEntry.js" },
-    }),
-  ],
+      remotes: {
+        app1: "app1@http://localhost:3001/remoteEntry.js"
+      }
+    })
+  ]
 };
 ```
 
----
+Key Idea
+
+✔ App1 → exposes code
+✔ App2 → consumes code
+✔ Apps can be deployed independently
 
 ## **11. Controlled vs Uncontrolled Components**
 
-React forms can be managed in two ways: **Controlled Components** and **Uncontrolled Components**.
-
-### **11.1 Controlled Components**
-
-In controlled components, **React state controls the form input**.
-
-```tsx
-import { useState } from "react";
-
-function ControlledInput() {
-  const [value, setValue] = useState("");
-
-  return (
-    <div>
-      <input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Enter text"
-      />
-      <p>Value: {value}</p>
-    </div>
-  );
-}
-```
-
-**Advantages**
-
-- Predictable state management
-- Easier validation
-- Better debugging
+React forms can be handled in two ways.
 
 ---
 
-### **11.2 Uncontrolled Components**
+### **11.1 Controlled Components**
 
-Uncontrolled components allow the **DOM to manage the input state** using `useRef`.
+👉 React state controls the input
+
+```tsx
+const [value, setValue] = useState("");
+
+<input
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+/>
+```
+
+## **11.2 Uncontrolled Components**
+
+👉 Uncontrolled components allow the **DOM to manage the form input state** instead of React.
+
+👉 We use `useRef` to access the value directly from the DOM.
+
+---
+
+### **Example**
 
 ```tsx
 import { useRef } from "react";
@@ -3132,14 +3165,15 @@ function UncontrolledInput() {
   );
 }
 ```
+## **12. React.memo**
+
+👉 `React.memo` is used to **prevent unnecessary re-renders** of a component.
+
+👉 It only re-renders if **props change**.
 
 ---
 
-## **12. React.memo (Performance Optimization)**
-
-`React.memo` is a **higher-order component** used to prevent unnecessary re-renders.
-
-If props do not change, the component will **not re-render**.
+### **Example**
 
 ```tsx
 import React from "react";
@@ -3156,51 +3190,48 @@ export default Child;
 
 ## **13. Custom Hooks**
 
-Custom hooks allow developers to **reuse logic between components**.
+👉 Custom hooks are used to **reuse logic across multiple components**.
 
-### Example: Fetch API Data
+---
+
+### **Example: useFetch Hook**
 
 ```tsx
 import { useEffect, useState } from "react";
 
 function useFetch(url: string) {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     fetch(url)
-      .then((res) => res.json())
-      .then((result) => setData(result));
+      .then(res => res.json())
+      .then(result => setData(result));
   }, [url]);
 
   return data;
 }
+
+export default useFetch;
 ```
 
-Usage:
-
-```tsx
-function Users() {
+#### Usage
+```
   const users = useFetch("https://jsonplaceholder.typicode.com/users");
 
-  if (!users) return <p>Loading...</p>;
-
-  return (
-    <ul>
-      {users.map((user: any) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
-  );
-}
 ```
+
 
 ---
 
 ## **14. Code Splitting (Lazy Loading)**
 
-Code splitting helps **reduce bundle size** and improves performance.
+👉 Code splitting is used to **load components only when needed**.
 
-React supports lazy loading using `React.lazy` and `Suspense`.
+👉 Improves performance by reducing initial bundle size.
+
+---
+
+### **Example**
 
 ```tsx
 import React, { Suspense } from "react";
@@ -3209,7 +3240,7 @@ const Dashboard = React.lazy(() => import("./Dashboard"));
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<p>Loading...</p>}>
       <Dashboard />
     </Suspense>
   );
@@ -3218,262 +3249,47 @@ function App() {
 export default App;
 ```
 
+
 ---
 
 ## **15. Error Boundaries**
 
-Error boundaries catch **JavaScript errors in component trees** and display fallback UI.
+👉 Error boundaries are used to **catch runtime errors in React components** and show a fallback UI.
 
-```tsx
-import React from "react";
+👉 Modern approach uses `react-error-boundary` library (no class components needed).
 
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false };
-  }
+---
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
+### **Install**
 
-  componentDidCatch(error: Error, info: any) {
-    console.error("Error caught:", error, info);
-  }
+```sh
+npm install react-error-boundary
+```
 
-  render() {
-    if (this.state.hasError) {
-      return <h2>Something went wrong.</h2>;
-    }
+### **Example**
 
-    return this.props.children;
-  }
+```js
+import { ErrorBoundary } from "react-error-boundary";
+
+function ErrorFallback() {
+  return <h2>Something went wrong 😢</h2>;
 }
-
-export default ErrorBoundary;
 ```
 
-Usage:
-
-```tsx
-<ErrorBoundary>
-  <App />
-</ErrorBoundary>
-```
-
----
-
-## **16. React Rendering Lifecycle**
-
-React components go through three lifecycle phases.
-
-### **Mount**
-
-Component is created and inserted into the DOM.
-
-### **Update**
-
-Component re-renders when:
-
-- Props change
-- State changes
-- Parent re-renders
-
-### **Unmount**
-
-Component is removed from the DOM.
-
-Hooks equivalent:
-
-```
-componentDidMount → useEffect(() => {}, [])
-componentDidUpdate → useEffect(() => {}, [deps])
-componentWillUnmount → cleanup function
-```
-
----
-
-## **17. React Reconciliation**
-
-React uses a **diffing algorithm** to compare the **Virtual DOM** with the previous version.
-
-This process is called **Reconciliation**.
-
-Steps:
-
-1. React builds a new Virtual DOM tree.
-2. Compares it with the previous tree.
-3. Updates only the changed elements in the real DOM.
-
-Benefits:
-
-- Faster UI updates
-- Efficient DOM manipulation
-
----
-
-## **18. List Rendering & Keys**
-
-Keys help React **identify which items changed, added, or removed**.
-
-```tsx
-const users = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" }
-];
-
-function UserList() {
+#### Usage
+```js
+function App() {
   return (
-    <ul>
-      {users.map((user) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <MyComponent />
+    </ErrorBoundary>
   );
 }
+
+export default App;
 ```
 
----
-
-## **19. React Performance Optimization**
-
-Important techniques for optimizing React applications.
-
-### Memoization
-
-```
-React.memo
-useMemo
-useCallback
-```
-
-### Code Splitting
-
-```
-React.lazy
-Dynamic imports
-```
-
-### Avoid Unnecessary Re-renders
-
-- Proper key usage
-- Memoized components
-- Avoid inline functions
-
-### Virtualization
-
-Used when rendering **large lists**.
-
-Libraries:
-
-```
-react-window
-react-virtualized
-```
----
-
-## **20. Additional Advanced React Concepts**
-
-### **20.1 Why React Components Re-render**
-
-A React component re-renders when:
-
-1. **State changes**
-2. **Props change**
-3. **Parent component re-renders**
-4. **Context value changes**
-
-Example:
-
-```tsx
-function Counter() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>{count}</p>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
-    </div>
-  );
-}
-```
-
-When `setCount()` is called, the component re-renders.
-
----
-
-### **20.2 React Strict Mode**
-
-Strict Mode is a development tool that helps detect potential problems in React applications.
-
-Example:
-
-```tsx
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-
-const root = ReactDOM.createRoot(document.getElementById("root")!);
-
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-```
-
-Benefits:
-
-- Identifies unsafe lifecycle methods
-- Detects unexpected side effects
-- Provides additional development warnings
-
----
-
-### **20.3 React Portals**
-
-React Portals allow rendering components **outside the parent DOM hierarchy**.
-
-Useful for:
-
-- Modals
-- Tooltips
-- Popups
-
-Example:
-
-```tsx
-import ReactDOM from "react-dom";
-
-function Modal({ children }) {
-  return ReactDOM.createPortal(
-    <div className="modal">{children}</div>,
-    document.getElementById("modal-root")
-  );
-}
-```
-
----
-
-### **20.4 Suspense for Data Loading**
-
-React Suspense can also be used for **asynchronous data loading**.
-
-Example:
-
-```tsx
-<Suspense fallback={<p>Loading...</p>}>
-  <UserProfile />
-</Suspense>
-```
-
-This allows React to show a fallback UI while waiting for data or components.
-
-
----
+--------------------------------------------
 
 ## 📌 Author Information  
 
