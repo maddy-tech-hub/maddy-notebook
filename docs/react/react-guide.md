@@ -1292,7 +1292,8 @@ console.log(`Hello, ${name}!`);
 ```
 
 #### **6.4 Promises & Async/Await**
-
+- `async` → makes a function return a Promise  
+-  `await` → waits for a Promise to complete  
 ```js
 const fetchData = async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
