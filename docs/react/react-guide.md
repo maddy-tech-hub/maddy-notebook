@@ -2422,22 +2422,24 @@ Output:
 ❌ Function always throws error
 ✔ No return value ever happens
 
+---## **9. TypeScript Decorators**
+
+Decorators are special functions used to **modify or add behavior to classes, methods, or properties**.
+
+👉 They run at runtime  
+👉 They are written using `@`
+
 ---
-TypeScript Decorators
 
-Decorators
-👉 Decorators are special functions used to modify or add behavior to classes, methods, or properties.
-
-👉 They run at runtime and are prefixed with `@`
-
---------------------------------------------
-
-1. Class Decorators
+## **9.1 Class Decorators**
 
 👉 Applied to an entire class
 
-Example:
+---
 
+### **Example**
+
+```ts
 function Logger(constructor: Function) {
   console.log("Logging...");
   console.log(constructor);
@@ -2453,28 +2455,30 @@ class Person {
 }
 
 const person = new Person();
+```
 
---------------------------------------------
+**How it works**
+✔ Runs when class is defined
+✔ Receives constructor function
+✔ Can modify or observe class behavior
 
-Output Flow:
-
-1. Class is defined → Logger runs
-2. Logs constructor function
-3. Object creation triggers constructor
-
-Output:
+**Output**
+```
 Logging...
 [class Person]
 Creating person object...
+```
+## **9.2 Method Decorators**
 
---------------------------------------------
+👉 Method decorators are used to **modify or observe class methods**.
 
-2. Method Decorators
+👉 They run when the class is defined (not when method is called).
 
-👉 Applied to class methods
+---
 
-Example:
+### **Example**
 
+```ts
 function Log(
   target: any,
   propertyName: string,
@@ -2492,34 +2496,20 @@ class Calculator {
 
 const calc = new Calculator();
 console.log(calc.add(5, 10));
+```
 
---------------------------------------------
+**How it works**
 
-Output Flow:
+✔ Decorator runs when class is created
+✔ It receives method details
+✔ Can inspect or modify method behavior
 
-1. Decorator runs when class is defined
-2. Logs method name
-3. Method executes normally
+**Output**
 
-Output:
+```
 Method: add
 15
-
---------------------------------------------
-
-Key Points:
-
-✔ Class decorators modify or observe class creation
-✔ Method decorators modify or observe method behavior
-✔ Runs at runtime, not compile time
-✔ Used for logging, validation, authentication, etc.
-
---------------------------------------------
-
-Key Idea:
-👉 Decorators = “Attach behavior to classes/methods without changing core code”
-
-
+```
 ### **10. TypeScript Configuration**
 ```json
 {
