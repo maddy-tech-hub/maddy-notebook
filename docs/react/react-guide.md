@@ -2097,9 +2097,116 @@ console.log(identity<string>("Hello"));
 #### **6.2 Utility Types**
 
 ```ts
-type Person = { name: string; age: number; };
-type PartialPerson = Partial<Person>;
-type ReadOnlyPerson = Readonly<Person>;
+TypeScript Utility Types (Clean Cheat Sheet)
+
+--------------------------------------------
+
+Partial<T>
+👉 Makes all properties optional
+
+Example:
+type User = { name: string; age: number };
+
+const u: Partial<User> = { name: "Alice" };
+
+Output:
+{ name: "Alice" } ✔ (age is optional)
+
+--------------------------------------------
+
+Required<T>
+👉 Makes all properties required
+
+Example:
+type User = { name?: string; age?: number };
+
+const u: Required<User> = { name: "Alice", age: 25 };
+
+Output:
+{ name: "Alice", age: 25 } ✔ (all fields required)
+
+--------------------------------------------
+
+Readonly<T>
+👉 Makes properties read-only (cannot be changed)
+
+Example:
+type User = { name: string };
+
+const u: Readonly<User> = { name: "Alice" };
+
+// u.name = "Bob" ❌ error
+
+Output:
+{ name: "Alice" } ✔ (immutable object)
+
+--------------------------------------------
+
+Pick<T, K>
+👉 Select only specific properties from a type
+
+Example:
+type User = { name: string; age: number; email: string };
+
+type UserName = Pick<User, "name" | "email">;
+
+Output Type:
+{ name: string; email: string }
+
+--------------------------------------------
+
+Omit<T, K>
+👉 Remove specific properties from a type
+
+Example:
+type User = { name: string; age: number; email: string };
+
+type UserWithoutEmail = Omit<User, "email">;
+
+Output Type:
+{ name: string; age: number }
+
+--------------------------------------------
+
+Record<K, T>
+👉 Creates an object type with key-value pairs
+
+Example:
+const roles: Record<string, number> = {
+  admin: 1,
+  user: 2
+};
+
+Output:
+{ admin: 1, user: 2 }
+
+--------------------------------------------
+
+ReturnType<T>
+👉 Gets the return type of a function
+
+Example:
+function getUser() {
+  return { name: "Alice", age: 25 };
+}
+
+type UserType = ReturnType<typeof getUser>;
+
+Output Type:
+{ name: string; age: number }
+
+--------------------------------------------
+
+Parameters<T>
+👉 Gets parameter types of a function
+
+Example:
+function add(a: number, b: number) {}
+
+type AddParams = Parameters<typeof add>;
+
+Output Type:
+[number, number]
 ```
 ---
 
