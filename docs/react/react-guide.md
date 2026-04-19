@@ -2361,8 +2361,6 @@ TypeScript Discriminated Unions
 Discriminated Unions
 👉 A pattern where multiple types share a common field (discriminator) to safely identify which type is being used.
 
---------------------------------------------
-
 **Basic Example:**
 
 ```js
@@ -2379,8 +2377,6 @@ type Square = {
 type Shape = Circle | Square;
 ```
 
---------------------------------------------
-
 **Usage:**
 
 ```js
@@ -2393,28 +2389,28 @@ function area(shape: Shape) {
     return shape.side * shape.side;
   }
 }
-```
---------------------------------------------
+``
 
 **Example Calls:**
 
-```
+```js
 area({ kind: "circle", radius: 10 });
 Output: 314
 
 area({ kind: "square", side: 5 });
 Output: 25
 ```
+
 👉 "kind" is the discriminator
 
---------------------------------------------
+
 #### **8.3 `never` Type**
 👉 The `never` type represents values that NEVER occur.
 👉 It is used for functions that never return or for exhaustive type checking.
 
 --------------------------------------------
 
-1. Function That Never Returns
+**1. Function That Never Returns**
 
 Example:
 
@@ -2428,7 +2424,9 @@ Output:
 ❌ Function always throws error
 ✔ No return value ever happens
 
----## **9. TypeScript Decorators**
+---
+
+## **9. TypeScript Decorators**
 
 Decorators are special functions used to **modify or add behavior to classes, methods, or properties**.
 
