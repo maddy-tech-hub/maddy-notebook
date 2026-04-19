@@ -1546,7 +1546,7 @@ Promises and async/await are essential for handling asynchronous operations in a
 
 ---
 
-#### **7.5 Array Methods Mastery
+#### **7.5 Array Methods Mastery**
 ![image](https://github.com/user-attachments/assets/10d30b84-c826-467a-aea6-35ba133a6119)
 
 #### 🧠 JavaScript Array Methods + C# Mapping (Clean Table Cheat Sheet)
@@ -1559,15 +1559,11 @@ Promises and async/await are essential for handling asynchronous operations in a
 |--------|-------------|------------------|----------------|--------------|
 | map() | transforms each element | `[1,2,3].map(n => n * 2)` | `[2,4,6]` | `Select(n => n * 2)` |
 
----
-
 #### 🟢 FILTER (Select items)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
 | filter() | keeps matching items | `[1,2,3,4].filter(n => n % 2 === 0)` | `[2,4]` | `Where(n => n % 2 == 0)` |
-
----
 
 #### 🟢 SEARCH (Find items)
 
@@ -1576,8 +1572,6 @@ Promises and async/await are essential for handling asynchronous operations in a
 | find() | first matching value | `[1,2,3].find(n => n > 1)` | `2` | `FirstOrDefault()` |
 | findIndex() | index of first match | `[1,2,3].findIndex(n => n > 1)` | `1` | `FindIndex()` |
 
----
-
 #### 🟢 CONDITION CHECK (Boolean result)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
@@ -1585,23 +1579,18 @@ Promises and async/await are essential for handling asynchronous operations in a
 | some() | at least one match | `[1,2,3].some(n => n > 2)` | `true` | `Any()` |
 | every() | all must match | `[1,2,3].every(n => n > 0)` | `true` | `All()` |
 
----
-
 #### 🟢 LOOP ONLY (No return)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
 | forEach() | runs function for each item | `[1,2,3].forEach(n => console.log(n))` | `1 2 3` | `ForEach()` |
 
----
 
 #### 🟢 REDUCE (Single value output)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
 | reduce() | combines array into one value | `[1,2,3].reduce((a,b)=>a+b,0)` | `6` | `Aggregate()` |
-
----
 
 #### 🟢 ADD / REMOVE (END)
 
@@ -1610,8 +1599,6 @@ Promises and async/await are essential for handling asynchronous operations in a
 | push() | add at end | `arr.push(4)` | `[1,2,3,4]` | `Add()` |
 | pop() | remove last item | `arr.pop()` | `[1,2]` | `RemoveAt(last)` |
 
----
-
 #### 🟢 ADD / REMOVE (FRONT)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
@@ -1619,23 +1606,18 @@ Promises and async/await are essential for handling asynchronous operations in a
 | unshift() | add at front | `arr.unshift(0)` | `[0,1,2]` | `Insert(0, val)` |
 | shift() | remove first item | `arr.shift()` | `[2,3]` | `RemoveAt(0)` |
 
----
-
 #### 🟢 COPY (No change to original)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
 | slice() | copy part of array | `[1,2,3,4].slice(1,3)` | `[2,3]` | `Skip + Take` |
 
----
 
 #### 🟢 MODIFY (Changes original array)
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
 | splice() | add/remove elements anywhere | `[1,2,3].splice(1,1)` | `[1,3]` | `RemoveAt / Insert` |
-
----
 
 #### 🟢 SORT / REVERSE
 
@@ -1644,7 +1626,7 @@ Promises and async/await are essential for handling asynchronous operations in a
 | sort() | sorts array | `[3,1,2].sort()` | `[1,2,3]` | `OrderBy()` |
 | reverse() | reverses array | `[1,2,3].reverse()` | `[3,2,1]` | `Reverse()` |
 
----
+--- 
 
 ```
 Transform → map
