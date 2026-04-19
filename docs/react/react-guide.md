@@ -2404,11 +2404,11 @@ Output: 25
 👉 "kind" is the discriminator
 
 
+--------------------------------------------
+
 #### **8.3 `never` Type**
 👉 The `never` type represents values that NEVER occur.
 👉 It is used for functions that never return or for exhaustive type checking.
-
---------------------------------------------
 
 **1. Function That Never Returns**
 
@@ -2439,7 +2439,6 @@ Decorators are special functions used to **modify or add behavior to classes, me
 
 👉 Applied to an entire class
 
----
 
 ### **Example**
 
@@ -2472,6 +2471,7 @@ Logging...
 [class Person]
 Creating person object...
 ```
+
 ## **9.2 Method Decorators**
 
 👉 Method decorators are used to **modify or observe class methods**.
@@ -2514,6 +2514,7 @@ console.log(calc.add(5, 10));
 Method: add
 15
 ```
+
 ### **10. TypeScript Configuration**
 ```json
 {
