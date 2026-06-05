@@ -1607,14 +1607,14 @@ Promises and async/await are essential for handling asynchronous operations in a
 | unshift() | add at front | `arr.unshift(0)` | `[0,1,2]` | `Insert(0, val)` |
 | shift() | remove first item | `arr.shift()` | `[2,3]` | `RemoveAt(0)` |
 
-#### 🟢 COPY (No change to original)
+#### 🟢 COPY (No change to original) : `slice(start, end) includes start but excludes end`
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
 | slice() | copy part of array | `[1,2,3,4].slice(1,3)` | `[2,3]` | `Skip + Take` |
 
 
-#### 🟢 MODIFY (Changes original array)
+#### 🟢 MODIFY (Changes original array) : `array.splice(start, deleteCount, item1, item2, ...)`
 
 | Method | What it does | JavaScript Syntax | Output Example | C# Equivalent |
 |--------|-------------|------------------|----------------|--------------|
