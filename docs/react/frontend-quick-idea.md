@@ -511,6 +511,7 @@ Check Flexbox/Grid configuration.
 Check logs, console errors, and network requests.
 
 151. **Why React Components Re-render**
+
 A React component re-renders when:
 - **State changes**
 - **Props change**
