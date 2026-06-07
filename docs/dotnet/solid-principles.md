@@ -264,10 +264,39 @@ class Program
 **Definition:**High - level modules should not depend on low-level modules. Both should depend on abstractions.
 **Bad Example (Violation):**
 ```csharp
+using System;
+
+public interface IDiscount
+{
+    double GetDiscount(double amount);
+}
+
+public class PremiumCustomer : IDiscount
+{
+    public double GetDiscount(double amount)
+    {
+        return amount * 0.20;
+    }
+}
+
 public class DiscountService
 {
-    private RegularCustomer _customer = new RegularCustomer();
-    public double CalculateDiscount(double amount) => _customer.GetDiscount(amount);
+    private PremiumCustomer _customer = new PremiumCustomer(); // ❌ DIP Violation
+
+    public double CalculateDiscount(double amount)
+    {
+        return _customer.GetDiscount(amount);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        DiscountService service = new DiscountService();
+
+        Console.WriteLine(service.CalculateDiscount(1000));
+    }
 }
 // ❌ Service depends directly on concrete class
 ```
@@ -280,9 +309,17 @@ public class PremiumCustomer : IDiscount { public double GetDiscount(double amou
 
 public class DiscountService
 {
-    private readonly IDiscount _customer;
-    public DiscountService(IDiscount customer) { _customer = customer; }
-    public double CalculateDiscount(double amount) => _customer.GetDiscount(amount);
+    private readonly IDiscount _customer; // ✅ DIP Followed
+
+    public DiscountService(IDiscount customer)
+    {
+        _customer = customer;
+    }
+
+    public double CalculateDiscount(double amount)
+    {
+        return _customer.GetDiscount(amount);
+    }
 }
 
 class Program
