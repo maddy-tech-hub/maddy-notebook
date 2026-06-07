@@ -1,4 +1,4 @@
-# .NET Senior Developer Interview Questions (5 Years Experience)
+en# .NET Senior Developer Interview Questions (5 Years Experience)
 
 Author: Madhava Reddy Vemireddy  
 
@@ -54,7 +54,7 @@ IQueryable is used to query data from remote sources like databases.
 OOP is a programming paradigm based on objects that contain data and behavior.
 
 14. **What is Encapsulation?**  
-Encapsulation hides internal implementation details and exposes only necessary functionality.
+Encapsulation means combining data and the functions that work on that data into a single unit, like a class.
 
 15. **What is Inheritance?**  
 Inheritance allows one class to reuse properties and methods of another class.
