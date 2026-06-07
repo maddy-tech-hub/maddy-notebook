@@ -221,6 +221,9 @@ Type assertion tells TypeScript to treat a value as a specific type.
 65. **What is `strict` mode in TypeScript?**  
 `strict` mode enables stronger type checks for safer and more predictable code.
 
+**What is dif b/w interface and type ?**
+
+`Interface is used to define object structure with extend/merge support, while type is more flexible and can define objects, unions, and primitives but cannot be merged.`
 ---
 
 # 5. React Fundamentals
