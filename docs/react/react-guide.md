@@ -2390,7 +2390,7 @@ function area(shape: Shape) {
     return shape.side * shape.side;
   }
 }
-``
+```
 
 **Example Calls:**
 
