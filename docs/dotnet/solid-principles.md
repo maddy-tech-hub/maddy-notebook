@@ -127,7 +127,7 @@ public class GuestCustomer : IDiscount
 {
     public double GetDiscount(double amount)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException();   // ❌ LSP Violation
     }
 }
 
@@ -176,7 +176,7 @@ public class GuestCustomer : IDiscount
 {
     public double GetDiscount(double amount)
     {
-        return 0;
+        return 0;            // ✅ LSP Followed
     }
 }
 
