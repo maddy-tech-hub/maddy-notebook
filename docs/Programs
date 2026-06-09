@@ -1,0 +1,162 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // =========================================================
+        // 1. TWO SUM (LINQ)
+        // =========================================================
+        int[] arr = { 1, 1, 7, 10 };
+        int target = 8;
+
+        var twoSum = arr
+            .Select((value, index) => new { value, index })
+            .SelectMany(x => arr.Select((v2, i2) => new { x, v2, i2 }))
+            .FirstOrDefault(x => x.x.value + x.v2 == target && x.x.index != x.i2);
+
+        Console.WriteLine($"Two Sum (LINQ): {twoSum?.x.index} {twoSum?.i2}");
+
+        // =========================================================
+        // 2. REVERSE WORDS + STRING REVERSE
+        // =========================================================
+        string s = "Hello World";
+
+        var reverseWords = string.Join(" ",
+            s.Split(' ').Reverse());
+
+        Console.WriteLine(reverseWords);
+
+        Console.WriteLine("Reverse String: " + new string(s.Reverse().ToArray()));
+
+        // =========================================================
+        // 3. PALINDROME
+        // =========================================================
+        string str = "madam";
+
+        var reversed = new string(str.Reverse().ToArray());
+
+        Console.WriteLine(str == reversed ? "Palindrome" : "Not Palindrome");
+
+        // =========================================================
+        // 4. SECOND LARGEST
+        // =========================================================
+        int[] arr1 = { 20, 20, 1, 2 };
+
+        var secondLargest = arr1
+            .Distinct()
+            .OrderByDescending(x => x)
+            .Skip(1)
+            .First();
+
+        Console.WriteLine("Second Largest: " + secondLargest);
+
+        // =========================================================
+        // 5. MOVE ZEROS TO END
+        // =========================================================
+        int[] nums = { 0, 1, 0, 3, 12 };
+
+        var moveZeros = nums
+            .OrderBy(x => x == 0)
+            .ToArray();
+
+        Console.WriteLine("Move Zeros: " + string.Join(" ", moveZeros));
+
+        // =========================================================
+        // 6. PRIME CHECK
+        // =========================================================
+        int number = 7;
+
+        bool isPrime = number > 1 &&
+            Enumerable.Range(2, number - 2)
+            .All(i => number % i != 0);
+
+        Console.WriteLine(isPrime ? "Prime" : "Not Prime");
+
+        // =========================================================
+        // 7. DUPLICATES
+        // =========================================================
+        int[] arr2 = { 1, 2, 3, 2, 4, 1 };
+
+        var duplicates = arr2
+            .GroupBy(x => x)
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key);
+
+        Console.WriteLine("Duplicates: " + string.Join(" ", duplicates));
+
+        // =========================================================
+        // 8. FIBONACCI
+        // =========================================================
+        int n = 10;
+
+        var fib = Enumerable.Range(0, n)
+            .Aggregate(new List<int> { 0, 1 },
+                (list, _) =>
+                {
+                    list.Add(list[^1] + list[^2]);
+                    return list;
+                })
+            .Take(n);
+
+        Console.WriteLine("Fibonacci: " + string.Join(" ", fib));
+
+        // =========================================================
+        // 9. VOWELS & CONSONANTS
+        // =========================================================
+        string input = "education";
+
+        var vowels = input.Count(c => "aeiou".Contains(c));
+        var consonants = input.Count(c => char.IsLetter(c) && !"aeiou".Contains(c));
+
+        Console.WriteLine($"Vowels: {vowels}");
+        Console.WriteLine($"Consonants: {consonants}");
+
+        // =========================================================
+        // 10. SUBSTRING COUNT
+        // =========================================================
+        string mainStr = "banana";
+        string subStr = "an";
+
+        var count = Enumerable.Range(0, mainStr.Length - subStr.Length + 1)
+            .Count(i => mainStr.Substring(i, subStr.Length) == subStr);
+
+        Console.WriteLine("Substring Count: " + count);
+
+        // =========================================================
+        // 11. ALL SUBSTRINGS
+        // =========================================================
+        string input1 = "abc";
+
+        var substrings =
+            from start in Enumerable.Range(0, input1.Length)
+            from len in Enumerable.Range(1, input1.Length - start)
+            select input1.Substring(start, len);
+
+        Console.WriteLine("Substrings:");
+        Console.WriteLine(string.Join(", ", substrings));
+
+        // =========================================================
+        // 12. LONGEST SUBSTRING WITHOUT REPEAT
+        // =========================================================
+        string input2 = "abcabcbb";
+
+        int maxLength = 0;
+
+        for (int i = 0; i < input2.Length; i++)
+        {
+            var set = new HashSet<char>();
+
+            foreach (var c in input2.Skip(i))
+            {
+                if (set.Contains(c)) break;
+                set.Add(c);
+                maxLength = Math.Max(maxLength, set.Count);
+            }
+        }
+
+        Console.WriteLine("Max Length: " + maxLength);
+    }
+}
