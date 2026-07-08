@@ -1694,48 +1694,40 @@ Understanding the event loop is crucial for debugging asynchronous code and avoi
 
 **Debouncing Example:**
 ```js
-function debounce(func, delay) {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), delay);
-  };
+let time: any;
+
+const search = document.querySelector("input");
+
+search?.addEventListener("input", XYZ);
+
+function XYZ(event: any) {
+    clearTimeout(time);
+
+    const value = event.target.value;
+
+    time = setTimeout(() => {
+        console.log("Searching:", value);
+    }, 1000);
 }
-
-const handleResize = debounce(() => {
-  console.log("Resized!");
-}, 300);
-
-window.addEventListener("resize", handleResize);
 ```
 
 **Throttling Example:**
 ```js
-function throttle(func, limit) {
-  let lastFunc;
-  let lastRan;
-  return function (...args) {
-    const context = this;
-    if (!lastRan) {
-      func.apply(context, args);
-      lastRan = Date.now();
-    } else {
-      clearTimeout(lastFunc);
-      lastFunc = setTimeout(() => {
-        if (Date.now() - lastRan >= limit) {
-          func.apply(context, args);
-          lastRan = Date.now();
-        }
-      }, limit - (Date.now() - lastRan));
-    }
-  };
+let allow = true;
+
+window.addEventListener("scroll", ABC);
+
+function ABC() {
+    if (!allow) return;
+
+    console.log("Scrolling...");
+
+    allow = false;
+
+    setTimeout(() => {
+        allow = true;
+    }, 1000);
 }
-
-const handleScroll = throttle(() => {
-  console.log("Scrolled!");
-}, 1000);
-
-window.addEventListener("scroll", handleScroll);
 ```
 
 **Why it's important:**  
