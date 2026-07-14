@@ -31,17 +31,35 @@ public class EmailService
 ```
 
 ## 2️⃣ O – Open/Closed Principle (OCP)  
-**Definition:**Software entities should be open for extension but closed for modification.  
+**Definition:** Software entities should be open for extension but closed for modification.  
 
 **Bad Example (Violation):**
 ```csharp
+using System;
+
 public class DiscountService
 {
-    public double GetDiscount(double amount, string customerType)
+    public double CalculateDiscount(double amount, string customerType)
     {
-        if (customerType == "Regular") return amount * 0.1;
-        if (customerType == "Premium") return amount * 0.2;
+        if (customerType == "Regular")
+            return amount * 0.10;
+
+        if (customerType == "Premium")
+            return amount * 0.20;
+
         return 0;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        DiscountService service = new DiscountService();
+
+        double discount = service.CalculateDiscount(1000, "Premium");
+
+        Console.WriteLine($"Discount : {discount}");
     }
 }
 // ❌ Adding new customer types requires modifying this class
@@ -67,26 +85,71 @@ public class PremiumCustomer : IDiscount
 public class DiscountService
 {
     public double CalculateDiscount(double amount, IDiscount customer)
-        => customer.GetDiscount(amount);
+    {
+        return customer.GetDiscount(amount);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        DiscountService service = new DiscountService();
+        IDiscountStrategy customer = new PremiumCustomer();
+        
+        double discount = service.CalculateDiscount(1000, customer);
+        Console.WriteLine($"Discount : {discount}");
+    }
 }
 // ✅ New customer types can be added by creating a new class implementing IDiscount
 ```
 ## 3️⃣ L – Liskov Substitution Principle (LSP)
-**Definition:**Subtypes must be substitutable for their base types.
+**Definition:** Subtypes must be substitutable for their base types.
 
 **Bad Example (Violation):**
 ```csharp
+using System;
 
 public interface IDiscount
 {
     double GetDiscount(double amount);
 }
 
+public class RegularCustomer : IDiscount
+{
+    public double GetDiscount(double amount)
+    {
+        return amount * 0.10;
+    }
+}
+
 public class GuestCustomer : IDiscount
 {
     public double GetDiscount(double amount)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException();   // ❌ LSP Violation
+    }
+}
+
+public class DiscountService
+{
+    public double CalculateDiscount(double amount, IDiscount customer)
+    {
+        return customer.GetDiscount(amount);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        DiscountService service = new DiscountService();
+
+        IDiscount customer = new GuestCustomer();
+
+        double discount = service.CalculateDiscount(1000, customer);
+
+        Console.WriteLine($"Discount : {discount}");
     }
 }
 // ❌ Replacing IDiscount with GuestCustomer breaks the program
@@ -94,26 +157,55 @@ public class GuestCustomer : IDiscount
 
 **Good Example(Correct):**
 ```csharp
+using System;
+
+public interface IDiscount
+{
+    double GetDiscount(double amount);
+}
+
+public class RegularCustomer : IDiscount
+{
+    public double GetDiscount(double amount)
+    {
+        return amount * 0.10;
+    }
+}
+
 public class GuestCustomer : IDiscount
 {
-    public double GetDiscount(double amount) => 0;
+    public double GetDiscount(double amount)
+    {
+        return 0;            // ✅ LSP Followed
+    }
 }
-// ✅ Can be substituted safely wherever IDiscount is used
+
+public class DiscountService
+{
+    public double CalculateDiscount(double amount, IDiscount customer)
+    {
+        return customer.GetDiscount(amount);
+    }
+}
 
 class Program
 {
     static void Main()
     {
-        IDiscount customer = new GuestCustomer();
         DiscountService service = new DiscountService();
-        Console.WriteLine(service.CalculateDiscount(1000, customer)); // works correctly
+
+        IDiscount customer = new GuestCustomer();
+
+        double discount = service.CalculateDiscount(1000, customer);
+
+        Console.WriteLine($"Discount : {discount}");
     }
 }
 // ✅ Can be substituted safely wherever IDiscount is used
 ```
 
 ## 4️⃣ I – Interface Segregation Principle (ISP)
-**Definition:**Clients should not be forced to depend on interfaces they do not use.
+**Definition:** Clients should not be forced to depend on interfaces they do not use.
 **Bad Example (Violation):**
 ```csharp
 public interface ICustomerOperations
@@ -172,10 +264,39 @@ class Program
 **Definition:**High - level modules should not depend on low-level modules. Both should depend on abstractions.
 **Bad Example (Violation):**
 ```csharp
+using System;
+
+public interface IDiscount
+{
+    double GetDiscount(double amount);
+}
+
+public class PremiumCustomer : IDiscount
+{
+    public double GetDiscount(double amount)
+    {
+        return amount * 0.20;
+    }
+}
+
 public class DiscountService
 {
-    private RegularCustomer _customer = new RegularCustomer();
-    public double CalculateDiscount(double amount) => _customer.GetDiscount(amount);
+    private PremiumCustomer _customer = new PremiumCustomer(); // ❌ DIP Violation
+
+    public double CalculateDiscount(double amount)
+    {
+        return _customer.GetDiscount(amount);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        DiscountService service = new DiscountService();
+
+        Console.WriteLine(service.CalculateDiscount(1000));
+    }
 }
 // ❌ Service depends directly on concrete class
 ```
@@ -188,9 +309,17 @@ public class PremiumCustomer : IDiscount { public double GetDiscount(double amou
 
 public class DiscountService
 {
-    private readonly IDiscount _customer;
-    public DiscountService(IDiscount customer) { _customer = customer; }
-    public double CalculateDiscount(double amount) => _customer.GetDiscount(amount);
+    private readonly IDiscount _customer; // ✅ DIP Followed
+
+    public DiscountService(IDiscount customer)
+    {
+        _customer = customer;
+    }
+
+    public double CalculateDiscount(double amount)
+    {
+        return _customer.GetDiscount(amount);
+    }
 }
 
 class Program
