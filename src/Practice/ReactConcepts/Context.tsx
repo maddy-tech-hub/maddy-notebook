@@ -1,24 +1,27 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
 
-const ContextCreation = createContext({count: 0, setCount: (count: number) => {}});
+const MadhavaContext = createContext({ count: 0, setCount: (count: number) => { } })
 
-export const Provider = ({ children }: any) => {
+export function ContextProvider({ children }: any) {
   const [count, setCount] = useState(0);
   return (
-    <ContextCreation.Provider value={{ count, setCount }}>
+    <MadhavaContext.Provider value={{ count, setCount }}>
       {children}
-    </ContextCreation.Provider>
-  );
-};
+    </MadhavaContext.Provider>
+  )
+}
 
-export const Context = () => {
-  const { count, setCount } = useContext(ContextCreation);
+export function ContextChild() {
+  const { count, setCount } = useContext(MadhavaContext);
+  const handleClick = () => {
+    setCount(count + 1);
+  }
+
+  
   return (
     <>
-      <div data-testid="context-value">Count : {count}</div> <br />
-      <button data-testid="handleEvent" onClick={() => setCount(count + 1)}>
-        Click Here
-      </button>
+      <div>your count : {count}</div>
+      <button onClick={handleClick}>Click</button>
     </>
   );
-};
+}

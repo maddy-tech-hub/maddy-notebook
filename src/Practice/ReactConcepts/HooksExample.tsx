@@ -23,16 +23,18 @@ export function HooksExample() {
 
     const expensiveCalculation = useMemo(() => { return count * 2; }, [count]);
 
-    const handleButtonClick = useCallback(() => { setCount((prev) => prev + 1); }, []);
+    const handleButtonClick = useCallback(() => { setCount(count+1) }, [count]);
 
     // Without dependencies, the effect will run on every re-render
     useEffect(() => { renderCompCountRef.current += 1; });
+    
 
     /* Automatically focuses the input field when the component mounts */
     useEffect(() => { inputRef.current?.focus(); }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const interval = 
+        setInterval(() => {
             setTimer((prev) => prev + 1);
         }, 1000);
 

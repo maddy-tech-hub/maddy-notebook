@@ -1,15 +1,20 @@
-interface PropType {
+interface Login {
     isLogin: boolean;
+    name: string;
 }
 
-function HoC(WrappedComponent: React.ComponentType<PropType>) {
-    return function EnhancedComponent(props: any) {
-        return <WrappedComponent {...props} />;
-    };
+function WrappedComponent(props: Login) {
+    return (<>
+        {props.isLogin ? `Welcome ${props.name}` : 'Hey you have some login issue'}
+    </>)
 }
 
-const WrappedComponent = (props: PropType) => {
-    return <div>{props.isLogin ? 'Welcome to Wrapper Component' : 'Please Re Login'}</div>;
+function HOC(WrappedComponent: any) {
+    //    return (props:Login) =>  <WrappedComponent {...props}/>
+    return function Enhancement(props: Login) {
+        return <WrappedComponent {...props} />
+    }
+
 }
 
-export default HoC(WrappedComponent);
+export default HOC(WrappedComponent);
